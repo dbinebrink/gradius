@@ -1,31 +1,22 @@
-
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
 
-
-//     //  Firefox doesn't support mp3 files, so use ogg
-//     // game.load.audio('music1', ['assets/gradius.mp3', 'assets/gradius.ogg']);
-    game.load.audio('music1', 'assets-gradius/gradius.mp3');
-    game.load.audio('sfx_enemy_die', 'assets-gradius/enemy-die.wav');
-    game.load.audio('sfx_fire', 'assets-gradius/fire.wav');
-    game.load.audio('sfx_player_hit', 'assets-gradius/player-hit.wav');
-
-
+    // load all sprites
     game.load.image('bullet', 'assets-gradius/bullet.png');
     game.load.image('enemyBullet', 'assets-gradius/enemy-bullet.png');
     game.load.spritesheet('invader', 'assets-gradius/invader32x32x4.png', 32, 32);
-    // game.load.image('ship', 'assets-gradius/ship.png');
     game.load.spritesheet('ship', 'assets-gradius/ship64x64x5.png', 64, 64, 5);
     game.load.spritesheet('kaboom', 'assets-gradius/explode.png', 128, 128);
     game.load.image('starfield', 'assets-gradius/starfield.png');
 
+    // load all sfx and music
+    game.load.audio('music1', 'assets-gradius/gradius.mp3');
+    game.load.audio('sfx_enemy_die', 'assets-gradius/enemy-die.wav');
+    game.load.audio('sfx_fire', 'assets-gradius/fire.wav');
+    game.load.audio('sfx_player_hit', 'assets-gradius/player-hit.wav');
 }
 
-
-var music; 
-var sfx_fire;
-var sfx_enemy_die;
 
 var player;
 var aliens;
@@ -43,7 +34,9 @@ var enemyBullet;
 var firingTimer = 0;
 var stateText;
 var livingEnemies = [];
-
+var music; 
+var sfx_fire;
+var sfx_enemy_die;
 
 
 function create() {
@@ -54,15 +47,13 @@ function create() {
     music.volume = 0.4;
     music.play();
 
-	//	Here we set-up our audio sprite
+	//	Here we set-up our audio sprites
 	sfx_fire = game.add.audio('sfx_fire');
     sfx_fire.allowMultiple = false;
 
-	//	Here we set-up our audio sprite
 	sfx_player_hit = game.add.audio('sfx_player_hit');
     sfx_player_hit.allowMultiple = true;
 
-	//	Here we set-up our audio sprite
 	sfx_enemy_die = game.add.audio('sfx_enemy_die');
     sfx_enemy_die.allowMultiple = true;
 
@@ -185,7 +176,6 @@ function update() {
 
 
 function createAliens() {
-
     for (var y = 0; y < 3; y++) {
         for (var x = 0; x < 5; x++) {
             var alien = aliens.create(x * 48, y * 50, 'invader');
@@ -208,17 +198,13 @@ function createAliens() {
 }
 
 function setupInvader (invader) {
-
     invader.anchor.x = 0.5;
     invader.anchor.y = 0.5;
     invader.animations.add('kaboom');
-
 }
 
 function descend() {
-
     aliens.x -= 10;
-
 }
 
 function render() {
@@ -226,7 +212,6 @@ function render() {
 }
 
 function fireBullet() {
-
     game.add.audio('sfx_fire');
     sfx_fire.volume = 0.2;
     sfx_fire.play();
@@ -246,16 +231,13 @@ function fireBullet() {
 
 }
 function collisionHandler (bullet, alien) {
-
     //  When a bullet hits an alien we kill them both
     bullet.kill();
     alien.kill();
 
-
     game.add.audio('sfx_enemy_die');
     sfx_enemy_die.volume = 0.6;
     sfx_enemy_die.play();
-
 
     //  Increase the score
     score += 20;
@@ -277,15 +259,12 @@ function collisionHandler (bullet, alien) {
         //the "click to restart" handler
         game.input.onTap.addOnce(restart,this);
     }
-
 }
 
 function enemyHitsPlayer (player,bullet) {
-    
     game.add.audio('sfx_player_hit');
     sfx_player_hit.volume = 0.6;
     sfx_player_hit.play();
-
 
     bullet.kill();
 
@@ -301,7 +280,6 @@ function enemyHitsPlayer (player,bullet) {
     explosion.play('kaboom', 30, false, true);
 
     // PLAYER DIES
-
     // When the player dies
     if (lives.countLiving() < 1) {
         player.kill();
@@ -347,7 +325,6 @@ function enemyFires() {
 
 
 function resetBullet (bullet) {
-
     //  Called if the bullet goes out of the screen
     bullet.kill();
 
