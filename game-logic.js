@@ -3,18 +3,18 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: p
 function preload() {
 
     // load all sprites
-    game.load.image('bullet', 'assets-gradius/bullet.png');
-    game.load.image('enemyBullet', 'assets-gradius/enemy-bullet.png');
-    game.load.spritesheet('invader', 'assets-gradius/invader32x32x4.png', 32, 32);
-    game.load.spritesheet('ship', 'assets-gradius/ship64x64x5.png', 64, 64, 5);
-    game.load.spritesheet('kaboom', 'assets-gradius/explode.png', 128, 128);
-    game.load.image('starfield', 'assets-gradius/starfield.png');
+    game.load.image('bullet', 'img/bullet.png');
+    game.load.image('enemyBullet', 'img/enemy-bullet.png');
+    game.load.spritesheet('invader', 'img/invader32x32x4.png', 32, 32);
+    game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
+    game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
+    game.load.image('starfield', 'img/starfield.png');
 
     // load all sfx and music
-    game.load.audio('music1', 'assets-gradius/gradius.mp3');
-    game.load.audio('sfx_enemy_die', 'assets-gradius/enemy-die.wav');
-    game.load.audio('sfx_fire', 'assets-gradius/fire.wav');
-    game.load.audio('sfx_player_hit', 'assets-gradius/player-hit.wav');
+    game.load.audio('music1', 'audio/gradius.mp3');
+    game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
+    game.load.audio('sfx_fire', 'audio/fire.wav');
+    game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
 }
 
 
