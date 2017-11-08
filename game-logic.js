@@ -1,3 +1,4 @@
+// this generates the canvas tag on index.html with width/height attributes
 var game = new Phaser.Game(900, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
@@ -48,19 +49,19 @@ function create() {
     music.play();
 
 	//	Here we set-up our audio sprites
-	sfx_fire = game.add.audio('sfx_fire');
+    sfx_fire = game.add.audio('sfx_fire');
     sfx_fire.allowMultiple = false;
 
-	sfx_player_hit = game.add.audio('sfx_player_hit');
+    sfx_player_hit = game.add.audio('sfx_player_hit');
     sfx_player_hit.allowMultiple = true;
 
-	sfx_enemy_die = game.add.audio('sfx_enemy_die');
+    sfx_enemy_die = game.add.audio('sfx_enemy_die');
     sfx_enemy_die.allowMultiple = true;
 
     //  The scrolling starfield background
     starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
 
-    //  The hero!
+    //  The starship
     player = game.add.sprite(100, 200, 'ship');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
@@ -89,7 +90,7 @@ function create() {
     enemyBullets.setAll('outOfBoundsKill', true);
     enemyBullets.setAll('checkWorldBounds', true);
 
-    //  The baddies!
+    //  The bad guys
     aliens = game.add.group();
     aliens.enableBody = true;
     aliens.physicsBodyType = Phaser.Physics.ARCADE;
@@ -98,14 +99,14 @@ function create() {
 
     //  The score
     scoreString = 'Score: ';
-    scoreText = game.add.text(10, 10, scoreString + score, { font: '22px NintendoFont', fill: '#fff' });
+    scoreText = game.add.text(10, 10, scoreString + score, { font: '124px Arial', fill: '#fff' });
 
     //  Lives
     lives = game.add.group();
-    game.add.text(game.world.width - 100, 10, 'Health : ', { font: '22px NintendoFont', fill: '#fff' });
+    game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
 
     //  Text
-    stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '32px NintendoFont', fill: '#fff' });
+    stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '32px Arial', fill: '#fff' });
     stateText.anchor.setTo(0.5, 0.5);
     stateText.visible = false;
 
@@ -130,7 +131,7 @@ function create() {
 function update() {
 
     //  Scroll the background
-    starfield.tilePosition.x -= 2;
+    starfield.tilePosition.x -= 3;
 
     if (player.alive) {
         //  Reset the player, then check for movement keys
@@ -152,10 +153,10 @@ function update() {
             player.body.velocity.y = 200;
             player.animations.play('down');
         }
-		else {  // stand still
-		    player.animations.stop();
-		    player.frame = 2;
-		}
+        else {  // stand still
+            player.animations.stop();
+            player.frame = 2;
+        }
 
 
         //  Firing?
@@ -190,7 +191,7 @@ function createAliens() {
     aliens.y = 250;
 
 
-    //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
+    //  Start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
     var tween = game.add.tween(aliens).to( { x: 400 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
     //  When the tween loops it calls descend
@@ -253,10 +254,11 @@ function collisionHandler (bullet, alien) {
         scoreText.text = scoreString + score;
 
         enemyBullets.callAll('kill',this);
-        stateText.text = " You Won, \n Click to restart";
+        stateText.text = " You Won!, \n Click to restart...";
         stateText.visible = true;
+        music.stop();
 
-        //the "click to restart" handler
+        // the "click to restart" handler
         game.input.onTap.addOnce(restart,this);
     }
 }
@@ -285,7 +287,7 @@ function enemyHitsPlayer (player,bullet) {
         player.kill();
         enemyBullets.callAll('kill');
 
-        stateText.text=" GAME OVER \n Click to restart";
+        stateText.text=" Game Over! \n Click to restart...";
         stateText.visible = true;
 
 	    music.stop();
@@ -331,15 +333,12 @@ function resetBullet (bullet) {
 }
 
 function restart() {
-
     //  A new level starts
     music.stop();
     music.play();
 
     score = 0;
     scoreText.text = scoreString + score;
-
-
 
     //resets the life count
     lives.callAll('revive');
