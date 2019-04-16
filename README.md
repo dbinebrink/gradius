@@ -11,6 +11,7 @@ Gradius clone for educational purpose.
 | Sejin Eom    | Student    |
 | Test         | Student    |
 | Seongbin Park| Student    |
+| DongHyun Kim | Student    |
 | Junbeom Wi | Student  |
 | Test         | Student    |
 | JunHo Choi   | Student    |
