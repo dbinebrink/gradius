@@ -10,7 +10,6 @@ Gradius clone for educational purpose.
 | Test         | Student    |
 | Hanseo An    | Student    |
 
-
 ## Credit
 
 Originally developed by https://github.com/dbinebrink/gradius
