@@ -81,6 +81,7 @@ Gradius clone for educational purpose.
 | Jiseon Lee | Student |
 | Seogwon Kim | Student |
 |Yelim Park    | student |
+| Choi Byoung Ik| Student|
 | Jeongmin Han | Student |
 | Sieun Hwang | Student |
 | Park Ji ho | Student |
@@ -106,7 +107,6 @@ Gradius clone for educational purpose.
 |Kim Jun Woo | Student |
 | Choi Eun Chul | Student |
 | Tsoy Sergey | Student |
-
 ## Credit
 
 Originally developed by https://github.com/dbinebrink/gradius
