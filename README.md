@@ -71,7 +71,7 @@ Gradius clone for educational purpose.
 | JinYong Kim | Student |
 | Ikjun Oh | Student |
 | Jeong Hwan Lim | Student  |
-| Jiseon LEe | Student |
+| Jiseon Lee | Student |
 | Seogwon Kim | Student |
 |Yelim Park    | student |
 | Jeongmin Han | Student |
