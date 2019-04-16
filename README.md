@@ -21,17 +21,31 @@ Gradius clone for educational purpose.
 | Seongbin Park| Student    |
 | DongHyun Kim | Student    |
 | Junbeom Wi | Student  |
+| Test         | Student    |
+| Test         | Student    |
 | JunHo Choi   | Student    |
 | Jongmin Lee  | Student    |
 | Hanseo An    | Student    |
+| Junbeom Wi | Student  |
+| Jongmin Lee  | Student    |
 | Sungjae An| Student |
 | Sangwon Park| Student |
 | Seungho Kim  | Student    |
 | Hochul Hwang | Student    |
-| DongHyun Goh | Student    |
 | Semyeong Lee|Student|
-| DeokYoung Kim | Student|
 | Hochul Hwang | Student    |
+| DeokYoung Kim | Student|
+| DongHyun Goh | Student    |
+| An yo Han    | Student   |
+| JaeSun Park  | Student   |
+| Semyeong Lee|Student|
+| Seungmin Baek| Student	  |
+| Jieun Kwon   | Student    |
+| Soonwoo Kwon | Student    |
+| HyeonSik Kim | Student   |
+| MyoungSoo Kim| Student    |
+| JaeSun Park  | Student   |
+| MinJae Kim   | Student.  |
 | Semyeong Lee|Student|
 | DongHyun Goh | Student    |
 | JaeSun Park  | Student   |
