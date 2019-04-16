@@ -63,6 +63,8 @@ Gradius clone for educational purpose.
 | JinYong Kim | Student |
 | Ikjun Oh | Student |
 
+| Seyeon Lee | Student |
+
 ## Credit
 
 Originally developed by https://github.com/dbinebrink/gradius
