@@ -101,3 +101,4 @@ Gradius clone for educational purpose.
 | Goeun Kim | Student |
 |Jang Si young  | Student |
 | Chonghyon Yim | Student |
+| Kyungkin You | Student |
