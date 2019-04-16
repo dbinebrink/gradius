@@ -7,7 +7,6 @@ Gradius clone for educational purpose.
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
-=======
 | Jin Hyeok Park| student   |
 | Test         | Student    |
 | Hayeong Kim| Student |
@@ -35,7 +34,7 @@ Gradius clone for educational purpose.
 | DongHyun Goh | Student    |
 | Semyeong Lee|Student|
 | JaeSun Park  | Student   |
-l HyeonSik Kim l Student   l
+| HyeonSik Kim | Student   |
 | Soonwoo Kwon | Student    |
 | Jieun Kwon   | Student    |
 
