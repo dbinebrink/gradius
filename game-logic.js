@@ -35,7 +35,7 @@ var enemyBullet;
 var firingTimer = 0;
 var stateText;
 var livingEnemies = [];
-var music; 
+var music;
 var sfx_fire;
 var sfx_enemy_die;
 
@@ -125,7 +125,7 @@ function create() {
     //  And some controls to play the game with
     cursors = game.input.keyboard.createCursorKeys();
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    
+
 }
 
 function update() {
@@ -251,6 +251,7 @@ function collisionHandler (bullet, alien) {
 
     if (aliens.countLiving() == 0) {
         score += 1000;
+
         scoreText.text = scoreString + score;
 
         enemyBullets.callAll('kill',this);
@@ -311,7 +312,7 @@ function enemyFires() {
 
 
     if (enemyBullet && livingEnemies.length > 0) {
-        
+
         var random=game.rnd.integerInRange(0,livingEnemies.length-1);
 
         // randomly select one of them
@@ -332,6 +333,7 @@ function resetBullet (bullet) {
 
 }
 
+
 function restart() {
     //  A new level starts
     music.stop();
@@ -348,7 +350,7 @@ function restart() {
 
     //revives the player
     player.revive();
+    player.reset(150,300);
     //hides the text
     stateText.visible = false;
-
 }
