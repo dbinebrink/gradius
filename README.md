@@ -60,6 +60,7 @@ Gradius clone for educational purpose.
 |Park Jae Hyeon | Student |
 | Sa Eun Soo | Student |
 | JinYong Kim | Student |
+| Ikjun Oh | Student |
 
 ## Credit
 
