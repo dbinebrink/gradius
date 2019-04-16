@@ -60,7 +60,7 @@ Gradius clone for educational purpose.
 |Park Jae Hyeon | Student |
 | Jiyeon Park  | Student    |
 | Lee Eun Ah | student |
-| TEST2        | TEST student | 
+| TEST2        | TEST student |
 | Minji Ma | Student |
 | HyeonChang Lee | Student |
 |Cho Seung Hyun| Student |
@@ -74,4 +74,4 @@ Gradius clone for educational purpose.
 | Jeongmin Han | Student |
 | Sieun Hwang | Student |
 | Park Ji ho | Student |
-
+| Jeong Eun Ji | Student |
