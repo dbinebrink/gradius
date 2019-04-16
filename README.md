@@ -86,3 +86,4 @@ Gradius clone for educational purpose.
 | Sieun Hwang | Student |
 | Park Ji ho | Student |
 | Sang Joon Kim | Student |
+| Choi Byoung Ik| Student |
