@@ -58,10 +58,35 @@ Gradius clone for educational purpose.
 | Seungmin Baek| Student	  |
 | Yerim Seok | Student |
 |Park Jae Hyeon | Student |
+| Junhee Choi | Student |
+| Sungju Yun   | Student    |
+| ChangSun Park | Student |
+| Jiyeon Park  | Student    |
+| Lee Eun Ah | student |
+| TEST2        | TEST student |
+| Minji Ma | Student |
+| HyeongChang Lee | Student |
+|Cho Seung Hyun| Student |
 | Jaehun Kim   | Student |
 | Sa Eun Soo | Student |
 | JinYong Kim | Student |
 | Ikjun Oh | Student |
+| Jiyoon Kim | Student |
+| Jeong Hwan Lim | Student  |
+| Jiseon Lee | Student |
+| Seogwon Kim | Student |
+|Yelim Park    | student |
+| Jeongmin Han | Student |
+| Sieun Hwang | Student |
+| Park Ji ho | Student |
+|JangYoonHo | Student |
+| Jang Dong gun | Student |
+| JeHyun Park  | Student |
+| Kang Dong ho| Student|
+| Seyeon Lee | Student |
+| JeHyun Park  | Student |
+| Kang Dong ho| Student|
+| Seyeon Lee | Student |
 | Chonghyon Yim | Student |
 
 ## Credit
