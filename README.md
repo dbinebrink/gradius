@@ -77,9 +77,7 @@ Gradius clone for educational purpose.
 | Jeongmin Han | Student |
 | Sieun Hwang | Student |
 | Park Ji ho | Student |
-<<<<<<< HEAD
 | JeHyun Park  | Student |
-=======
 | Kang Dong ho| Student|
-| Seyeon Lee | Student |
->>>>>>> master
+| Seyeon Lee | Student | 
+| Minju Kim | Student |
