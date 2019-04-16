@@ -7,18 +7,24 @@ Gradius clone for educational purpose.
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
+| Beomsu Kwon  | Student    |
+| Junseop Lee| Student    |
+| Jin Hyeok Park| student   |
+| Junyung Park | Student |
+| Hayeong Kim| Student |
 | Suelym Moon  | Student    |
 | Sejin Eom    | Student    |
-| Test         | Student    |
+| Sujeong Lee    | Student     |
+| Suelym Moon  | Student    |
+| Sejin Eom    | Student    |
+| Seoyoung Kim| Student     |
 | Seongbin Park| Student    |
+| DongHyun Kim | Student    |
 | Junbeom Wi | Student  |
-| Test         | Student    |
 | JunHo Choi   | Student    |
 | Jongmin Lee  | Student    |
-| Test         | Student    |
 | Hanseo An    | Student    |
 | Sungjae An| Student |
-| Test         | Student    |
 | Sangwon Park| Student |
 | Seungho Kim  | Student    |
 | Hochul Hwang | Student    |
@@ -30,10 +36,16 @@ Gradius clone for educational purpose.
 | Semyeong Lee|Student|
 | JaeSun Park  | Student   |
 | DongYeon Han | Student |
+|JaeHyeon Park |   Student   |
+| MyoungSoo Kim| Student    |
+| HyeonSik Kim | Student   |
+| Soonwoo Kwon | Student    |
+| Jieun Kwon   | Student    |
+| Seungmin Baek| Student	  |
+|Park Jae Hyeon | Student |
 
 ## Credit
 
 Originally developed by https://github.com/dbinebrink/gradius
 
 Recreating Gradius 3 for the SNES, though of course a simplified version of it in JS, using the Phaser library.
-
