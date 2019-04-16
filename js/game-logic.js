@@ -4,18 +4,17 @@ var game = new Phaser.Game(900, 600, Phaser.AUTO, 'phaser-example', { preload: p
 function preload() {
 
     // load all sprites
-    game.load.image('bullet', 'img/bullet.png');
-    game.load.image('enemyBullet', 'img/enemy-bullet.png');
-    game.load.spritesheet('invader', 'img/invader32x32x4.png', 32, 32);
-    game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
-    game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
-    game.load.image('starfield', 'img/starfield.png');
-
+    game.load.image('bullet', '../img/bullet.png');
+    game.load.image('enemyBullet', '../img/enemy-bullet.png');
+    game.load.spritesheet('invader', '../img/invader32x32x4.png', 32, 32);
+    game.load.spritesheet('ship', '../img/ship64x64x5.png', 64, 64, 5);
+    game.load.spritesheet('kaboom', '../img/explode.png', 128, 128);
+    game.load.image('starfield', '../img/starfield.png');
     // load all sfx and music
-    game.load.audio('music1', 'audio/gradius.mp3');
-    game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
-    game.load.audio('sfx_fire', 'audio/fire.wav');
-    game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
+    game.load.audio('music1', '../audio/gradius.mp3');
+    game.load.audio('sfx_enemy_die', '../audio/enemy-die.wav');
+    game.load.audio('sfx_fire', '../audio/fire.wav');
+    game.load.audio('sfx_player_hit', '../audio/player-hit.wav');
 }
 
 
@@ -126,6 +125,13 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     
+    this.input.addDownCallback(function() {
+				
+        if (game.sound.context.state === 'suspended') {
+            game.sound.context.resume();
+        }
+        
+    });
 }
 
 function update() {
@@ -170,7 +176,8 @@ function update() {
 
         //  Run collision
         game.physics.arcade.overlap(bullets, aliens, collisionHandler, null, this);
-        game.physics.arcade.overlap(enemyBullets, player, enemyHitsPlayer, null, this);
+        game.physics.arcade.overlap(aliens, player, enemyHitsPlayer, null, this);
+        game.physics.arcade.overlap(enemyBullets, player, enemybulletHitsPlayer, null, this);
     }
 
 }
@@ -265,7 +272,42 @@ function collisionHandler (bullet, alien) {
     }
 }
 
-function enemyHitsPlayer (player,bullet) {
+function enemyHitsPlayer (player,alien) {
+    game.add.audio('sfx_player_hit');
+    sfx_player_hit.volume = 0.6;
+    sfx_player_hit.play();
+
+    alien.kill();
+
+    live = lives.getFirstAlive();
+
+    if (live) {
+        live.kill();
+    }
+
+    //  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(player.body.x, player.body.y);
+    explosion.play('kaboom', 30, false, true);
+    setTimeout(function() { explosion.kill(); }, 500);
+    
+    // PLAYER DIES
+    // When the player dies
+    if (lives.countLiving() < 1) {
+        player.kill();
+        enemyBullets.callAll('kill');
+
+        stateText.text=" Game Over! \n Click to restart...";
+        stateText.visible = true;
+
+        music.stop();
+
+        //the "click to restart" handler
+        game.input.onTap.addOnce(restart,this);
+    }
+}
+
+function enemybulletHitsPlayer (player,bullet) {
     game.add.audio('sfx_player_hit');
     sfx_player_hit.volume = 0.6;
     sfx_player_hit.play();
@@ -282,7 +324,7 @@ function enemyHitsPlayer (player,bullet) {
     var explosion = explosions.getFirstExists(false);
     explosion.reset(player.body.x, player.body.y);
     explosion.play('kaboom', 30, false, true);
-    setTimeout(function() { explosion.kill(); }, 0);
+    setTimeout(function() { explosion.kill(); }, 500);
     
     // PLAYER DIES
     // When the player dies
@@ -348,9 +390,12 @@ function restart() {
     //  And brings the aliens back from the dead :)
     aliens.removeAll();
     createAliens();
-
+    // resets current bullets and enemybullets
+    bullets.callAll('kill');
+    enemyBullets.callAll('kill');
     //revives the player
     player.revive();
+    player.velocity = 0;
     //hides the text
     stateText.visible = false;
 
