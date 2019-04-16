@@ -4,7 +4,7 @@
 
   1) nodejs를 설치합니다.
 
-  * https://nodejs.org/en/download/에 들어가서 설치하면됩니다.
+  * https://nodejs.org/en/download/ 에 들어가서 설치하면됩니다.
   
   2) 설치를 위해 git을 clone한 후에 터미널로 폴더에 들어가서 아래의 명령어를 칩니다
 
