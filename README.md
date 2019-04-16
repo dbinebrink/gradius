@@ -58,6 +58,7 @@ Gradius clone for educational purpose.
 | Seungmin Baek| Student	  |
 | Yerim Seok | Student |
 |Park Jae Hyeon | Student |
+| Wonbae Kim   | Student   |
 | Jiyeon Park  | Student    |
 | Lee Eun Ah | student |
 | TEST2        | TEST student |
@@ -74,9 +75,5 @@ Gradius clone for educational purpose.
 | Jeongmin Han | Student |
 | Sieun Hwang | Student |
 | Park Ji ho | Student |
-<<<<<<< HEAD
-
 | Goeun Kim | Student |
-=======
 | Jeong Eun Ji | Student |
->>>>>>> addmyname
