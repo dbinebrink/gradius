@@ -69,6 +69,7 @@ Gradius clone for educational purpose.
 | Seogwon Kim | Student |
 |Yelim Park    | student |
 | Sieun Hwang | Student |
+| Park Ji ho | Student |
 
 ## Credit
 
