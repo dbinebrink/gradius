@@ -1,3 +1,4 @@
 *.exe
 *.psd
 /audio/source
+node_modules/
