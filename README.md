@@ -58,18 +58,11 @@ Gradius clone for educational purpose.
 | Seungmin Baek| Student	  |
 | Yerim Seok | Student |
 |Park Jae Hyeon | Student |
-<<<<<<< HEAD
 | Choi ByoungIk| Student    |
 | Jaehun Kim   | Student |
 | Sa Eun Soo | Student |
 | JinYong Kim | Student |
 | Ikjun Oh | Student |
-=======
-| Jaehun Kim   | Student |
-| Sa Eun Soo | Student |
-| JinYong Kim | Student |
-| Ikjun Oh | Student |
->>>>>>> master
 
 ## Credit
 
