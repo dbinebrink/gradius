@@ -126,6 +126,13 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     
+    this.input.addDownCallback(function() {
+				
+        if (game.sound.context.state === 'suspended') {
+            game.sound.context.resume();
+        }
+        
+    });
 }
 
 function update() {
