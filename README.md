@@ -81,6 +81,7 @@ Gradius clone for educational purpose.
 | Jiseon Lee | Student |
 | Seogwon Kim | Student |
 |Yelim Park    | student |
+| Choi Byoung Ik| Student|
 | Jeongmin Han | Student |
 | Sieun Hwang | Student |
 | Park Ji ho | Student |
@@ -108,7 +109,7 @@ Gradius clone for educational purpose.
 | Choi Eun Chul | Student |
 | Tsoy Sergey | Student |
 |Namho Kim | Student |
-=======
+| Choi Byoung Ik| Student |
 
 
 ## Credit
@@ -116,5 +117,3 @@ Gradius clone for educational purpose.
 Originally developed by https://github.com/dbinebrink/gradius
 
 Recreating Gradius 3 for the SNES, though of course a simplified version of it in JS, using the Phaser library.
-| Sang Joon Kim | Student |
-
