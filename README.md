@@ -80,6 +80,10 @@ Gradius clone for educational purpose.
 | Jeongmin Han | Student |
 | Sieun Hwang | Student |
 | Park Ji ho | Student |
+| JeHyun Park  | Student |
+| Kang Dong ho| Student|
+| Seyeon Lee | Student | 
+| Minju Kim | Student |
 |JangYoonHo | Student |
 | Jang Dong gun | Student |
 | JeHyun Park  | Student |
