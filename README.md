@@ -59,6 +59,7 @@ Gradius clone for educational purpose.
 | Yerim Seok | Student |
 |Park Jae Hyeon | Student |
 | Lee Eun Ah | student |
+| TEST2        | TEST student | 
 | Minji Ma | Student |
 | HyeonChang Lee | Student |
 |Cho Seung Hyun| Student |
@@ -66,7 +67,10 @@ Gradius clone for educational purpose.
 | Sa Eun Soo | Student |
 | JinYong Kim | Student |
 | Ikjun Oh | Student |
+| Seogwon Kim | Student |
 |Yelim Park    | student |
+| Sieun Hwang | Student |
+| Park Ji ho | Student |
 
 ## Credit
 
