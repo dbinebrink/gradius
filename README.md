@@ -59,4 +59,48 @@ Gradius clone for educational purpose.
 | Seungmin Baek| Student	  |
 | Yerim Seok | Student |
 |Park Jae Hyeon | Student |
+| Park Myung Chul | Student |
+| Park Hyunseo | Student |
+| Wonbae Kim   | Student   |
+| Jun Sun Park | Student |
+| Junhee Choi | Student |
+| Sungju Yun   | Student    |
+| ChangSun Park | Student |
+| Jiyeon Park  | Student    |
+| Lee Eun Ah | student |
+| TEST2        | TEST student |
+| Minji Ma | Student |
+| HyeongChang Lee | Student |
+|Cho Seung Hyun| Student |
+| Jaehun Kim   | Student |
+| Sa Eun Soo | Student |
+| JinYong Kim | Student |
+| Ikjun Oh | Student |
+| Jiyoon Kim | Student |
+| Jeong Hwan Lim | Student  |
+| Jiseon Lee | Student |
+| Seogwon Kim | Student |
+|Yelim Park    | student |
+| Jeongmin Han | Student |
+| Sieun Hwang | Student |
+| Park Ji ho | Student |
+| Goeun Kim | Student |
+| Jeong Eun Ji | Student |
+| JeHyun Park  | Student |
+| Kang Dong ho| Student|
+| Seyeon Lee | Student | 
+| Minju Kim | Student |
+|JangYoonHo | Student |
+| Jang Dong gun | Student |
+| JeHyun Park  | Student |
+| Kang Dong ho| Student|
+| Seyeon Lee | Student |
+| JeHyun Park  | Student |
+| Kang Dong ho| Student|
+| Seyeon Lee | Student |
+| Goeun Kim | Student |
+|Jang Si young  | Student |
+| Chonghyon Yim | Student |
+| Kyungkin You | Student |
 |Kim Jun Woo | Student |
+
