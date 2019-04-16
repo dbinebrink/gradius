@@ -22,6 +22,7 @@ var player;
 var aliens;
 var bullets;
 var bulletTime = 0;
+var invincibleTime = 0;
 var cursors;
 var fireButton;
 var explosions;
@@ -169,8 +170,8 @@ function update() {
 
         //  Run collision
         game.physics.arcade.overlap(bullets, aliens, collisionHandler, null, this);
-        game.physics.arcade.overlap(aliens, player, enemyHitsPlayer, null, this);
-        game.physics.arcade.overlap(enemyBullets, player, enemybulletHitsPlayer, null, this);
+        game.physics.arcade.overlap(player, aliens, enemyHitsPlayer, null, this);
+        game.physics.arcade.overlap(player, enemyBullets, enemyHitsPlayer, null, this);
     }
 
 }
@@ -265,18 +266,22 @@ function collisionHandler (bullet, alien) {
     }
 }
 
-function enemyHitsPlayer (player,alien) {
+function enemyHitsPlayer (player,object) {
+    if (game.time.now < invincibleTime) return;
     game.add.audio('sfx_player_hit');
     sfx_player_hit.volume = 0.6;
     sfx_player_hit.play();
 
-    alien.kill();
+    object.kill();
 
     live = lives.getFirstAlive();
 
     if (live) {
         live.kill();
     }
+
+    // 타격받으면 1초동안 무적상태
+    player.invincibleTime = game.time.now + 1000;
 
     //  And create an explosion :)
     var explosion = explosions.getFirstExists(false);
@@ -294,41 +299,6 @@ function enemyHitsPlayer (player,alien) {
         stateText.visible = true;
 
         music.stop();
-
-        //the "click to restart" handler
-        game.input.onTap.addOnce(restart,this);
-    }
-}
-
-function enemybulletHitsPlayer (player,bullet) {
-    game.add.audio('sfx_player_hit');
-    sfx_player_hit.volume = 0.6;
-    sfx_player_hit.play();
-
-    bullet.kill();
-
-    live = lives.getFirstAlive();
-
-    if (live) {
-        live.kill();
-    }
-
-    //  And create an explosion :)
-    var explosion = explosions.getFirstExists(false);
-    explosion.reset(player.body.x, player.body.y);
-    explosion.play('kaboom', 30, false, true);
-    setTimeout(function() { explosion.kill(); }, 500);
-    
-    // PLAYER DIES
-    // When the player dies
-    if (lives.countLiving() < 1) {
-        player.kill();
-        enemyBullets.callAll('kill');
-
-        stateText.text=" Game Over! \n Click to restart...";
-        stateText.visible = true;
-
-	    music.stop();
 
         //the "click to restart" handler
         game.input.onTap.addOnce(restart,this);
@@ -389,6 +359,7 @@ function restart() {
     //revives the player
     player.revive();
     player.velocity = 0;
+    player.invincibleTime = 0;
     //hides the text
     stateText.visible = false;
 
