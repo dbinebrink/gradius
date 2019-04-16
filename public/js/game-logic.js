@@ -257,7 +257,7 @@ function collisionHandler (bullet, alien) {
 
         scoreText.text = scoreString + score;
 
-        enemyBullets.callAll('kill',this);
+        enemyBullets.callAll('kill');
         stateText.text = " You Won!, \n Click to restart...";
         stateText.visible = true;
         music.stop();
