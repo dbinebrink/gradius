@@ -38,6 +38,8 @@ Gradius clone for educational purpose.
 | HyeonSik Kim | Student   |
 | Soonwoo Kwon | Student    |
 | Jieun Kwon   | Student    |
+| Seungmin Baek| Student	  |
+
 
 ## Credit
 
