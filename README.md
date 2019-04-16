@@ -7,8 +7,10 @@ Gradius clone for educational purpose.
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
+| Sungjae An| Student |
 | Test         | Student    |
 | Sangwon Park| Student |
+| DongHyun Goh | Student    |
 
 ## Credit
 
