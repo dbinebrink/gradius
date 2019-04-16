@@ -29,7 +29,6 @@ Gradius clone for educational purpose.
 | DongHyun Goh | Student    |
 | Semyeong Lee|Student|
 | JaeSun Park  | Student   |
-=======
 |JaeHyeon Park |   Student   |
 >>>>>>> master
 
