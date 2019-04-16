@@ -100,6 +100,7 @@ Gradius clone for educational purpose.
 | Seyeon Lee | Student |
 | Goeun Kim | Student |
 |Jang Si young  | Student |
+| Minji Kim | Student |
 | Chonghyon Yim | Student |
 | Kyungkin You | Student |
 |Kim Jun Woo | Student |
