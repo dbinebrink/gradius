@@ -59,6 +59,8 @@ Gradius clone for educational purpose.
 | Yerim Seok | Student |
 |Park Jae Hyeon | Student |
 | Park Hyunseo | Student |
+| Wonbae Kim   | Student   |
+| Jun Sun Park | Student |
 | Junhee Choi | Student |
 | Sungju Yun   | Student    |
 | ChangSun Park | Student |
@@ -72,6 +74,7 @@ Gradius clone for educational purpose.
 | Sa Eun Soo | Student |
 | JinYong Kim | Student |
 | Ikjun Oh | Student |
+| Jiyoon Kim | Student |
 | Jeong Hwan Lim | Student  |
 | Jiseon Lee | Student |
 | Seogwon Kim | Student |
@@ -79,6 +82,13 @@ Gradius clone for educational purpose.
 | Jeongmin Han | Student |
 | Sieun Hwang | Student |
 | Park Ji ho | Student |
+| Goeun Kim | Student |
+| Jeong Eun Ji | Student |
+| JeHyun Park  | Student |
+| Kang Dong ho| Student|
+| Seyeon Lee | Student | 
+| Minju Kim | Student |
+|JangYoonHo | Student |
 | Jang Dong gun | Student |
 | JeHyun Park  | Student |
 | Kang Dong ho| Student|
@@ -86,11 +96,4 @@ Gradius clone for educational purpose.
 | JeHyun Park  | Student |
 | Kang Dong ho| Student|
 | Seyeon Lee | Student |
-
-## Credit
-
-Originally developed by https://github.com/dbinebrink/gradius
-
-Recreating Gradius 3 for the SNES, though of course a simplified version of it in JS, using the Phaser library.
-
-
+|Jang Si young  | Student |
