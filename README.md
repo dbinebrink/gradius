@@ -7,7 +7,9 @@ Gradius clone for educational purpose.
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
-| DeokYoung KIM| Student |
+| Test         | Student    |
+| DeokYoung Kim | Student|
+
 
 ## Credit
 
