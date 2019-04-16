@@ -283,7 +283,7 @@ function enemyHitsPlayer (player,alien) {
     var explosion = explosions.getFirstExists(false);
     explosion.reset(player.body.x, player.body.y);
     explosion.play('kaboom', 30, false, true);
-    setTimeout(function() { explosion.kill(); }, 0);
+    setTimeout(function() { explosion.kill(); }, 500);
     
     // PLAYER DIES
     // When the player dies
@@ -318,7 +318,7 @@ function enemybulletHitsPlayer (player,bullet) {
     var explosion = explosions.getFirstExists(false);
     explosion.reset(player.body.x, player.body.y);
     explosion.play('kaboom', 30, false, true);
-    setTimeout(function() { explosion.kill(); }, 0);
+    setTimeout(function() { explosion.kill(); }, 500);
     
     // PLAYER DIES
     // When the player dies
