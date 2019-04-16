@@ -99,4 +99,5 @@ Gradius clone for educational purpose.
 |Jang Si young  | Student |
 | Chonghyon Yim | Student |
 | Sungsu Park | Student | 
+| Choi ByoungIk | Student |
 
