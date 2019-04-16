@@ -35,6 +35,7 @@ Gradius clone for educational purpose.
 | DongHyun Goh | Student    |
 | Semyeong Lee|Student|
 | JaeSun Park  | Student   |
+| DongYeon Han | Student |
 |JaeHyeon Park |   Student   |
 | MyoungSoo Kim| Student    |
 | HyeonSik Kim | Student   |
