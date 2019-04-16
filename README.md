@@ -8,6 +8,10 @@ Gradius clone for educational purpose.
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
 | Sejin Eom    | Student    |
+<<<<<<< HEAD
+=======
+| Test         | Student    |
+>>>>>>> readmeModify
 
 ## Credit
 
