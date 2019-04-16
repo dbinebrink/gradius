@@ -2,6 +2,12 @@
 
 Gradius clone for educational purpose.
 
+## Student list
+
+| Name         |            |
+|--------------|------------|
+| Jeongkyu Shin| Maintainer |
+
 ## Credit
 
 Originally developed by https://github.com/dbinebrink/gradius
