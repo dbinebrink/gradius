@@ -35,11 +35,13 @@ Gradius clone for educational purpose.
 | DongHyun Goh | Student    |
 | Semyeong Lee|Student|
 | JaeSun Park  | Student   |
+|JaeHyeon Park |   Student   |
 | MyoungSoo Kim| Student    |
 | HyeonSik Kim | Student   |
 | Soonwoo Kwon | Student    |
 | Jieun Kwon   | Student    |
 | Seungmin Baek| Student	  |
+|Park Jae Hyeon | Student |
 
 ## Credit
 
