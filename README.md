@@ -58,13 +58,14 @@ Gradius clone for educational purpose.
 | Seungmin Baek| Student	  |
 | Yerim Seok | Student |
 |Park Jae Hyeon | Student |
+| Junhee Choi | Student |
 | Sungju Yun   | Student    |
 | ChangSun Park | Student |
 | Jiyeon Park  | Student    |
 | Lee Eun Ah | student |
 | TEST2        | TEST student |
 | Minji Ma | Student |
-| HyeonChang Lee | Student |
+| HyeongChang Lee | Student |
 |Cho Seung Hyun| Student |
 | Jaehun Kim   | Student |
 | Sa Eun Soo | Student |
@@ -77,9 +78,14 @@ Gradius clone for educational purpose.
 | Jeongmin Han | Student |
 | Sieun Hwang | Student |
 | Park Ji ho | Student |
-<<<<<<< HEAD
 | JeHyun Park  | Student |
-=======
 | Kang Dong ho| Student|
 | Seyeon Lee | Student |
->>>>>>> master
+
+## Credit
+
+Originally developed by https://github.com/dbinebrink/gradius
+
+Recreating Gradius 3 for the SNES, though of course a simplified version of it in JS, using the Phaser library.
+
+
