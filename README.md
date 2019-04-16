@@ -8,17 +8,18 @@ Gradius clone for educational purpose.
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
 | Sujeong Lee    | Student     |
+| Suelym Moon  | Student    |
 | Sejin Eom    | Student    |
 | Test         | Student    |
+| Seoyoung Kim| Student     |
 | Seongbin Park| Student    |
+| DongHyun Kim | Student    |
 | Junbeom Wi | Student  |
 | Test         | Student    |
 | JunHo Choi   | Student    |
 | Jongmin Lee  | Student    |
-| Test         | Student    |
 | Hanseo An    | Student    |
 | Sungjae An| Student |
-| Test         | Student    |
 | Sangwon Park| Student |
 | Seungho Kim  | Student    |
 | Hochul Hwang | Student    |
