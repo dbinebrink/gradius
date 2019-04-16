@@ -22,8 +22,6 @@ Gradius clone for educational purpose.
 | Seongbin Park| Student    |
 | DongHyun Kim | Student    |
 | Junbeom Wi | Student  |
-| Test         | Student    |
-| Test         | Student    |
 | JunHo Choi   | Student    |
 | Jongmin Lee  | Student    |
 | Hanseo An    | Student    |
@@ -51,14 +49,14 @@ Gradius clone for educational purpose.
 | DongHyun Goh | Student    |
 | JaeSun Park  | Student   |
 | DongYeon Han | Student |
-|JaeHyeon Park |   Student   |
+| JaeHyeon Park |   Student   |
 | MyoungSoo Kim| Student    |
 | HyeonSik Kim | Student   |
 | Soonwoo Kwon | Student    |
 | Jieun Kwon   | Student    |
 | Seungmin Baek| Student	  |
 | Yerim Seok | Student |
-|Park Jae Hyeon | Student |
+| Park Jae Hyeon | Student |
 | Park Myung Chul | Student |
 | Park Hyunseo | Student |
 | Wonbae Kim   | Student   |
@@ -68,10 +66,9 @@ Gradius clone for educational purpose.
 | ChangSun Park | Student |
 | Jiyeon Park  | Student    |
 | Lee Eun Ah | student |
-| TEST2        | TEST student |
 | Minji Ma | Student |
 | HyeongChang Lee | Student |
-|Cho Seung Hyun| Student |
+| Cho Seung Hyun| Student |
 | Jaehun Kim   | Student |
 | Sa Eun Soo | Student |
 | JinYong Kim | Student |
@@ -80,7 +77,7 @@ Gradius clone for educational purpose.
 | Jeong Hwan Lim | Student  |
 | Jiseon Lee | Student |
 | Seogwon Kim | Student |
-|Yelim Park    | student |
+| Yelim Park    | student |
 | Choi Byoung Ik| Student|
 | Jeongmin Han | Student |
 | Sieun Hwang | Student |
@@ -91,7 +88,7 @@ Gradius clone for educational purpose.
 | Kang Dong ho| Student|
 | Seyeon Lee | Student | 
 | Minju Kim | Student |
-|JangYoonHo | Student |
+| JangYoonHo | Student |
 | Jang Dong gun | Student |
 | JeHyun Park  | Student |
 | Kang Dong ho| Student|
@@ -101,15 +98,15 @@ Gradius clone for educational purpose.
 | Seyeon Lee | Student |
 | Gyujin Kim | Student |
 | Goeun Kim | Student |
-|Jang Si young  | Student |
+| Jang Si young  | Student |
 | Minji Kim | Student |
 | Chonghyon Yim | Student |
 | Kyungkin You | Student |
-|Kim Jun Woo | Student |
+| Kim Jun Woo | Student |
 | Choi Eun Chul | Student |
 | Lee Hyo Jeong | Student |
 | Tsoy Sergey | Student |
-|Namho Kim | Student |
+| Namho Kim | Student |
 | Choi Byoung Ik| Student |
 | Shim Hyeonbo | Student |
 
