@@ -45,6 +45,7 @@ Gradius clone for educational purpose.
 | HyeonSik Kim | Student   |
 | MyoungSoo Kim| Student    |
 | JaeSun Park  | Student   |
+| MinJae Kim   | Student.  |
 
 
 ## Credit
