@@ -77,5 +77,5 @@ Gradius clone for educational purpose.
 | Jeongmin Han | Student |
 | Sieun Hwang | Student |
 | Park Ji ho | Student |
+| Kang Dong ho| Student|
 | Seyeon Lee | Student |
-
