@@ -97,5 +97,6 @@ Gradius clone for educational purpose.
 | JeHyun Park  | Student |
 | Kang Dong ho| Student|
 | Seyeon Lee | Student |
+| Goeun Kim | Student |
 |Jang Si young  | Student |
 | Chonghyon Yim | Student |
