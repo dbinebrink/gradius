@@ -10,6 +10,8 @@ Gradius clone for educational purpose.
 | Sungjae An| Student |
 | Test         | Student    |
 | DongHyun Goh | Student    |
+| Semyeong Lee|Student|
+=======
 
 ## Credit
 
