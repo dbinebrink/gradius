@@ -336,9 +336,9 @@ function restart() {
     //  A new level starts
     music.stop();
     music.play();
-    resetBullet(bullets);
-    resetBullet(enemyBulletsts);
-    score = 1;
+    // resetBullet(bullets);
+    // resetBullet(enemyBulletsts);
+    score = 0;
     scoreText.text = scoreString + score;
 
     //resets the life count
