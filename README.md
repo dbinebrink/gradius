@@ -8,6 +8,7 @@ Gradius clone for educational purpose.
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
 | Hayeong Kim| Student |
+
 ## Credit
 
 Originally developed by https://github.com/dbinebrink/gradius
