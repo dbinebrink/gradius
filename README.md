@@ -9,6 +9,7 @@ Gradius clone for educational purpose.
 | Jeongkyu Shin| Maintainer |
 | Jin Hyeok Park| student   |
 | Test         | Student    |
+| Junyung Park | Student |
 | Hayeong Kim| Student |
 | Suelym Moon  | Student    |
 | Sejin Eom    | Student    |
