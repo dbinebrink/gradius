@@ -106,6 +106,7 @@ Gradius clone for educational purpose.
 |Kim Jun Woo | Student |
 | Choi Eun Chul | Student |
 | Tsoy Sergey | Student |
+|Namho Kim | Student |
 
 ## Credit
 
