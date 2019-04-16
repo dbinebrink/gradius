@@ -88,5 +88,3 @@ Gradius clone for educational purpose.
 | Kang Dong ho| Student|
 | Seyeon Lee | Student |
 | Juwon Baik | Student |
-
-| Juwon Baik | Student |
