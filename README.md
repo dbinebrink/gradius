@@ -107,9 +107,11 @@ Gradius clone for educational purpose.
 | Kyungkin You | Student |
 |Kim Jun Woo | Student |
 | Choi Eun Chul | Student |
+| Lee Hyo Jeong | Student |
 | Tsoy Sergey | Student |
 |Namho Kim | Student |
 | Choi Byoung Ik| Student |
+| Shim Hyeonbo | Student |
 
 
 ## Credit
