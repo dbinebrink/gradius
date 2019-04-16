@@ -7,6 +7,7 @@ Gradius clone for educational purpose.
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
+| Junbeom Wi | Student  |
 | Test         | Student    |
 | JunHo Choi   | Student    |
 | Jongmin Lee  | Student    |
@@ -21,7 +22,6 @@ Gradius clone for educational purpose.
 | Hochul Hwang | Student    |
 | DongHyun Goh | Student    |
 | Semyeong Lee|Student|
-
 
 ## Credit
 
