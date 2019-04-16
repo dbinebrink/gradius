@@ -104,3 +104,11 @@ Gradius clone for educational purpose.
 | Chonghyon Yim | Student |
 | Kyungkin You | Student |
 |Kim Jun Woo | Student |
+| Choi Eun Chul | Student |
+| Tsoy Sergey | Student |
+
+## Credit
+
+Originally developed by https://github.com/dbinebrink/gradius
+
+Recreating Gradius 3 for the SNES, though of course a simplified version of it in JS, using the Phaser library.
