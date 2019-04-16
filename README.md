@@ -13,6 +13,7 @@ Gradius clone for educational purpose.
 | JunHo Choi   | Student    |
 | Jongmin Lee  | Student    |
 | Test         | Student    |
+| Hanseo An    | Student    |
 | Sungjae An| Student |
 | Test         | Student    |
 | Sangwon Park| Student |
