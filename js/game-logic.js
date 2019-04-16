@@ -390,10 +390,12 @@ function restart() {
     //  And brings the aliens back from the dead :)
     aliens.removeAll();
     createAliens();
-
+    // resets current bullets and enemybullets
+    bullets.callAll('kill');
+    enemyBullets.callAll('kill');
     //revives the player
     player.revive();
-    player.velocity = 
+    player.velocity = 0;
     //hides the text
     stateText.visible = false;
 
