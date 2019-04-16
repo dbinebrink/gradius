@@ -13,6 +13,10 @@ Gradius clone for educational purpose.
 | Hochul Hwang | Student    |
 | DongHyun Goh | Student    |
 | Semyeong Lee|Student|
+| DeokYoung Kim | Student|
+| Hochul Hwang | Student    |
+| DongHyun Goh | Student    |
+| Semyeong Lee|Student|
 
 ## Credit
 
