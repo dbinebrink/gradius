@@ -7,7 +7,16 @@ Gradius clone for educational purpose.
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
+<<<<<<< changeaddmyname
 | Test         | Student    |
+
+=======
+| JunHo Choi   | Student    |
+=======
+>>>>>>> master
+
+
+
 
 | JunHo Choi   | Student    |
 
