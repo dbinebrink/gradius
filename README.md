@@ -111,6 +111,7 @@ Gradius clone for educational purpose.
 | Tsoy Sergey | Student |
 |Namho Kim | Student |
 | Choi Byoung Ik| Student |
+| Shim Hyeonbo | Student |
 
 
 ## Credit

@@ -125,6 +125,13 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     
+    this.input.addDownCallback(function() {
+				
+        if (game.sound.context.state === 'suspended') {
+            game.sound.context.resume();
+        }
+        
+    });
 }
 
 function update() {
@@ -169,7 +176,8 @@ function update() {
 
         //  Run collision
         game.physics.arcade.overlap(bullets, aliens, collisionHandler, null, this);
-        game.physics.arcade.overlap(enemyBullets, player, enemyHitsPlayer, null, this);
+        game.physics.arcade.overlap(aliens, player, enemyHitsPlayer, null, this);
+        game.physics.arcade.overlap(enemyBullets, player, enemybulletHitsPlayer, null, this);
     }
 
 }
@@ -264,7 +272,42 @@ function collisionHandler (bullet, alien) {
     }
 }
 
-function enemyHitsPlayer (player,bullet) {
+function enemyHitsPlayer (player,alien) {
+    game.add.audio('sfx_player_hit');
+    sfx_player_hit.volume = 0.6;
+    sfx_player_hit.play();
+
+    alien.kill();
+
+    live = lives.getFirstAlive();
+
+    if (live) {
+        live.kill();
+    }
+
+    //  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(player.body.x, player.body.y);
+    explosion.play('kaboom', 30, false, true);
+    setTimeout(function() { explosion.kill(); }, 500);
+    
+    // PLAYER DIES
+    // When the player dies
+    if (lives.countLiving() < 1) {
+        player.kill();
+        enemyBullets.callAll('kill');
+
+        stateText.text=" Game Over! \n Click to restart...";
+        stateText.visible = true;
+
+        music.stop();
+
+        //the "click to restart" handler
+        game.input.onTap.addOnce(restart,this);
+    }
+}
+
+function enemybulletHitsPlayer (player,bullet) {
     game.add.audio('sfx_player_hit');
     sfx_player_hit.volume = 0.6;
     sfx_player_hit.play();
@@ -281,7 +324,7 @@ function enemyHitsPlayer (player,bullet) {
     var explosion = explosions.getFirstExists(false);
     explosion.reset(player.body.x, player.body.y);
     explosion.play('kaboom', 30, false, true);
-    setTimeout(function() { explosion.kill(); }, 0);
+    setTimeout(function() { explosion.kill(); }, 500);
     
     // PLAYER DIES
     // When the player dies
