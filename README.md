@@ -11,6 +11,11 @@ Gradius clone for educational purpose.
 | Hayeong Kim| Student |
 | Suelym Moon  | Student    |
 | Sejin Eom    | Student    |
+| Sujeong Lee    | Student     |
+| Suelym Moon  | Student    |
+| Sejin Eom    | Student    |
+| Test         | Student    |
+| Seoyoung Kim| Student     |
 | Seongbin Park| Student    |
 | DongHyun Kim | Student    |
 | Junbeom Wi | Student  |
