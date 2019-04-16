@@ -102,3 +102,5 @@ Gradius clone for educational purpose.
 |Jang Si young  | Student |
 | Chonghyon Yim | Student |
 | Kyungkin You | Student |
+|Kim Jun Woo | Student |
+
