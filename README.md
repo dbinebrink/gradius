@@ -14,6 +14,7 @@ Gradius clone for educational purpose.
 | Test         | Student    |
 | Sungjae An| Student |
 | Test         | Student    |
+| Sangwon Park| Student |
 | Seungho Kim  | Student    |
 | Hochul Hwang | Student    |
 | DongHyun Goh | Student    |
