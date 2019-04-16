@@ -34,7 +34,7 @@ var enemyBullet;
 var firingTimer = 0;
 var stateText;
 var livingEnemies = [];
-var music; 
+var music;
 var sfx_fire;
 var sfx_enemy_die;
 
@@ -124,7 +124,7 @@ function create() {
     //  And some controls to play the game with
     cursors = game.input.keyboard.createCursorKeys();
     fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    
+
 }
 
 function update() {
@@ -215,7 +215,7 @@ function render() {
 function fireBullet() {
     game.add.audio('sfx_fire');
     sfx_fire.volume = 0.2;
-    
+
 
     //  To avoid them being allowed to fire too fast we set a time limit
     if (game.time.now > bulletTime) {
@@ -253,6 +253,7 @@ function collisionHandler (bullet, alien) {
 
     if (aliens.countLiving() == 0) {
         score += 1000;
+
         scoreText.text = scoreString + score;
 
         enemyBullets.callAll('kill',this);
@@ -283,7 +284,7 @@ function enemyHitsPlayer (player,alien) {
     explosion.reset(player.body.x, player.body.y);
     explosion.play('kaboom', 30, false, true);
     setTimeout(function() { explosion.kill(); }, 500);
-    
+
     // PLAYER DIES
     // When the player dies
     if (lives.countLiving() < 1) {
@@ -318,7 +319,7 @@ function enemybulletHitsPlayer (player,bullet) {
     explosion.reset(player.body.x, player.body.y);
     explosion.play('kaboom', 30, false, true);
     setTimeout(function() { explosion.kill(); }, 500);
-    
+
     // PLAYER DIES
     // When the player dies
     if (lives.countLiving() < 1) {
@@ -349,7 +350,7 @@ function enemyFires() {
 
 
     if (enemyBullet && livingEnemies.length > 0) {
-        
+
         var random=game.rnd.integerInRange(0,livingEnemies.length-1);
 
         // randomly select one of them
@@ -370,6 +371,7 @@ function resetBullet (bullet) {
 
 }
 
+
 function restart() {
     //  A new level starts
     music.stop();
@@ -388,8 +390,10 @@ function restart() {
     enemyBullets.callAll('kill');
     //revives the player
     player.revive();
+
+    player.reset(150,300);
     player.velocity = 0;
+
     //hides the text
     stateText.visible = false;
-
 }
