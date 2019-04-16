@@ -215,7 +215,7 @@ function render() {
 function fireBullet() {
     game.add.audio('sfx_fire');
     sfx_fire.volume = 0.2;
-    sfx_fire.play();
+    
 
     //  To avoid them being allowed to fire too fast we set a time limit
     if (game.time.now > bulletTime) {
@@ -223,6 +223,7 @@ function fireBullet() {
         bullet = bullets.getFirstExists(false);
 
         if (bullet) {
+            sfx_fire.play();
             //  And fire it
             bullet.reset(player.x+8, player.y);
             bullet.body.velocity.x = 400;
@@ -281,7 +282,7 @@ function enemyHitsPlayer (player,bullet) {
     var explosion = explosions.getFirstExists(false);
     explosion.reset(player.body.x, player.body.y);
     explosion.play('kaboom', 30, false, true);
-    setTimeout(function() { explosion.kill(); }, 500);
+    setTimeout(function() { explosion.kill(); }, 0);
     
     // PLAYER DIES
     // When the player dies
