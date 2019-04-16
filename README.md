@@ -3,3 +3,4 @@ Recreating Gradius 3 for the SNES, though of course a simplified version of it i
 
 Originally developed by https://github.com/dbinebrink/gradius
 
+add - Jeongmin Han
