@@ -37,6 +37,7 @@ Gradius clone for educational purpose.
 | JaeSun Park  | Student   |
 l HyeonSik Kim l Student   l
 | Soonwoo Kwon | Student    |
+| Jieun Kwon   | Student    |
 
 ## Credit
 
