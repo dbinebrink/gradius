@@ -7,6 +7,9 @@ Gradius clone for educational purpose.
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
+| Suelym Moon  | Student    |
+| Sejin Eom    | Student    |
+| Test         | Student    |
 | Seongbin Park| Student    |
 | Junbeom Wi | Student  |
 | Test         | Student    |
