@@ -4,18 +4,17 @@ var game = new Phaser.Game(900, 600, Phaser.AUTO, 'phaser-example', { preload: p
 function preload() {
 
     // load all sprites
-    game.load.image('bullet', 'img/bullet.png');
-    game.load.image('enemyBullet', 'img/enemy-bullet.png');
-    game.load.spritesheet('invader', 'img/invader32x32x4.png', 32, 32);
-    game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
-    game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
-    game.load.image('starfield', 'img/starfield.png');
-
+    game.load.image('bullet', '../img/bullet.png');
+    game.load.image('enemyBullet', '../img/enemy-bullet.png');
+    game.load.spritesheet('invader', '../img/invader32x32x4.png', 32, 32);
+    game.load.spritesheet('ship', '../img/ship64x64x5.png', 64, 64, 5);
+    game.load.spritesheet('kaboom', '../img/explode.png', 128, 128);
+    game.load.image('starfield', '../img/starfield.png');
     // load all sfx and music
-    game.load.audio('music1', 'audio/gradius.mp3');
-    game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
-    game.load.audio('sfx_fire', 'audio/fire.wav');
-    game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
+    game.load.audio('music1', '../audio/gradius.mp3');
+    game.load.audio('sfx_enemy_die', '../audio/enemy-die.wav');
+    game.load.audio('sfx_fire', '../audio/fire.wav');
+    game.load.audio('sfx_player_hit', '../audio/player-hit.wav');
 }
 
 
@@ -348,6 +347,7 @@ function restart() {
 
     //revives the player
     player.revive();
+    player.velocity = 
     //hides the text
     stateText.visible = false;
 
