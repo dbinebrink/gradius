@@ -81,9 +81,9 @@ Gradius clone for educational purpose.
 | Park Ji ho | Student |
 |JangYoonHo | Student |
 | Jang Dong gun | Student |
-| JeHyun Park  | Student |
 | Kang Dong ho| Student|
 | Seyeon Lee | Student |
 | JeHyun Park  | Student |
 | Kang Dong ho| Student|
 | Seyeon Lee | Student |
+| JeHyun Park  | Student |
