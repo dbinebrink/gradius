@@ -7,6 +7,7 @@ Gradius clone for educational purpose.
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
+| Seongbin Park| Student    |
 | Junbeom Wi | Student  |
 | Test         | Student    |
 | JunHo Choi   | Student    |
@@ -29,3 +30,4 @@ Gradius clone for educational purpose.
 Originally developed by https://github.com/dbinebrink/gradius
 
 Recreating Gradius 3 for the SNES, though of course a simplified version of it in JS, using the Phaser library.
+
