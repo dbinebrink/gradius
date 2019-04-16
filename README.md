@@ -7,18 +7,23 @@ Gradius clone for educational purpose.
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
+| Jin Hyeok Park| student   |
+| Test         | Student    |
+| Hayeong Kim| Student |
+| Suelym Moon  | Student    |
+| Sejin Eom    | Student    |
+| Sujeong Lee    | Student     |
 | Suelym Moon  | Student    |
 | Sejin Eom    | Student    |
 | Test         | Student    |
+| Seoyoung Kim| Student     |
 | Seongbin Park| Student    |
+| DongHyun Kim | Student    |
 | Junbeom Wi | Student  |
-| Test         | Student    |
 | JunHo Choi   | Student    |
 | Jongmin Lee  | Student    |
-| Test         | Student    |
 | Hanseo An    | Student    |
 | Sungjae An| Student |
-| Test         | Student    |
 | Sangwon Park| Student |
 | Seungho Kim  | Student    |
 | Hochul Hwang | Student    |
@@ -29,6 +34,8 @@ Gradius clone for educational purpose.
 | Semyeong Lee|Student|
 | DongHyun Goh | Student    |
 | JaeSun Park  | Student   |
+l HyeonSik Kim l Student   l
+| Yerim Seok | Student |
 
 ## Credit
 
