@@ -7,8 +7,23 @@ Gradius clone for educational purpose.
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
+| Sejin Eom    | Student    |
 | Test         | Student    |
-| Minjae Kim   | Student    |
+| Seongbin Park| Student    |
+| Junbeom Wi | Student  |
+| Test         | Student    |
+| JunHo Choi   | Student    |
+| Hanseo An    | Student    |
+| Jongmin Lee  | Student    |
+| Sungjae An| Student |
+| Sangwon Park| Student |
+| Seungho Kim  | Student    |
+| Hochul Hwang | Student    |
+| Semyeong Lee|Student|
+| Hochul Hwang | Student    |
+| DeokYoung Kim | Student|
+| DongHyun Goh | Student    |
+| DongHyun Goh | Student    |
 
 ## Credit
 
