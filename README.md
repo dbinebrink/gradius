@@ -71,10 +71,15 @@ Gradius clone for educational purpose.
 | JinYong Kim | Student |
 | Ikjun Oh | Student |
 | Jeong Hwan Lim | Student  |
-| Jiseon LEe | Student |
+| Jiseon Lee | Student |
 | Seogwon Kim | Student |
 |Yelim Park    | student |
 | Jeongmin Han | Student |
 | Sieun Hwang | Student |
 | Park Ji ho | Student |
+<<<<<<< HEAD
 | JeHyun Park  | Student |
+=======
+| Kang Dong ho| Student|
+| Seyeon Lee | Student |
+>>>>>>> master
