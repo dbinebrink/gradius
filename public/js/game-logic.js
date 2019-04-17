@@ -347,7 +347,7 @@ function restart() {
     music.play();
     // resetBullet(bullets);
     // resetBullet(enemyBulletsts);
-    score = 0;
+    score = 1;
     scoreText.text = scoreString + score;
 
     //resets the life count
