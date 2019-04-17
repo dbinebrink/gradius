@@ -250,16 +250,7 @@ function collisionHandler (bullet, alien) {
     explosion.play('kaboom', 30, false, true);
 
     if (aliens.countLiving() == 0) {
-        score += 1000;
-        scoreText.text = scoreString + score;
-
-        enemyBullets.callAll('kill',this);
-        stateText.text = " You Won!, \n Click to restart...";
-        stateText.visible = true;
-        music.stop();
-
-        // the "click to restart" handler
-        game.input.onTap.addOnce(restart,this);
+        createAliens();
     }
 }
 
