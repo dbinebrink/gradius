@@ -252,17 +252,7 @@ var Game = {
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
         if (aliens.countLiving() == 0) {
-            score += 1000;
-
-            scoreText.text = scoreString + score;
-
-            enemyBullets.callAll('kill');
-            stateText.text = " You Won!, \n Click to restart...";
-            stateText.visible = true;
-            music.stop();
-
-            // the "click to restart" handler
-            game.input.onTap.addOnce(this.restart,this);
+            this.finishGame();
         }
     },
 
@@ -301,7 +291,23 @@ var Game = {
     
             //the "click to restart" handler
             game.input.onTap.addOnce(this.restart,this);
+        } else if (aliens.countLiving() == 0) {
+            this.finishGame();
         }
+    },
+
+    finishGame : function() {
+        score += 1000;
+
+        scoreText.text = scoreString + score;
+
+        enemyBullets.callAll('kill');
+        stateText.text = " You Won!, \n Click to restart...";
+        stateText.visible = true;
+        music.stop();
+
+        // the "click to restart" handler
+        game.input.onTap.addOnce(this.restart,this);
     },
 
     enemyFires : function() {
