@@ -7,9 +7,15 @@ Gradius clone for educational purpose.
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin| Maintainer |
+<<<<<<< HEAD
 | Jong Hwi Wang | Student  |
 | Beomsu Kwon  | Student    |
 | Junseop Lee | Student    |
+=======
+| DongHyun Kim | Student |
+| Test         | Student    |
+| Junseop Lee| Student    |
+>>>>>>> master
 | Jin Hyeok Park| student   |
 | Junyung Park | Student |
 | Hayeong Kim| Student |
@@ -31,6 +37,7 @@ Gradius clone for educational purpose.
 | DongHyun Goh | Student    |
 | An yo Han    | Student   |
 | Seungmin Baek| Student	  |
+<<<<<<< HEAD
 | Jieun Kwon   | Student    |
 | Soonwoo Kwon | Student    |
 | HyeonSik Kim | Student   |
@@ -87,6 +94,9 @@ Gradius clone for educational purpose.
 | Namho Kim | Student |
 | Choi Byoung Ik| Student |
 | Shim Hyeonbo | Student |
+=======
+>>>>>>> master
+>>>>>>> master
 
 
 ## Credit
