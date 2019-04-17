@@ -1,3 +1,26 @@
+<<<<<<< HEAD:public/js/game.js
+=======
+// this generates the canvas tag on index.html with width/height attributes
+var game = new Phaser.Game(900, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+
+function preload() {
+
+    // load all sprites
+    game.load.image('bullet', 'img/bullet.png');
+    game.load.image('enemyBullet', 'img/enemy-bullet.png');
+    game.load.spritesheet('invader', 'img/invader32x32x4.png', 32, 32);
+    game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
+    game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
+    game.load.image('starfield', 'img/starfield.png');
+    // load all sfx and music
+    game.load.audio('music1', 'audio/gradius.mp3');
+    game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
+    game.load.audio('sfx_fire', 'audio/fire.wav');
+    game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
+}
+
+
+>>>>>>> master:public/js/game-logic.js
 var player;
 var aliens;
 var bullets;
@@ -316,6 +339,14 @@ var Game = {
             livingEnemies.push(alien);
         });
 
+<<<<<<< HEAD:public/js/game.js
+=======
+    //  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(alien.body.x, alien.body.y);
+    explosion.play('kaboom', 30, false, true);
+    setTimeout(function() { explosion.kill(); }, 750);
+>>>>>>> master:public/js/game-logic.js
 
         if (enemyBullet && livingEnemies.length > 0) {
 
@@ -326,10 +357,45 @@ var Game = {
             // And fire the bullet from this enemy
             enemyBullet.reset(shooter.body.x, shooter.body.y);
 
+<<<<<<< HEAD:public/js/game.js
             game.physics.arcade.moveToObject(enemyBullet,player,120);
             firingTimer = game.time.now + 2000;
         }
     },
+=======
+        // the "click to restart" handler
+        game.input.onTap.addOnce(restart,this);
+    }
+}
+
+function enemyHitsPlayer (player,object) {
+    if (game.time.now < player.invincibleTime) return;
+    game.add.audio('sfx_player_hit');
+    sfx_player_hit.volume = 0.6;
+    sfx_player_hit.play();
+
+    object.kill();
+
+    live = lives.getFirstAlive();
+
+    if (live) {
+        live.kill();
+    }
+  
+    player.invincibleTime = game.time.now + 1000;
+  
+    //  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(player.body.x, player.body.y);
+    explosion.play('kaboom', 30, false, true);
+    setTimeout(function() { explosion.kill(); }, 750);
+
+    // PLAYER DIES
+    // When the player dies
+    if (lives.countLiving() < 1) {
+        player.kill();
+        enemyBullets.callAll('kill');
+>>>>>>> master:public/js/game-logic.js
 
     resetBullet : function(bullet) {
         //  Called if the bullet goes out of the screen
