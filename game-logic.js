@@ -178,7 +178,7 @@ function update() {
 
 function createAliens() {
     for (var y = 0; y < 3; y++) {
-        for (var x = 0; x < 5; x++) {
+        for (var x = 0; x < 4; x++) {
             var alien = aliens.create(x * 48, y * 50, 'invader');
             alien.anchor.setTo(0.5, 0.5);
             alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
