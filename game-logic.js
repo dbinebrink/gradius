@@ -180,7 +180,7 @@ function createAliens() {
     for (var y = 0; y < 3; y++) {
         for (var x = 0; x < 5; x++) {
             var alien = aliens.create(x * 48, y * 50, 'invader');
-            alien.anchor.setTo(1, 1);
+            alien.anchor.setTo(0.5, 0.5);
             alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
             alien.play('fly');
             alien.body.moves = false;
@@ -336,7 +336,7 @@ function restart() {
     //  A new level starts
     music.stop();
     music.play();
-    score = 1;
+    score = 0;
     scoreText.text = scoreString + score;
 
     //resets the life count
