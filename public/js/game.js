@@ -244,7 +244,7 @@ var Game = {
         sfx_enemy_die.play();
 
         //  Increase the score
-        score += 20;
+        score += 20*lives.countLiving();
         scoreText.text = scoreString + score;
 
         //  And create an explosion :)
