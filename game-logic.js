@@ -336,7 +336,7 @@ function restart() {
     //  A new level starts
     music.stop();
     music.play();
-    score = 0;
+    score = 1;
     scoreText.text = scoreString + score;
 
     //resets the life count
