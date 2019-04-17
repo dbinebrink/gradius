@@ -4,17 +4,17 @@ var game = new Phaser.Game(900, 600, Phaser.AUTO, 'phaser-example', { preload: p
 function preload() {
 
     // load all sprites
-    game.load.image('bullet', '../img/bullet.png');
-    game.load.image('enemyBullet', '../img/enemy-bullet.png');
-    game.load.spritesheet('invader', '../img/invader32x32x4.png', 32, 32);
-    game.load.spritesheet('ship', '../img/ship64x64x5.png', 64, 64, 5);
-    game.load.spritesheet('kaboom', '../img/explode.png', 128, 128);
-    game.load.image('starfield', '../img/starfield.png');
+    game.load.image('bullet', 'public/img/bullet.png');
+    game.load.image('enemyBullet', 'public/img/enemy-bullet.png');
+    game.load.spritesheet('invader', 'public/img/invader32x32x4.png', 32, 32);
+    game.load.spritesheet('ship', 'public/img/ship64x64x5.png', 64, 64, 5);
+    game.load.spritesheet('kaboom', 'public/img/explode.png', 128, 128);
+    game.load.image('starfield', 'public/img/starfield.png');
     // load all sfx and music
-    game.load.audio('music1', '../audio/gradius.mp3');
-    game.load.audio('sfx_enemy_die', '../audio/enemy-die.wav');
-    game.load.audio('sfx_fire', '../audio/fire.wav');
-    game.load.audio('sfx_player_hit', '../audio/player-hit.wav');
+    game.load.audio('music1', 'public/audio/gradius.mp3');
+    game.load.audio('sfx_enemy_die', 'public/audio/enemy-die.wav');
+    game.load.audio('sfx_fire', 'public/audio/fire.wav');
+    game.load.audio('sfx_player_hit', 'public/audio/player-hit.wav');
 }
 
 
@@ -22,6 +22,7 @@ var player;
 var aliens;
 var bullets;
 var bulletTime = 0;
+var invincibleTime = 0;
 var cursors;
 var fireButton;
 var explosions;
@@ -61,7 +62,7 @@ function create() {
     starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
 
     //  The starship
-    player = game.add.sprite(100, 200, 'ship');
+    player = game.add.sprite(150, 300, 'ship');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
 
@@ -136,19 +137,19 @@ function update() {
         //  Reset the player, then check for movement keys
         player.body.velocity.setTo(0, 0);
 
-        if (cursors.left.isDown) {
+        if (cursors.left.isDown && (40 < player.x)) {
             player.body.velocity.x = -200;
         }
-        else if (cursors.right.isDown) {
+        else if (cursors.right.isDown && (player.x < 860)) {
             player.body.velocity.x = 200;
         }
 
         // keyboard up/down
-        if (cursors.up.isDown) {
+        if (cursors.up.isDown && (40 < player.y)) {
             player.body.velocity.y = -200;
             player.animations.play('up');
         }
-        else if (cursors.down.isDown) {
+        else if (cursors.down.isDown && (player.y < 560)) {
             player.body.velocity.y = 200;
             player.animations.play('down');
         }
@@ -169,8 +170,8 @@ function update() {
 
         //  Run collision
         game.physics.arcade.overlap(bullets, aliens, collisionHandler, null, this);
-        game.physics.arcade.overlap(aliens, player, enemyHitsPlayer, null, this);
-        game.physics.arcade.overlap(enemyBullets, player, enemybulletHitsPlayer, null, this);
+        game.physics.arcade.overlap(player, aliens, enemyHitsPlayer, null, this);
+        game.physics.arcade.overlap(player, enemyBullets, enemyHitsPlayer, null, this);
     }
 
 }
@@ -256,7 +257,7 @@ function collisionHandler (bullet, alien) {
 
         scoreText.text = scoreString + score;
 
-        enemyBullets.callAll('kill',this);
+        enemyBullets.callAll('kill');
         stateText.text = " You Won!, \n Click to restart...";
         stateText.visible = true;
         music.stop();
@@ -266,19 +267,22 @@ function collisionHandler (bullet, alien) {
     }
 }
 
-function enemyHitsPlayer (player,alien) {
+function enemyHitsPlayer (player,object) {
+    if (game.time.now < player.invincibleTime) return;
     game.add.audio('sfx_player_hit');
     sfx_player_hit.volume = 0.6;
     sfx_player_hit.play();
 
-    alien.kill();
+    object.kill();
 
     live = lives.getFirstAlive();
 
     if (live) {
         live.kill();
     }
-
+  
+    player.invincibleTime = game.time.now + 1000;
+  
     //  And create an explosion :)
     var explosion = explosions.getFirstExists(false);
     explosion.reset(player.body.x, player.body.y);
@@ -295,41 +299,6 @@ function enemyHitsPlayer (player,alien) {
         stateText.visible = true;
 
         music.stop();
-
-        //the "click to restart" handler
-        game.input.onTap.addOnce(restart,this);
-    }
-}
-
-function enemybulletHitsPlayer (player,bullet) {
-    game.add.audio('sfx_player_hit');
-    sfx_player_hit.volume = 0.6;
-    sfx_player_hit.play();
-
-    bullet.kill();
-
-    live = lives.getFirstAlive();
-
-    if (live) {
-        live.kill();
-    }
-
-    //  And create an explosion :)
-    var explosion = explosions.getFirstExists(false);
-    explosion.reset(player.body.x, player.body.y);
-    explosion.play('kaboom', 30, false, true);
-    setTimeout(function() { explosion.kill(); }, 500);
-
-    // PLAYER DIES
-    // When the player dies
-    if (lives.countLiving() < 1) {
-        player.kill();
-        enemyBullets.callAll('kill');
-
-        stateText.text=" Game Over! \n Click to restart...";
-        stateText.visible = true;
-
-	    music.stop();
 
         //the "click to restart" handler
         game.input.onTap.addOnce(restart,this);
@@ -393,7 +362,7 @@ function restart() {
 
     player.reset(150,300);
     player.velocity = 0;
-
+    player.invincibleTime = 0;
     //hides the text
     stateText.visible = false;
 }
