@@ -374,7 +374,6 @@
       <change beforePath="$PROJECT_DIR$/node_modules/vary/README.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/vary/index.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/vary/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/game.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -473,12 +472,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1555517663582</updated>
-      <workItem from="1555517664995" duration="22000" />
+      <workItem from="1555517664995" duration="209000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22000" />
+    <option name="totallyTimeSpent" value="209000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="342" y="23" width="1625" height="987" extended-state="0" />
