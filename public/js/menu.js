@@ -5,7 +5,7 @@ var mainMenu = {
     },
 
     create : function() {
-        game.stage.backgroundColor = '#FFFFFF';
+        game.stage.backgroundColor = '#fff';
         game.add.button(500,200,'startButton', this.startGame, this);
     },
 
