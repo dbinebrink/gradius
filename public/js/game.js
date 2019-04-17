@@ -180,7 +180,7 @@ var Game = {
 
         for (var y = 0; y < 3; y++) {
             for (var x = 0; x < 5; x++) {
-                var alien = aliens.create(x * 56, Math.floor(Math.random() * 325) , 'invader');
+                var alien = aliens.create(x * 58, Math.floor(Math.random() * 325) , 'invader');
                 alien.anchor.setTo(0.5, 0.5);
                 alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
                 alien.play('fly');
