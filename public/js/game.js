@@ -71,8 +71,8 @@ var Game = {
         //  The starship
         player = game.add.sprite(150, 300, 'ship');
         player.anchor.setTo(0.5, 0.5);
-        player.body.setSize(64,32,0,16);
         game.physics.enable(player, Phaser.Physics.ARCADE);
+        player.body.setSize(64,32,0,16);
     
         //  Our two animations, moving up and down.
         player.animations.add('up', [3, 4], 2, false);
