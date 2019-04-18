@@ -7,6 +7,7 @@ var cursors;
 var fireButton;
 var explosions;
 var starfield;
+var countstage = 1;
 var score = 0;
 var scoreString = '';
 var scoreText;
@@ -46,6 +47,7 @@ var Game = {
         scoreString = ''
         firingTimer = 0;
         livingEnemies = [];
+        stagecount = 1;
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -255,6 +257,7 @@ var Game = {
 
         if (aliens.countLiving() == 0) {
             this.createAliens();
+            countstage++;
             
         }
     },
@@ -323,7 +326,7 @@ var Game = {
             enemyBullet.reset(shooter.body.x, shooter.body.y);
 
             game.physics.arcade.moveToObject(enemyBullet,player,120);
-            firingTimer = game.time.now + 2000;
+            firingTimer = game.time.now + 2000 / countstage;
         }
     },
 
