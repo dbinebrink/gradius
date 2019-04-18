@@ -278,6 +278,8 @@ var Game = {
         }
       
         player.invincibleTime = game.time.now + 1000;
+        // blink player
+        game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
       
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
@@ -298,9 +300,6 @@ var Game = {
         }
 
         music.stop();
-        
-
-        
 
         game.time.events.add(Phaser.Timer.SECOND, function() {
             enemyBullets.callAll('kill');
