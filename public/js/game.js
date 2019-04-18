@@ -47,7 +47,7 @@ var Game = {
         scoreString = ''
         firingTimer = 0;
         livingEnemies = [];
-        stagecount = 1;
+        countstage = 1;
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -285,7 +285,9 @@ var Game = {
     
         // ?îå?†à?ù¥?ñ¥Í∞? Ï£ΩÍ±∞?Çò ?†Å?ù¥ ?ã§ Ï£ΩÏùÑ ?ïå
         if (lives.countLiving() < 1) {
+            countstage = 1;
             this.finishGame();
+            
         }
     },
 
@@ -295,6 +297,9 @@ var Game = {
         }
 
         music.stop();
+        
+
+        
 
         game.time.events.add(Phaser.Timer.SECOND, function() {
             enemyBullets.callAll('kill');
