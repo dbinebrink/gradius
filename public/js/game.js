@@ -254,7 +254,8 @@ var Game = {
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
         if (aliens.countLiving() == 0) {
-            createAliens();
+            this.createAliens();
+            
         }
     },
 
@@ -280,7 +281,7 @@ var Game = {
         explosion.play('kaboom', 30, false, true);
     
         // ?îå?†à?ù¥?ñ¥Í∞? Ï£ΩÍ±∞?Çò ?†Å?ù¥ ?ã§ Ï£ΩÏùÑ ?ïå
-        if ((lives.countLiving() < 1) || (aliens.countLiving() == 0)) {
+        if (lives.countLiving() < 1) {
             this.finishGame();
         }
     },
@@ -294,7 +295,7 @@ var Game = {
 
         game.time.events.add(Phaser.Timer.SECOND, function() {
             enemyBullets.callAll('kill');
-            aliens.removeAll();
+            //aliens.removeAll();
             this.state.start('ending');
         }, this);
     },
