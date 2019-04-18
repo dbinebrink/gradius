@@ -7,6 +7,7 @@ var cursors;
 var fireButton;
 var explosions;
 var starfield;
+var countstage = 1;
 var score = 0;
 var scoreString = '';
 var scoreText;
@@ -46,6 +47,7 @@ var Game = {
         scoreString = ''
         firingTimer = 0;
         livingEnemies = [];
+        countstage = 1;
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -254,8 +256,9 @@ var Game = {
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
         if (aliens.countLiving() == 0) {
-            score += 1000;
-            this.finishGame();
+            this.createAliens();
+            countstage++;
+            
         }
     },
 
@@ -280,9 +283,11 @@ var Game = {
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
     
-        // í”Œë ˆì´ì–´ê°€ ì£½ê±°ë‚˜ ì ì´ ë‹¤ ì£½ì„ ë•Œ
-        if ((lives.countLiving() < 1) || (aliens.countLiving() == 0)) {
+        // ?”Œ? ˆ?´?–´ê°? ì£½ê±°?‚˜ ? ?´ ?‹¤ ì£½ì„ ?•Œ
+        if (lives.countLiving() < 1) {
+            countstage = 1;
             this.finishGame();
+            
         }
     },
 
@@ -292,10 +297,13 @@ var Game = {
         }
 
         music.stop();
+        
+
+        
 
         game.time.events.add(Phaser.Timer.SECOND, function() {
             enemyBullets.callAll('kill');
-            aliens.removeAll();
+            //aliens.removeAll();
             this.state.start('ending');
         }, this);
     },
@@ -323,7 +331,7 @@ var Game = {
             enemyBullet.reset(shooter.body.x, shooter.body.y);
 
             game.physics.arcade.moveToObject(enemyBullet,player,120);
-            firingTimer = game.time.now + 2000;
+            firingTimer = game.time.now + 2000 / countstage;
         }
     },
 
