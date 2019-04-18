@@ -181,19 +181,17 @@ var Game = {
 
     createAliens : function() {
 
-        for (var y = 0; y < 3; y++) {
-            for (var x = 0; x < 5; x++) {
-                var alien = aliens.create(x * 48, y * 50, 'invader');
-                alien.anchor.setTo(0.5, 0.5);
-                alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-                alien.play('fly');
-                alien.body.moves = false;
-                alien.body.setSize(24,32,0,0);
-            }
+        for (var i = 0; i < 15; i++) {
+            var alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
+            alien.anchor.setTo(0.5, 0.5);
+            alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
+            alien.play('fly');
+            alien.body.moves = false;
+            alien.body.setSize(24,32,0,0);
         }
     
         aliens.x = 600;
-        aliens.y = 250;
+        aliens.y = 30;
     
     
         //  Start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
