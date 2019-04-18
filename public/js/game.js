@@ -107,7 +107,7 @@ var Game = {
     
         //  The score
         scoreString = 'Score: ';
-        scoreText = game.add.text(10, 10, scoreString + score, { font: '124px Arial', fill: '#fff' });
+        scoreText = game.add.text(10, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
     
         //  Lives
         lives = game.add.group();
@@ -173,6 +173,7 @@ var Game = {
 
             //  Run collision
             game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
+            game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
         }
@@ -261,6 +262,11 @@ var Game = {
             countstage++;
             
         }
+    },
+
+    playerBreakEnemyBullet : function(bullet, enemyBullet) {
+        bullet.kill();
+        enemyBullet.kill();
     },
 
     enemyHitsPlayer : function(player, object) {
