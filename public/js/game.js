@@ -71,6 +71,7 @@ var Game = {
         //  The starship
         player = game.add.sprite(150, 300, 'ship');
         player.anchor.setTo(0.5, 0.5);
+        player.body.setSize(64,32,0,16);
         game.physics.enable(player, Phaser.Physics.ARCADE);
     
         //  Our two animations, moving up and down.
@@ -187,6 +188,7 @@ var Game = {
                 alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
                 alien.play('fly');
                 alien.body.moves = false;
+                alien.body.setSize(24,32,0,0);
             }
         }
     
@@ -213,7 +215,8 @@ var Game = {
     },
 
     render : function() {
-
+        // game.debug.body(player);
+        // game.debug.body(aliens.getFirstAlive());
     },
 
     fireBullet : function() {
@@ -283,7 +286,7 @@ var Game = {
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
     
-        // ?”Œ? ˆ?´?–´ê°? ì£½ê±°?‚˜ ? ?´ ?‹¤ ì£½ì„ ?•Œ
+        // ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? ì£½ê±°?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ ì£½ì„ ?ï¿½ï¿½
         if (lives.countLiving() < 1) {
             countstage = 1;
             this.finishGame();
