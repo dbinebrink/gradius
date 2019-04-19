@@ -336,7 +336,7 @@ var Game = {
             // And fire the bullet from this enemy
             enemyBullet.reset(shooter.body.x, shooter.body.y);
 
-            game.physics.arcade.moveToObject(enemyBullet,player,100 + 20*countstage);
+            game.physics.arcade.moveToObject(enemyBullet,player,120);
             firingTimer = game.time.now + 2000 / countstage;
         }
     },
