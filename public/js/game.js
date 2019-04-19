@@ -47,7 +47,7 @@ var Game = {
         scoreString = ''
         firingTimer = 0;
         livingEnemies = [];
-        stagecount = 1;
+        countstage = 1;
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -72,6 +72,7 @@ var Game = {
         player = game.add.sprite(150, 300, 'ship');
         player.anchor.setTo(0.5, 0.5);
         game.physics.enable(player, Phaser.Physics.ARCADE);
+        player.body.setSize(64,32,0,16);
     
         //  Our two animations, moving up and down.
         player.animations.add('up', [3, 4], 2, false);
@@ -106,7 +107,7 @@ var Game = {
     
         //  The score
         scoreString = 'Score: ';
-        scoreText = game.add.text(10, 10, scoreString + score, { font: '124px Arial', fill: '#fff' });
+        scoreText = game.add.text(10, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
     
         //  Lives
         lives = game.add.group();
@@ -172,6 +173,7 @@ var Game = {
 
             //  Run collision
             game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
+            game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
         }
@@ -180,18 +182,17 @@ var Game = {
 
     createAliens : function() {
 
-        for (var y = 0; y < 3; y++) {
-            for (var x = 0; x < 5; x++) {
-                var alien = aliens.create(x * 48, Math.floor(Math.random() * 300), 'invader');
-                alien.anchor.setTo(0.5, 0.5);
-                alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-                alien.play('fly');
-                alien.body.moves = false;
-            }
+        for (var i = 0; i < 15; i++) {
+            var alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
+            alien.anchor.setTo(0.5, 0.5);
+            alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
+            alien.play('fly');
+            alien.body.moves = false;
+            alien.body.setSize(24,32,0,0);
         }
     
         aliens.x = 600;
-        aliens.y = 250;
+        aliens.y = 30;
     
     
         //  Start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
@@ -213,7 +214,8 @@ var Game = {
     },
 
     render : function() {
-
+        // game.debug.body(player);
+        // game.debug.body(aliens.getFirstAlive());
     },
 
     fireBullet : function() {
@@ -262,6 +264,11 @@ var Game = {
         }
     },
 
+    playerBreakEnemyBullet : function(bullet, enemyBullet) {
+        bullet.kill();
+        enemyBullet.kill();
+    },
+
     enemyHitsPlayer : function(player, object) {
         if ((game.time.now < player.invincibleTime) || !aliens.countLiving()) return;
         game.add.audio('sfx_player_hit');
@@ -277,6 +284,8 @@ var Game = {
         }
       
         player.invincibleTime = game.time.now + 1000;
+        // blink player
+        game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
       
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
@@ -285,7 +294,9 @@ var Game = {
     
         // ?��?��?��?���? 죽거?�� ?��?�� ?�� 죽을 ?��
         if (lives.countLiving() < 1) {
+            countstage = 1;
             this.finishGame();
+            
         }
     },
 
@@ -325,8 +336,7 @@ var Game = {
             // And fire the bullet from this enemy
             enemyBullet.reset(shooter.body.x, shooter.body.y);
 
-            if(countstage > 4) countstage -= 1;
-            game.physics.arcade.moveToObject(enemyBullet,player,100 + 20*countstage);
+            game.physics.arcade.moveToObject(enemyBullet,player,120);
             firingTimer = game.time.now + 2000 / countstage;
         }
     },
