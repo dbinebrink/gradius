@@ -292,7 +292,7 @@ var Game = {
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
     
-        // ?��?��?��?���? 죽거?�� ?��?�� ?�� 죽을 ?��
+        // ?��?��?��?���?? 죽거?�� ?��?�� ?�� 죽을 ?��
         if (lives.countLiving() < 1) {
             countstage = 1;
             this.finishGame();
