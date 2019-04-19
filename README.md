@@ -2,6 +2,9 @@
 
 Gradius clone for educational purpose.
 
+## Setting before play
+Refer : https://github.com/inureyes/gradios/blob/master/wiki.md
+
 ## Student list
 
 | Name         |            |
