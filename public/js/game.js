@@ -267,6 +267,14 @@ var Game = {
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
         bullet.kill();
         enemyBullet.kill();
+
+        game.add.audio('sfx_enemy_die');
+        sfx_enemy_die.volume = 0.6;
+        sfx_enemy_die.play();
+
+        var explosion = explosions.getFirstExists(false);
+        explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
+        explosion.play('kaboom', 30, false, true);
     },
 
     enemyHitsPlayer : function(player, object) {
