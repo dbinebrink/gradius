@@ -8,9 +8,6 @@ var fireButton;
 var explosions;
 var starfield;
 var countstage = 1;
-var stage = 1;
-var stageString = '';
-var stageText;
 var score = 0;
 var scoreString = '';
 var scoreText;
@@ -21,7 +18,6 @@ var livingEnemies = [];
 var music;
 var sfx_fire;
 var sfx_enemy_die;
-var sfx_stage_clear;
 
 var Game = {
 
@@ -39,7 +35,6 @@ var Game = {
         game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
-        game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
 
     },
 
@@ -48,8 +43,6 @@ var Game = {
         // reset
         bulletTime = 0;
         invincibleTime = 0;
-        stage = 1;
-        stageString = ''
         score = 0;
         scoreString = ''
         firingTimer = 0;
@@ -71,9 +64,6 @@ var Game = {
     
         sfx_enemy_die = game.add.audio('sfx_enemy_die');
         sfx_enemy_die.allowMultiple = true;
-
-        sfx_stage_clear = game.add.audio('sfx_stage_clear');
-        sfx_stage_clear.allowMultiple = true;
     
         //  The scrolling starfield background
         starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
@@ -115,13 +105,9 @@ var Game = {
     
         this.createAliens();
     
-        // The stage
-        stageString = 'Stage: ';
-        stageText = game.add.text(10, 10, stageString + stage, { font: '40px Arial', fill: '#fff' });
-        
         //  The score
         scoreString = 'Score: ';
-        scoreText = game.add.text(200, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
+        scoreText = game.add.text(10, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
     
         //  Lives
         lives = game.add.group();
@@ -272,13 +258,9 @@ var Game = {
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
         if (aliens.countLiving() == 0) {
-            game.add.audio('stage_clear');
-            sfx_stage_clear.volume = 2.0;
-            sfx_stage_clear.play();
             this.createAliens();
             countstage++;
-            stage++;
-            stageText.text = stageString + stage;
+            
         }
     },
 
