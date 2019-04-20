@@ -1,3 +1,5 @@
+var easyRestart;
+
 var Ending = {
 
     preload : function() {
@@ -9,8 +11,14 @@ var Ending = {
         game.stage.backgroundColor = '#FFF';
         game.add.button(350,300,'restartButton', this.startGame, this);
         game.add.button(350,400,'menuButton', this.goMenu, this);
-
         totalScore = game.add.text(350, 100, score, { font: '124px Arial', fill: '#000' });
+        easyRestart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+    },
+
+    update : function() {
+        if (easyRestart.isDown) {
+            this.startGame();
+        }
     },
 
     startGame : function() {
