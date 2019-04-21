@@ -29,6 +29,7 @@ var sfx_stage_clear;
 var easyPause;
 var speedup;
 var player_speed = 200;
+var item_count=0;
 var Game = {
 
     preload : function() {
@@ -226,21 +227,13 @@ var Game = {
             var spd_random = Math.random() * 10000;
 
             //speedUp
-            if(spd_random < 30){
-                var speedup_1 = speedup.create(Math.random() * (game.width/2), Math.random() * game.height,'speedup');
+            if((random*10) >=30 && (random*10) <50){
+                if(item_count <1){
+                    item_count +=1;
+                    var speedup_1 = speedup.create(Math.random() * (game.width/2), 100 + Math.random() * (game.height-200),'speedup');
+                }
+
             }
-
-
-
-
-
-            // if( spd_random < 1){
-            //     var speedup_1 = speedup.create(50, 50,'speedup');
-            // }
-
-            // speedup_1.body.gravity.x = - (stage*100 + 100);
-
-
 
             //  Run collision
             game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
@@ -465,6 +458,7 @@ var Game = {
 
     getSpeedup : function(player, speedup){
         speedup.kill();
+        item_count -=1;
         if(player_speed <340){
             player_speed +=20;
         }
