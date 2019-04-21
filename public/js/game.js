@@ -196,9 +196,9 @@ var Game = {
 
             //Heart
             var random = Math.random() * 1000;
-            if(random < 3){
+            if(random < 2){
                 var heart_1 = heart.create(game.width, Math.random() * 1000,'heart');
-                heart_1.body.gravity.x = - 400;
+                heart_1.body.gravity.x = - (stage*100 + 100);
             }
 
             //  Run collision
