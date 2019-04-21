@@ -227,10 +227,9 @@ var Game = {
                 var heart_1 = heart.create(game.width, Math.random() * 475 + 70,'heart');
                 heart_1.body.gravity.x = - (stage*100 + 100);
             }
-            var spd_random = Math.random() * 10000;
 
             //speedUp
-            if((random*10) >=0){
+            if((random*10) >=30 && (random*10)<50){
                 if(item_count <1){
                     item_count +=1;
                     var speedup_1 = speedup.create(Math.random() * (game.width/2), 100 + Math.random() * (game.height-200),'speedup');
