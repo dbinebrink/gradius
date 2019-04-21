@@ -306,6 +306,8 @@ var Game = {
             countstage++;
             stage++;
             stageText.text = stageString + stage;
+			player.invincibleTime = game.time.now + 1000;
+			game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
             
         }
     },
