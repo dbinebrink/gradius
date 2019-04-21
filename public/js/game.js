@@ -40,6 +40,7 @@ var Game = {
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         game.load.image('starfield', 'img/starfield.png');
         game.load.image('heart', 'img/heart.png');
+        game.load.image('upper_mountain', 'img/upper_mountain.png');
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
         game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
@@ -47,7 +48,8 @@ var Game = {
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
         // load the pause icon
-        game.load.image('pausebutton','img/pausebutton.png');        
+        game.load.image('pausebutton','img/pausebutton.png');
+
     },
 
     create  : function() {
@@ -84,6 +86,7 @@ var Game = {
     
         //  The scrolling starfield background
         starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
+        upper_mountain = game.add.tileSprite(0, 0, 900, 30, 'upper_mountain');
     
         //  The starship
         player = game.add.sprite(150, 300, 'ship');
@@ -166,6 +169,7 @@ var Game = {
 
         //  Scroll the background
         starfield.tilePosition.x -= 3;
+        upper_mountain.tilePosition.x -= 1;
 
         // Pause the game with an alert
         if (easyPause.isDown){
@@ -224,7 +228,7 @@ var Game = {
 
     createAliens : function() {
 
-        for (var i = 0; i < stage*3; i++) {
+        for (var i = 0; i < 15; i++) {
             var alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
             alien.anchor.setTo(0.5, 0.5);
             alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
@@ -306,8 +310,6 @@ var Game = {
             countstage++;
             stage++;
             stageText.text = stageString + stage;
-			player.invincibleTime = game.time.now + 1000;
-			game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
             
         }
     },
