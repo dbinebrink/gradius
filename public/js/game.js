@@ -183,7 +183,9 @@ var Game = {
 
         // Pause the game with an alert
         if (easyPause.isDown){
+            music.stop();
             this.pauseGame();
+            music.play();
         }
 
         if (player.alive) {
