@@ -18,6 +18,10 @@ var livingEnemies = [];
 var music;
 var sfx_fire;
 var sfx_enemy_die;
+var heart;
+var live_count = 3;
+var last = -1;
+var first = 0;
 
 var Game = {
 
@@ -30,6 +34,7 @@ var Game = {
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         game.load.image('starfield', 'img/starfield.png');
+        game.load.image('heart', 'img/heart.png');
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
         game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
@@ -44,7 +49,7 @@ var Game = {
         bulletTime = 0;
         invincibleTime = 0;
         score = 0;
-        scoreString = ''
+        scoreString = '';
         firingTimer = 0;
         livingEnemies = [];
         countstage = 1;
@@ -97,12 +102,12 @@ var Game = {
         enemyBullets.setAll('anchor.y', 1);
         enemyBullets.setAll('outOfBoundsKill', true);
         enemyBullets.setAll('checkWorldBounds', true);
-    
+
         //  The bad guys
         aliens = game.add.group();
         aliens.enableBody = true;
         aliens.physicsBodyType = Phaser.Physics.ARCADE;
-    
+
         this.createAliens();
     
         //  The score
@@ -112,14 +117,15 @@ var Game = {
         //  Lives
         lives = game.add.group();
         game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
-    
-        for (var i = 0; i < 3; i++) {
+
+
+        for (var i = 2; i >= 0; i--) {
             var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
             ship.anchor.setTo(0.5, 0.5);
             ship.angle = 0;
             ship.alpha = 0.4;
         }
-    
+
         //  An explosion pool
         explosions = game.add.group();
         explosions.createMultiple(30, 'kaboom');
@@ -161,7 +167,6 @@ var Game = {
                 player.frame = 2;
             }
 
-
             //  Firing?
             if (fireButton.isDown) {
                 this.fireBullet();
@@ -171,13 +176,21 @@ var Game = {
                 this.enemyFires();
             }
 
+            //Heart
+            var random = Math.random() * 1000;
+            if(random < 3){
+                heart = game.add.sprite(game.width, Math.random() * 1000,'heart');
+                game.physics.arcade.enable(heart);
+                heart.body.gravity.x = - 400;
+            }
+
             //  Run collision
             game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
             game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
+            game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
         }
-
     },
 
     createAliens : function() {
@@ -221,8 +234,7 @@ var Game = {
     fireBullet : function() {
         game.add.audio('sfx_fire');
         sfx_fire.volume = 0.2;
-    
-    
+
         //  To avoid them being allowed to fire too fast we set a time limit
         if (game.time.now > bulletTime) {
             //  Grab the first bullet we can from the pool
@@ -267,14 +279,6 @@ var Game = {
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
         bullet.kill();
         enemyBullet.kill();
-
-        game.add.audio('sfx_enemy_die');
-        sfx_enemy_die.volume = 0.6;
-        sfx_enemy_die.play();
-
-        var explosion = explosions.getFirstExists(false);
-        explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
-        explosion.play('kaboom', 30, false, true);
     },
 
     enemyHitsPlayer : function(player, object) {
@@ -282,15 +286,15 @@ var Game = {
         game.add.audio('sfx_player_hit');
         sfx_player_hit.volume = 0.6;
         sfx_player_hit.play();
-    
+
         object.kill();
-    
+
         live = lives.getFirstAlive();
-    
-        if (live) {
+        if(live){
             live.kill();
+            live_count--;
         }
-      
+
         player.invincibleTime = game.time.now + 1000;
         // blink player
         game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
@@ -304,7 +308,25 @@ var Game = {
         if (lives.countLiving() < 1) {
             countstage = 1;
             this.finishGame();
-            
+        }
+    },
+
+    getHeart: function(player, heart) {
+        heart.kill();
+
+        if(live_count === 1){
+            var ship = lives.create(game.world.width - 150 + (60 * last--), 60, 'ship');
+            ship.anchor.setTo(0.5, 0.5);
+            ship.angle = 0;
+            ship.alpha = 0.4;
+            live_count++;
+        }
+        else if(live_count === 2){
+            var ship = lives.create(game.world.width - 150 + (60 * last--), 60, 'ship');
+            ship.anchor.setTo(0.5, 0.5);
+            ship.angle = 0;
+            ship.alpha = 0.4;
+            live_count++;
         }
     },
 
@@ -333,7 +355,6 @@ var Game = {
             // put every living enemy in an array
             livingEnemies.push(alien);
         });
-
 
         if (enemyBullet && livingEnemies.length > 0) {
 
