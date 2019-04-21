@@ -18,6 +18,15 @@ var livingEnemies = [];
 var music;
 var sfx_fire;
 var sfx_enemy_die;
+var heart;
+var live_count = 3;
+var last = -1;
+var first = 0;
+var stage = 1;
+var stageString = '';
+var stageText;
+var sfx_stage_clear;
+var easyPause;
 
 var Game = {
 
@@ -30,12 +39,15 @@ var Game = {
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         game.load.image('starfield', 'img/starfield.png');
+        game.load.image('heart', 'img/heart.png');
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
         game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
-
+        game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
+        // load the pause icon
+        game.load.image('pausebutton','img/pausebutton.png');        
     },
 
     create  : function() {
@@ -44,10 +56,12 @@ var Game = {
         bulletTime = 0;
         invincibleTime = 0;
         score = 0;
-        scoreString = ''
+        scoreString = '';
         firingTimer = 0;
         livingEnemies = [];
         countstage = 1;
+        stage = 1;
+        stageString = '';
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -58,6 +72,9 @@ var Game = {
         //	Here we set-up our audio sprites
         sfx_fire = game.add.audio('sfx_fire');
         sfx_fire.allowMultiple = false;
+
+        sfx_stage_clear = game.add.audio('sfx_stage_clear');
+        sfx_stage_clear.allowMultiple = true;
     
         sfx_player_hit = game.add.audio('sfx_player_hit');
         sfx_player_hit.allowMultiple = true;
@@ -97,29 +114,43 @@ var Game = {
         enemyBullets.setAll('anchor.y', 1);
         enemyBullets.setAll('outOfBoundsKill', true);
         enemyBullets.setAll('checkWorldBounds', true);
-    
+
         //  The bad guys
         aliens = game.add.group();
         aliens.enableBody = true;
         aliens.physicsBodyType = Phaser.Physics.ARCADE;
-    
+
+        // the pause button
+        game.add.button(0,0,'pausebutton', this.pauseGame, this);
+        easyPause = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+
+        // The stage
+        stageString = 'Stage: ';
+        stageText = game.add.text(70, 10, stageString + stage, { font: '40px Arial', fill: '#fff' });
+
         this.createAliens();
     
         //  The score
         scoreString = 'Score: ';
-        scoreText = game.add.text(10, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
+        scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
     
         //  Lives
         lives = game.add.group();
         game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
-    
-        for (var i = 0; i < 3; i++) {
+
+        // hearts
+        heart = game.add.group();
+        heart.enableBody = true;
+        heart.physicsBodyType = Phaser.Physics.ARCADE;
+
+
+        for (var i = 2; i >= 0; i--) {
             var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
             ship.anchor.setTo(0.5, 0.5);
             ship.angle = 0;
             ship.alpha = 0.4;
         }
-    
+
         //  An explosion pool
         explosions = game.add.group();
         explosions.createMultiple(30, 'kaboom');
@@ -135,6 +166,11 @@ var Game = {
 
         //  Scroll the background
         starfield.tilePosition.x -= 3;
+
+        // Pause the game with an alert
+        if (easyPause.isDown){
+            this.pauseGame();
+        }
 
         if (player.alive) {
             //  Reset the player, then check for movement keys
@@ -161,7 +197,6 @@ var Game = {
                 player.frame = 2;
             }
 
-
             //  Firing?
             if (fireButton.isDown) {
                 this.fireBullet();
@@ -171,13 +206,20 @@ var Game = {
                 this.enemyFires();
             }
 
+            //Heart
+            var random = Math.random() * 1000;
+            if(random < 2){
+                var heart_1 = heart.create(game.width, Math.random() * 1000,'heart');
+                heart_1.body.gravity.x = - (stage*100 + 100);
+            }
+
             //  Run collision
             game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
             game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
+            game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
         }
-
     },
 
     createAliens : function() {
@@ -221,8 +263,7 @@ var Game = {
     fireBullet : function() {
         game.add.audio('sfx_fire');
         sfx_fire.volume = 0.2;
-    
-    
+
         //  To avoid them being allowed to fire too fast we set a time limit
         if (game.time.now > bulletTime) {
             //  Grab the first bullet we can from the pool
@@ -257,9 +298,14 @@ var Game = {
         explosion.play('kaboom', 30, false, true);
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
-        if (aliens.countLiving() == 0) {
+        if (aliens.countLiving() === 0) {
+            game.add.audio('stage_clear');
+            sfx_stage_clear.volume = 2.0;
+            sfx_stage_clear.play();
             this.createAliens();
             countstage++;
+            stage++;
+            stageText.text = stageString + stage;
             
         }
     },
@@ -267,6 +313,14 @@ var Game = {
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
         bullet.kill();
         enemyBullet.kill();
+
+        game.add.audio('sfx_enemy_die');
+        sfx_enemy_die.volume = 0.6;
+        sfx_enemy_die.play();
+
+        var explosion = explosions.getFirstExists(false);
+        explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
+        explosion.play('kaboom', 30, false, true);
     },
 
     enemyHitsPlayer : function(player, object) {
@@ -274,15 +328,15 @@ var Game = {
         game.add.audio('sfx_player_hit');
         sfx_player_hit.volume = 0.6;
         sfx_player_hit.play();
-    
+
         object.kill();
-    
+
         live = lives.getFirstAlive();
-    
-        if (live) {
+        if(live){
             live.kill();
+            live_count--;
         }
-      
+
         player.invincibleTime = game.time.now + 1000;
         // blink player
         game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
@@ -296,7 +350,36 @@ var Game = {
         if (lives.countLiving() < 1) {
             countstage = 1;
             this.finishGame();
-            
+        }
+
+        if (aliens.countLiving() === 0) {
+            game.add.audio('stage_clear');
+            sfx_stage_clear.volume = 2.0;
+            sfx_stage_clear.play();
+            this.createAliens();
+            countstage++;
+            stage++;
+            stageText.text = stageString + stage;
+
+        }
+    },
+
+    getHeart: function(player, heart) {
+        heart.kill();
+
+        if(live_count === 1){
+            var ship = lives.create(game.world.width - 150 + (60 * last--), 60, 'ship');
+            ship.anchor.setTo(0.5, 0.5);
+            ship.angle = 0;
+            ship.alpha = 0.4;
+            live_count++;
+        }
+        else if(live_count === 2){
+            var ship = lives.create(game.world.width - 150 + (60 * last--), 60, 'ship');
+            ship.anchor.setTo(0.5, 0.5);
+            ship.angle = 0;
+            ship.alpha = 0.4;
+            live_count++;
         }
     },
 
@@ -326,7 +409,6 @@ var Game = {
             livingEnemies.push(alien);
         });
 
-
         if (enemyBullet && livingEnemies.length > 0) {
 
             var random=game.rnd.integerInRange(0,livingEnemies.length-1);
@@ -345,6 +427,10 @@ var Game = {
     resetBullet : function(bullet) {
         //  Called if the bullet goes out of the screen
         bullet.kill();
+    },
+
+    pauseGame : function(){
+        alert('Click OK to resume')
     },
 
 }
