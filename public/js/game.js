@@ -45,7 +45,6 @@ var Game = {
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
-
     },
 
     create  : function() {
@@ -132,6 +131,11 @@ var Game = {
         lives = game.add.group();
         game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
 
+        // hearts
+        heart = game.add.group();
+        heart.enableBody = true;
+        heart.physicsBodyType = Phaser.Physics.ARCADE;
+
 
         for (var i = 2; i >= 0; i--) {
             var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
@@ -193,9 +197,8 @@ var Game = {
             //Heart
             var random = Math.random() * 1000;
             if(random < 2){
-                heart = game.add.sprite(game.width, Math.random() * 1000,'heart');
-                game.physics.arcade.enable(heart);
-                heart.body.gravity.x = - 400;
+                var heart_1 = heart.create(game.width, Math.random() * 1000,'heart');
+                heart_1.body.gravity.x = - (stage*100 + 100);
             }
 
             //  Run collision
@@ -283,7 +286,7 @@ var Game = {
         explosion.play('kaboom', 30, false, true);
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
-        if (aliens.countLiving() == 0) {
+        if (aliens.countLiving() === 0) {
             game.add.audio('stage_clear');
             sfx_stage_clear.volume = 2.0;
             sfx_stage_clear.play();
@@ -335,6 +338,17 @@ var Game = {
         if (lives.countLiving() < 1) {
             countstage = 1;
             this.finishGame();
+        }
+
+        if (aliens.countLiving() === 0) {
+            game.add.audio('stage_clear');
+            sfx_stage_clear.volume = 2.0;
+            sfx_stage_clear.play();
+            this.createAliens();
+            countstage++;
+            stage++;
+            stageText.text = stageString + stage;
+
         }
     },
 
