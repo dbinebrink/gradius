@@ -9,6 +9,47 @@ Refer : https://github.com/inureyes/gradios/blob/master/wiki.md
 
 | Name         |            |
 |--------------|------------|
+<<<<<<< HEAD
+| Jeongkyu Shin| Maintainer |
+<<<<<<< HEAD
+| Jong Hwi Wang | Student  |
+| Beomsu Kwon  | Student    |
+| Junseop Lee | Student    |
+=======
+| DongHyun Kim | Student |
+| Test         | Student    |
+| Junseop Lee| Student    |
+>>>>>>> master
+| Jin Hyeok Park| student   |
+| Junyung Park | Student |
+| Hayeong Kim| Student |
+| Suelym Moon  | Student    |
+| Sejin Eom    | Student    |
+| Sujeong Lee    | Student     |
+| Seoyoung Kim | Student     |
+| Seongbin Park| Student    |
+| DongHyun Kim | Student    |
+| Junbeom Wi | Student  |
+| JunHo Choi   | Student    |
+| Jongmin Lee  | Student    |
+| Hanseo An    | Student    |
+| Sungjae An| Student |
+| Sangwon Park| Student |
+| Seungho Kim  | Student    |
+| Hochul Hwang | Student    |
+| DeokYoung Kim | Student|
+| DongHyun Goh | Student    |
+| An yo Han    | Student   |
+| Seungmin Baek| Student	  |
+<<<<<<< HEAD
+| Jieun Kwon   | Student    |
+| Soonwoo Kwon | Student    |
+| HyeonSik Kim | Student   |
+| MyoungSoo Kim| Student    |
+| JaeSun Park  | Student   |
+| MinJae Kim   | Student  |
+| Semyeong Lee | Student |
+=======
 | Jeongkyu Shin | Maintainer |
 | An yo Han | Student |
 | Beomsu Kwon | Student |
@@ -20,6 +61,7 @@ Refer : https://github.com/inureyes/gradios/blob/master/wiki.md
 | DeokYoung Kim | Student |
 | DongHyun Goh | Student |
 | DongHyun Kim | Student |
+>>>>>>> master
 | DongYeon Han | Student |
 | Goeun Kim | Student |
 | Gyujin Kim | Student |
@@ -86,9 +128,18 @@ Refer : https://github.com/inureyes/gradios/blob/master/wiki.md
 | Sungjae An | Student |
 | Sungju Yun | Student |
 | Tsoy Sergey | Student |
+<<<<<<< HEAD
+| Namho Kim | Student |
+| Choi Byoung Ik| Student |
+| Shim Hyeonbo | Student |
+=======
+>>>>>>> master
+>>>>>>> master
+=======
 | Wonbae Kim | Student |
 | Yelim Park | student |
 | Yerim Seok | Student |
+>>>>>>> master
 
 
 ## Credit
