@@ -283,7 +283,7 @@ var Game = {
         explosion.play('kaboom', 30, false, true);
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
-        if (aliens.countLiving() == 0) {
+        if (aliens.countLiving() === 0) {
             game.add.audio('stage_clear');
             sfx_stage_clear.volume = 2.0;
             sfx_stage_clear.play();
@@ -335,6 +335,17 @@ var Game = {
         if (lives.countLiving() < 1) {
             countstage = 1;
             this.finishGame();
+        }
+
+        if (aliens.countLiving() === 0) {
+            game.add.audio('stage_clear');
+            sfx_stage_clear.volume = 2.0;
+            sfx_stage_clear.play();
+            this.createAliens();
+            countstage++;
+            stage++;
+            stageText.text = stageString + stage;
+
         }
     },
 
