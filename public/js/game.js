@@ -28,7 +28,7 @@ var stageText;
 var sfx_stage_clear;
 var easyPause;
 var speedup;
-var player_speed = 200;
+var player_speed;
 var item_count=0;
 var Game = {
 
@@ -66,6 +66,7 @@ var Game = {
         livingEnemies = [];
         countstage = 1;
         stage = 1;
+        player_speed = 200;
         stageString = '';
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -181,7 +182,9 @@ var Game = {
 
         // Pause the game with an alert
         if (easyPause.isDown){
+            music.stop();
             this.pauseGame();
+            music.play();
         }
 
         if (player.alive) {
@@ -227,7 +230,7 @@ var Game = {
             var spd_random = Math.random() * 10000;
 
             //speedUp
-            if((random*10) >=30 && (random*10) <50){
+            if((random*10) >=0){
                 if(item_count <1){
                     item_count +=1;
                     var speedup_1 = speedup.create(Math.random() * (game.width/2), 100 + Math.random() * (game.height-200),'speedup');
@@ -247,7 +250,7 @@ var Game = {
 
     createAliens : function() {
 
-        for (var i = 0; i < 15; i++) {
+        for (var i = 0; i < stage*3; i++) {
             var alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
             alien.anchor.setTo(0.5, 0.5);
             alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
@@ -453,7 +456,9 @@ var Game = {
     },
 
     pauseGame : function(){
+        music.stop();
         alert('Click OK to resume')
+        music.play();
     },
 
     getSpeedup : function(player, speedup){
