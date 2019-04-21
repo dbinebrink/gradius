@@ -182,7 +182,9 @@ var Game = {
 
         // Pause the game with an alert
         if (easyPause.isDown){
+            music.stop();
             this.pauseGame();
+            music.play();
         }
 
         if (player.alive) {
@@ -248,7 +250,7 @@ var Game = {
 
     createAliens : function() {
 
-        for (var i = 0; i < 15; i++) {
+        for (var i = 0; i < stage*3; i++) {
             var alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
             alien.anchor.setTo(0.5, 0.5);
             alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
@@ -454,7 +456,9 @@ var Game = {
     },
 
     pauseGame : function(){
+        music.stop();
         alert('Click OK to resume')
+        music.play();
     },
 
     getSpeedup : function(player, speedup){
