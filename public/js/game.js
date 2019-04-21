@@ -22,6 +22,10 @@ var heart;
 var live_count = 3;
 var last = -1;
 var first = 0;
+var stage = 1;
+var stageString = '';
+var stageText;
+var sfx_stage_clear;
 
 var Game = {
 
@@ -40,6 +44,7 @@ var Game = {
         game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
+        game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
 
     },
 
@@ -53,6 +58,8 @@ var Game = {
         firingTimer = 0;
         livingEnemies = [];
         countstage = 1;
+        stage = 1;
+        stageString = '';
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -63,6 +70,9 @@ var Game = {
         //	Here we set-up our audio sprites
         sfx_fire = game.add.audio('sfx_fire');
         sfx_fire.allowMultiple = false;
+
+        sfx_stage_clear = game.add.audio('sfx_stage_clear');
+        sfx_stage_clear.allowMultiple = true;
     
         sfx_player_hit = game.add.audio('sfx_player_hit');
         sfx_player_hit.allowMultiple = true;
@@ -108,11 +118,15 @@ var Game = {
         aliens.enableBody = true;
         aliens.physicsBodyType = Phaser.Physics.ARCADE;
 
+        // The stage
+        stageString = 'Stage: ';
+        stageText = game.add.text(10, 10, stageString + stage, { font: '40px Arial', fill: '#fff' });
+
         this.createAliens();
     
         //  The score
         scoreString = 'Score: ';
-        scoreText = game.add.text(10, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
+        scoreText = game.add.text(200, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
     
         //  Lives
         lives = game.add.group();
@@ -270,8 +284,13 @@ var Game = {
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
         if (aliens.countLiving() == 0) {
+            game.add.audio('stage_clear');
+            sfx_stage_clear.volume = 2.0;
+            sfx_stage_clear.play();
             this.createAliens();
             countstage++;
+            stage++;
+            stageText.text = stageString + stage;
             
         }
     },
@@ -279,6 +298,14 @@ var Game = {
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
         bullet.kill();
         enemyBullet.kill();
+
+        game.add.audio('sfx_enemy_die');
+        sfx_enemy_die.volume = 0.6;
+        sfx_enemy_die.play();
+
+        var explosion = explosions.getFirstExists(false);
+        explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
+        explosion.play('kaboom', 30, false, true);
     },
 
     enemyHitsPlayer : function(player, object) {
