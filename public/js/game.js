@@ -454,9 +454,7 @@ var Game = {
     },
 
     pauseGame : function(){
-        music.stop();
         alert('Click OK to resume')
-        music.play();
     },
 
     getSpeedup : function(player, speedup){
