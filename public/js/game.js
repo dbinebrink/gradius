@@ -27,12 +27,14 @@ var stageString = '';
 var stageText;
 var sfx_stage_clear;
 var easyPause;
-
+var speedup;
+var player_speed = 200;
 var Game = {
 
     preload : function() {
 
         // load all sprites
+        game.load.image('speedup', 'img/speedup.png');
         game.load.image('bullet', 'img/bullet.png');
         game.load.image('enemyBullet', 'img/enemy-bullet.png');
         game.load.spritesheet('invader', 'img/invader32x32x4.png', 32, 32);
@@ -70,34 +72,34 @@ var Game = {
         music = game.add.audio('music1');
         music.volume = 0.4;
         music.play();
-    
+
         //	Here we set-up our audio sprites
         sfx_fire = game.add.audio('sfx_fire');
         sfx_fire.allowMultiple = false;
 
         sfx_stage_clear = game.add.audio('sfx_stage_clear');
         sfx_stage_clear.allowMultiple = true;
-    
+
         sfx_player_hit = game.add.audio('sfx_player_hit');
         sfx_player_hit.allowMultiple = true;
-    
+
         sfx_enemy_die = game.add.audio('sfx_enemy_die');
         sfx_enemy_die.allowMultiple = true;
-    
+
         //  The scrolling starfield background
         starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
         upper_mountain = game.add.tileSprite(0, 0, 900, 30, 'upper_mountain');
-    
+
         //  The starship
         player = game.add.sprite(150, 300, 'ship');
         player.anchor.setTo(0.5, 0.5);
         game.physics.enable(player, Phaser.Physics.ARCADE);
         player.body.setSize(64,32,0,16);
-    
+
         //  Our two animations, moving up and down.
         player.animations.add('up', [3, 4], 2, false);
         player.animations.add('down', [0, 1], 2, false);
-    
+
         //  Our bullet group
         bullets = game.add.group();
         bullets.enableBody = true;
@@ -107,7 +109,7 @@ var Game = {
         bullets.setAll('anchor.y', 1);
         bullets.setAll('outOfBoundsKill', true);
         bullets.setAll('checkWorldBounds', true);
-    
+
         // The enemy's bullets
         enemyBullets = game.add.group();
         enemyBullets.enableBody = true;
@@ -130,13 +132,13 @@ var Game = {
         // The stage
         stageString = 'Stage: ';
         stageText = game.add.text(70, 10, stageString + stage, { font: '40px Arial', fill: '#fff' });
-
+        // this.generateSpeedup();
         this.createAliens();
-    
+
         //  The score
         scoreString = 'Score: ';
         scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
-    
+
         //  Lives
         lives = game.add.group();
         game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
@@ -145,6 +147,11 @@ var Game = {
         heart = game.add.group();
         heart.enableBody = true;
         heart.physicsBodyType = Phaser.Physics.ARCADE;
+
+        //speedup
+        speedup = game.add.group();
+        speedup.enableBody = true;
+        speedup.physicsBodyType = Phaser.Physics.ARCADE;
 
 
         for (var i = 2; i >= 0; i--) {
@@ -158,7 +165,7 @@ var Game = {
         explosions = game.add.group();
         explosions.createMultiple(30, 'kaboom');
         explosions.forEach(this.setupInvader, this);
-    
+
         //  And some controls to play the game with
         cursors = game.input.keyboard.createCursorKeys();
         fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -181,19 +188,19 @@ var Game = {
             player.body.velocity.setTo(0, 0);
 
             if (cursors.left.isDown && (40 < player.x)) {
-                player.body.velocity.x = -200;
+                player.body.velocity.x = -player_speed;
             }
             else if (cursors.right.isDown && (player.x < 860)) {
-                player.body.velocity.x = 200;
+                player.body.velocity.x = player_speed;
             }
 
             // keyboard up/down
             if (cursors.up.isDown && (40 < player.y)) {
-                player.body.velocity.y = -200;
+                player.body.velocity.y = -player_speed;
                 player.animations.play('up');
             }
             else if (cursors.down.isDown && (player.y < 560)) {
-                player.body.velocity.y = 200;
+                player.body.velocity.y = player_speed;
                 player.animations.play('down');
             }
             else {  // stand still
@@ -216,6 +223,24 @@ var Game = {
                 var heart_1 = heart.create(game.width, Math.random() * 475 + 70,'heart');
                 heart_1.body.gravity.x = - (stage*100 + 100);
             }
+            var spd_random = Math.random() * 10000;
+
+            //speedUp
+            if(spd_random < 30){
+                var speedup_1 = speedup.create(Math.random() * (game.width/2), Math.random() * game.height,'speedup');
+            }
+
+
+
+
+
+            // if( spd_random < 1){
+            //     var speedup_1 = speedup.create(50, 50,'speedup');
+            // }
+
+            // speedup_1.body.gravity.x = - (stage*100 + 100);
+
+
 
             //  Run collision
             game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
@@ -223,6 +248,7 @@ var Game = {
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
+            game.physics.arcade.overlap(player, speedup, this.getSpeedup, null, this);
         }
     },
 
@@ -236,14 +262,14 @@ var Game = {
             alien.body.moves = false;
             alien.body.setSize(24,32,0,0);
         }
-    
+
         aliens.x = 600;
         aliens.y = 30;
-    
-    
+
+
         //  Start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
         var tween = game.add.tween(aliens).to( { x: 400 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-    
+
         //  When the tween loops it calls descend
         tween.onLoop.add(this.descend, this);
 
@@ -272,7 +298,7 @@ var Game = {
         if (game.time.now > bulletTime) {
             //  Grab the first bullet we can from the pool
             bullet = bullets.getFirstExists(false);
-    
+
             if (bullet) {
                 sfx_fire.play();
                 //  And fire it
@@ -310,7 +336,7 @@ var Game = {
             countstage++;
             stage++;
             stageText.text = stageString + stage;
-            
+
         }
     },
 
@@ -344,12 +370,12 @@ var Game = {
         player.invincibleTime = game.time.now + 1000;
         // blink player
         game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
-      
+
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
-    
+
         // ?��?��?��?���? 죽거?�� ?��?�� ?�� 죽을 ?��
         if (lives.countLiving() < 1) {
             countstage = 1;
@@ -437,5 +463,11 @@ var Game = {
         alert('Click OK to resume')
     },
 
-}
+    getSpeedup : function(player, speedup){
+        speedup.kill();
+        if(player_speed <340){
+            player_speed +=20;
+        }
+    }
 
+}
