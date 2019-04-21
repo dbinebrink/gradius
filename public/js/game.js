@@ -192,7 +192,7 @@ var Game = {
 
             //Heart
             var random = Math.random() * 1000;
-            if(random < 3){
+            if(random < 2){
                 heart = game.add.sprite(game.width, Math.random() * 1000,'heart');
                 game.physics.arcade.enable(heart);
                 heart.body.gravity.x = - 400;
