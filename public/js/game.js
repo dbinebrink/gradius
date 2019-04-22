@@ -243,16 +243,6 @@ var Game = {
                 heart_1.body.bounce.set(1);
             }
 
-            //Power_up
-            var random = Math.random() * 1000;
-            if(random < 2){
-                var power = power_up.create(game.width, Math.random() * 475 + 70,'power_up');
-                power.body.velocity.setTo(200,200);
-                power.body.collideWorldBounds = true;
-                power.body.bounce.set(1);
-            }
-
-
             //speedUp
             if((random*10) >=30 && (random*10)<50){
                 if(item_count <1){
@@ -270,6 +260,16 @@ var Game = {
             game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
             game.physics.arcade.overlap(player, power_up, this.getPower_up, null, this);
             game.physics.arcade.overlap(player, speedup, this.getSpeedup, null, this);
+        }
+    },
+    create_Power_up : function(){
+        //Power_up
+        var random = Math.random() * 1000;
+        if(random < 30){
+            var power = power_up.create(game.width, Math.random() * 475 + 70,'power_up');
+            power.body.velocity.setTo(200,200);
+            power.body.collideWorldBounds = true;
+            power.body.bounce.set(1);
         }
     },
 
@@ -337,6 +337,8 @@ var Game = {
         //  When a bullet hits an alien we kill them both
         bullet.kill();
         alien.kill();
+
+        this.create_Power_up();
 
         game.add.audio('sfx_enemy_die');
         sfx_enemy_die.volume = 0.6;
