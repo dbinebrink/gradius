@@ -375,13 +375,8 @@ var Game = {
         var explosion = explosions.getFirstExists(false);
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
-<<<<<<< HEAD
-    
-        // ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿?? ì£½ê±°?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ ì£½ì ?ï¿½ï¿½
-=======
 
-        // ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? ì£½ê±°?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ ì£½ì ?ï¿½ï¿½
->>>>>>> upstream/master
+        
         if (lives.countLiving() < 1) {
             countstage = 1;
             this.finishGame();
