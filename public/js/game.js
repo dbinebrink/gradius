@@ -440,7 +440,7 @@ var Game = {
     getPower_up: function(player, power_up){
         power_up.kill();
         power_up_count++;
-        if(power_up_count > 5) power_up_count = 4;
+        if(power_up_count > 5) power_up_count = 5;
     },
 
     finishGame : function() {
