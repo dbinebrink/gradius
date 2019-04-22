@@ -13,7 +13,7 @@ Gradios는 Node.js 를 기반으로 동작합니다. 실행하기 위해서는 N
 
 
 #### Node.js 설치
-![nodejs](https://raw.githubusercontent.com/inureyes/gradios/master/wiki/wiki_nodejs_01.png)
+![wiki_nodejs_01](https://user-images.githubusercontent.com/43108674/56501866-613f4600-654b-11e9-823d-b320a7d19e00.PNG)
 
 Node.js 홈페이지 [[링크]](https://nodejs.org/ko/) 에 들어가서 사용중인 운영체제에 맞는 LTS 버전을 다운받으면 됩니다.
 
@@ -31,11 +31,11 @@ gradios를 실행하려면 당연히 gradios 파일들이 필요합니다. 다�
 
   1. GitKraken 첫 페이지에서 Open a repo를 클릭합니다.
 
-     ![gitkraken](https://raw.githubusercontent.com/inureyes/gradios/master/wiki/wiki_gitkraken_01.png)
+     ![wiki_gitkraken_01](https://user-images.githubusercontent.com/43108674/56501868-613f4600-654b-11e9-99ca-7d2b247dea38.PNG)
 
   2. clone - github.com - (gradios)를 선택하고, 다운받을 경로를 지정해 줍니다.
 
-     ![gitkraken](https://raw.githubusercontent.com/inureyes/gradios/master/wiki/wiki_gitkraken_02.png)
+     ![wiki_gitkraken_02](https://user-images.githubusercontent.com/43108674/56501865-60a6af80-654b-11e9-91c7-fdfaac1cab28.PNG)
 
   3. 잠시 후 다운로드가 완료되면 확인할 수 있습니다.
 
@@ -43,7 +43,7 @@ gradios를 실행하려면 당연히 gradios 파일들이 필요합니다. 다�
 
 * ***Github 홈페이지에서 ZIP 형태로 다운로드***
 
-![github](https://raw.githubusercontent.com/inureyes/gradios/master/wiki/wiki_github_01.png)
+![wiki_github_01](https://user-images.githubusercontent.com/43108674/56501867-613f4600-654b-11e9-8fd4-4e8bbab22ea8.PNG)
 
 1. 저 버튼을 찾아 누르면 됩니다. 압축은 풀 수 있을 것입니다.
 
