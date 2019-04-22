@@ -228,7 +228,9 @@ var Game = {
             var random = Math.random() * 1000;
             if(random < 2){
                 var heart_1 = heart.create(game.width, Math.random() * 475 + 70,'heart');
-                heart_1.body.gravity.x = - (stage*100 + 100);
+                heart_1.body.velocity.setTo(200,200);
+                heart_1.body.collideWorldBounds = true;
+                heart_1.body.bounce.set(1);
             }
 
             //speedUp
@@ -373,8 +375,13 @@ var Game = {
         var explosion = explosions.getFirstExists(false);
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
+<<<<<<< HEAD
+    
+        // ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿?? ì£½ê±°?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ ì£½ì ?ï¿½ï¿½
+=======
 
-        // ?��?��?��?���? 죽거?�� ?��?�� ?�� 죽을 ?��
+        // ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? ì£½ê±°?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ ì£½ì ?ï¿½ï¿½
+>>>>>>> upstream/master
         if (lives.countLiving() < 1) {
             countstage = 1;
             this.finishGame();
