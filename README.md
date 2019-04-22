@@ -85,7 +85,7 @@ Refer : https://github.com/inureyes/gradios/blob/master/wiki.md
 | Sujeong Lee | Student |
 | Sungjae An | Student |
 | Sungju Yun | Student |
-| Tsoy Sergey | Student |
+| Sergey Tsoy | Student |
 | Wonbae Kim | Student |
 | Yelim Park | student |
 | Yerim Seok | Student |
