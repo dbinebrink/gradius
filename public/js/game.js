@@ -410,20 +410,17 @@ var Game = {
     getHeart: function(player, heart) {
         heart.kill();
 
-        if(live_count === 1){
-            var ship = lives.create(game.world.width - 150 + (60 * last--), 60, 'ship');
-            ship.anchor.setTo(0.5, 0.5);
-            ship.angle = 0;
-            ship.alpha = 0.4;
-            live_count++;
+        for (var i = live_count; i >= 0; i--) {
+            var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
         }
-        else if(live_count === 2){
-            var ship = lives.create(game.world.width - 150 + (60 * last--), 60, 'ship');
-            ship.anchor.setTo(0.5, 0.5);
-            ship.angle = 0;
-            ship.alpha = 0.4;
-            live_count++;
+
+        for (var i = 0; i < live_count; i++)
+        {
+            live = lives.getFirstAlive();
+            if(live)
+                live.kill();
         }
+        live_count++;
     },
 
     getPower_up: function(player, power_up){
