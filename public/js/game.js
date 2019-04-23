@@ -29,7 +29,6 @@ var sfx_stage_clear;
 var easyPause;
 var speedup;
 var player_speed;
-var item_count=0;
 var power_up_count = 1;
 var power_up;
 var Game = {
@@ -239,6 +238,9 @@ var Game = {
             game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
+            game.physics.arcade.overlap(bullets, heart, this.changeItem, null, this);
+            game.physics.arcade.overlap(bullets, speedup, this.changeItem, null, this);
+            game.physics.arcade.overlap(bullets, power_up, this.changeItem, null, this);
             game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
             game.physics.arcade.overlap(player, power_up, this.getPower_up, null, this);
             game.physics.arcade.overlap(player, speedup, this.getSpeedup, null, this);
@@ -314,22 +316,19 @@ var Game = {
         bullet.kill();
 
         // hearts
-        if(Math.random() * 1000 < 20) {
+        if(Math.random() * 1000 < 100) {
             var heart_1 = heart.create(alien.body.x, alien.body.y, 'heart');
             game.physics.arcade.moveToObject(heart_1, player, 100 + 10 * stage);
         }
         // power
-        else if(Math.random() * 1000 < 20){
+        else if(Math.random() * 1000 < 100){
             var power = power_up.create(alien.body.x, alien.body.y,'power_up');
             game.physics.arcade.moveToObject(power, player, 100 + 10 * stage);
         }
         // speed up
-        else if(Math.random() * 1000 < 20){
-            if(item_count < 1) {
-                var speedup_1 = speedup.create(alien.body.x, alien.body.y, 'speedup');
-                game.physics.arcade.moveToObject(speedup_1, player, 100 + 10 * stage);
-                item_count +=1;
-            }
+        else if(Math.random() * 1000 < 100){
+            var speedup_1 = speedup.create(alien.body.x, alien.body.y, 'speedup');
+            game.physics.arcade.moveToObject(speedup_1, player, 100 + 10 * stage);
         }
         alien.kill();
 
@@ -357,6 +356,25 @@ var Game = {
             stageText.text = stageString + stage;
 
         }
+    },
+
+    changeItem : function(bullet, object){
+        object.kill();
+        var random = Math.random();
+        if(random < 0.3){
+            var power = power_up.create(bullet.body.x, bullet.body.y,'power_up');
+            game.physics.arcade.moveToObject(power, player, 100 + 10 * stage);
+        }
+        else if(random < 0.6){
+            var speedup_1 = speedup.create(bullet.body.x, bullet.body.y, 'speedup');
+            game.physics.arcade.moveToObject(speedup_1, player, 100 + 10 * stage);
+
+        }
+        else{
+            var heart_1 = heart.create(bullet.body.x, bullet.body.y, 'heart');
+            game.physics.arcade.moveToObject(heart_1, player, 100 + 10 * stage);
+        }
+        bullet.kill();
     },
 
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
@@ -492,9 +510,8 @@ var Game = {
 
     getSpeedup : function(player, speedup){
         speedup.kill();
-        item_count -=1;
         if(player_speed <340){
-            player_speed +=20;
+            player_speed += 20;
         }
     }
 
