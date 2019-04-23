@@ -316,7 +316,7 @@ var Game = {
             var power = power_up.create(alien.body.x, alien.body.y,'power_up');
             game.physics.arcade.moveToObject(power, player, 100 + 10 * stage);
         }
-        else if(Math.random() * 1000 < 100){
+        else if(Math.random() * 1000 < 20){
             if(item_count < 1) {
                 var speedup_1 = speedup.create(alien.body.x, alien.body.y, 'speedup');
                 game.physics.arcade.moveToObject(speedup_1, player, 100 + 10 * stage);
