@@ -224,16 +224,8 @@ var Game = {
                 this.enemyFires();
             }
 
-            //Heart
-            var random = Math.random() * 1000;
-            if(random < 2){
-                var heart_1 = heart.create(game.width, Math.random() * 475 + 70,'heart');
-                heart_1.body.velocity.setTo(200,200);
-                heart_1.body.collideWorldBounds = true;
-                heart_1.body.bounce.set(1);
-            }
-
             //speedUp
+            var random = Math.random() * 1000;
             if((random*10) >=30 && (random*10)<50){
                 if(item_count <1){
                     item_count +=1;
@@ -312,6 +304,10 @@ var Game = {
     collisionHandler : function(bullet, alien) {
         //  When a bullet hits an alien we kill them both
         bullet.kill();
+        if(Math.random() * 1000 < 30) {
+            var heart_1 = heart.create(alien.body.x, alien.body.y, 'heart');
+            game.physics.arcade.moveToObject(heart_1, player, 100 + 5 * stage);
+        }
         alien.kill();
 
         game.add.audio('sfx_enemy_die');
@@ -375,7 +371,7 @@ var Game = {
         var explosion = explosions.getFirstExists(false);
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
-        
+
         if (lives.countLiving() < 1) {
             countstage = 1;
             this.finishGame();
