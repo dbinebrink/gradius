@@ -316,17 +316,17 @@ var Game = {
         bullet.kill();
 
         // hearts
-        if(Math.random() * 1000 < 100) {
+        if(Math.random() * 1000 < 20) {
             var heart_1 = heart.create(alien.body.x, alien.body.y, 'heart');
             game.physics.arcade.moveToObject(heart_1, player, 100 + 10 * stage);
         }
         // power
-        else if(Math.random() * 1000 < 100){
+        else if(Math.random() * 1000 < 20){
             var power = power_up.create(alien.body.x, alien.body.y,'power_up');
             game.physics.arcade.moveToObject(power, player, 100 + 10 * stage);
         }
         // speed up
-        else if(Math.random() * 1000 < 100){
+        else if(Math.random() * 1000 < 20){
             var speedup_1 = speedup.create(alien.body.x, alien.body.y, 'speedup');
             game.physics.arcade.moveToObject(speedup_1, player, 100 + 10 * stage);
         }
