@@ -234,16 +234,6 @@ var Game = {
                 this.enemyFires();
             }
 
-            //speedUp
-            var random = Math.random() * 1000;
-            if((random*10) >=30 && (random*10)<50){
-                if(item_count <1){
-                    item_count +=1;
-                    var speedup_1 = speedup.create(Math.random() * (game.width/2), 100 + Math.random() * (game.height-200),'speedup');
-                }
-
-            }
-
             //  Run collision
             game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
             game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
@@ -325,6 +315,13 @@ var Game = {
         else if(Math.random() * 1000 < 20){
             var power = power_up.create(alien.body.x, alien.body.y,'power_up');
             game.physics.arcade.moveToObject(power, player, 100 + 10 * stage);
+        }
+        else if(Math.random() * 1000 < 100){
+            if(item_count < 1) {
+                var speedup_1 = speedup.create(alien.body.x, alien.body.y, 'speedup');
+                game.physics.arcade.moveToObject(speedup_1, player, 100 + 10 * stage);
+                item_count +=1;
+            }
         }
         alien.kill();
 
