@@ -401,7 +401,6 @@ var Game = {
         var explosion = explosions.getFirstExists(false);
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
-
         
         if (lives.countLiving() < 1) {
             countstage = 1;
