@@ -234,16 +234,8 @@ var Game = {
                 this.enemyFires();
             }
 
-            //Heart
-            var random = Math.random() * 1000;
-            if(random < 2){
-                var heart_1 = heart.create(game.width, Math.random() * 475 + 70,'heart');
-                heart_1.body.velocity.setTo(200,200);
-                heart_1.body.collideWorldBounds = true;
-                heart_1.body.bounce.set(1);
-            }
-
             //speedUp
+            var random = Math.random() * 1000;
             if((random*10) >=30 && (random*10)<50){
                 if(item_count <1){
                     item_count +=1;
@@ -260,16 +252,6 @@ var Game = {
             game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
             game.physics.arcade.overlap(player, power_up, this.getPower_up, null, this);
             game.physics.arcade.overlap(player, speedup, this.getSpeedup, null, this);
-        }
-    },
-    create_Power_up : function(){
-        //Power_up
-        var random = Math.random() * 1000;
-        if(random < 30){
-            var power = power_up.create(game.width, Math.random() * 475 + 70,'power_up');
-            power.body.velocity.setTo(200,200);
-            power.body.collideWorldBounds = true;
-            power.body.bounce.set(1);
         }
     },
 
@@ -336,9 +318,15 @@ var Game = {
     collisionHandler : function(bullet, alien) {
         //  When a bullet hits an alien we kill them both
         bullet.kill();
+        if(Math.random() * 1000 < 20) {
+            var heart_1 = heart.create(alien.body.x, alien.body.y, 'heart');
+            game.physics.arcade.moveToObject(heart_1, player, 100 + 10 * stage);
+        }
+        else if(Math.random() * 1000 < 20){
+            var power = power_up.create(alien.body.x, alien.body.y,'power_up');
+            game.physics.arcade.moveToObject(power, player, 100 + 10 * stage);
+        }
         alien.kill();
-
-        this.create_Power_up();
 
         game.add.audio('sfx_enemy_die');
         sfx_enemy_die.volume = 0.6;
@@ -401,7 +389,7 @@ var Game = {
         var explosion = explosions.getFirstExists(false);
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
-        
+
         if (lives.countLiving() < 1) {
             countstage = 1;
             this.finishGame();
