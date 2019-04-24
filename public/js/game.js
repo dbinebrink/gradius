@@ -454,7 +454,7 @@ var Game = {
         power_up.kill();
         power_up_count++;
         if(power_up_count > 6) power_up_count = 6;
-        game.time.events.add(Phaser.Timer.SECOND*40, function() {
+        game.time.events.add(Phaser.Timer.SECOND*20, function() {
             power_up_count--;
         }, this);
     },
