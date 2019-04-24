@@ -362,16 +362,16 @@ var Game = {
         object.kill();
         var random = Math.random();
         if(random < 0.3){
-            var power = power_up.create(bullet.body.x, bullet.body.y,'power_up');
+            var power = power_up.create(bullet.body.x+30, bullet.body.y,'power_up');
             game.physics.arcade.moveToObject(power, player, 5 * stage);
         }
         else if(random < 0.6){
-            var speedup_1 = speedup.create(bullet.body.x, bullet.body.y, 'speedup');
+            var speedup_1 = speedup.create(bullet.body.x+30, bullet.body.y, 'speedup');
             game.physics.arcade.moveToObject(speedup_1, player, 5 * stage);
 
         }
         else{
-            var heart_1 = heart.create(bullet.body.x, bullet.body.y, 'heart');
+            var heart_1 = heart.create(bullet.body.x+30, bullet.body.y, 'heart');
             game.physics.arcade.moveToObject(heart_1, player, 5 * stage);
         }
         bullet.kill();
