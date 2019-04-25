@@ -79,6 +79,7 @@ var Game = {
         music.volume = 0.4;
         music.play();
 
+
         //	Here we set-up our audio sprites
         sfx_fire = game.add.audio('sfx_fire');
         sfx_fire.allowMultiple = false;
@@ -350,6 +351,7 @@ var Game = {
             game.add.audio('stage_clear');
             sfx_stage_clear.volume = 2.0;
             sfx_stage_clear.play();
+
             this.createAliens();
             countstage++;
             stage++;
@@ -404,6 +406,10 @@ var Game = {
             live_count--;
         }
 
+        // reset player's power & speed
+        player_speed = 200;
+        power_up_count = 1;
+
         player.invincibleTime = game.time.now + 1000;
         // blink player
         game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
@@ -454,9 +460,6 @@ var Game = {
         power_up.kill();
         power_up_count++;
         if(power_up_count > 6) power_up_count = 6;
-        game.time.events.add(Phaser.Timer.SECOND*20, function() {
-            power_up_count--;
-        }, this);
     },
 
     finishGame : function() {
