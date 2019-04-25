@@ -37,5 +37,4 @@ var mainMenu = {
     ViewControls : function() {
        game.add.button(250,330,'controlkey', this.ViewControls, this);
     },
-
 }
