@@ -1,3 +1,5 @@
+var easyStart;
+
 var mainMenu = {
 
     preload : function() {
@@ -6,8 +8,15 @@ var mainMenu = {
 
     create : function() {
         game.stage.backgroundColor = '#fff';
-        //game.add.button(500,200,'startButton', this.startGame, this);
+        game.add.image('space_debris_1' , 'img/space_debris_1.jpg');
         game.add.button(350,270,'startButton', this.startGame, this);
+        easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+    },
+
+    update : function() {
+        if (easyStart.isDown) {
+            this.startGame();
+        }
     },
 
     startGame : function() {
