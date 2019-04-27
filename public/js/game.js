@@ -287,7 +287,44 @@ var Game = {
 
 
         //  Start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-        var tween = game.add.tween(aliens).to( { x: 400 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        if (stage > 18) {
+            var tween = game.add.tween(aliens).to( { x: 200 }, 1500, Phaser.Easing.Cubic.Out, true, 0, 1000, true);
+            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 1000, true);
+        }
+        else if (stage > 16) {
+            var tween = game.add.tween(aliens).to( { x: 200 }, 1500, Phaser.Easing.Sinusoidal.In, true, 0, 1000, true);
+            var tween = game.add.tween(aliens).to( { y: 50 }, 1000, Phaser.Easing.Sinusoidal.In, true, 0, 1000, true);
+        }
+        else if (stage > 14) {
+            var tween = game.add.tween(aliens).to( { x: 15 }, 2500, Phaser.Easing.Linear.None, true, 0, 1000, true);
+            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        }
+        else if (stage > 12) {
+            var tween = game.add.tween(aliens).to( { x: 200 }, 1500, Phaser.Easing.Cubic.Out, true, 0, 1000, true);
+            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 1000, true);
+        }
+        else if (stage > 10) {
+            var tween = game.add.tween(aliens).to( { x: 15 }, 2500, Phaser.Easing.Linear.None, true, 0, 1000, true);
+            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        }
+        else if (stage > 8) {
+            var tween = game.add.tween(aliens).to( { x: 200 }, 2000, Phaser.Easing.Quintic.Out, true, 0, 1000, true);
+            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Quintic.Out, true, 0, 1000, true);
+        }
+        else if (stage > 6) {
+            var tween = game.add.tween(aliens).to( { x: 250 }, 2000, Phaser.Easing.Quintic.Out, true, 0, 1000, true);
+            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Quintic.Out, true, 0, 1000, true);
+        }
+        else if (stage > 4) {
+            var tween = game.add.tween(aliens).to( { x: 200 }, 1500, Phaser.Easing.Linear.None, true, 0, 1000, true);
+            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        }
+        else if (stage > 2) {
+            var tween = game.add.tween(aliens).to( { x: 300 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        }
+        else {
+            var tween = game.add.tween(aliens).to( { x: 400 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        }
 
         //  When the tween loops it calls descend
         tween.onLoop.add(this.descend, this);
@@ -547,7 +584,7 @@ var Game = {
             // And fire the bullet from this enemy
             enemyBullet.reset(shooter.body.x, shooter.body.y);
 
-            if(countstage >= 5) countstage -=1;
+            if(countstage >= 7) countstage -=1;
             game.physics.arcade.moveToObject(enemyBullet,player,100 + 20 * countstage);
             firingTimer = game.time.now + 2000 / countstage;
         }
