@@ -45,8 +45,8 @@ var Game = {
         game.load.image('starfield', 'img/starfield.png');
         game.load.image('heart', 'img/heart.png');
         game.load.image('power_up','img/power_up.png');
-        game.load.image('upper_mountain', 'img/upper_mountain.png');
         game.load.image('lower_mountain', 'img/lower_mountain.png');
+        game.load.image('upper_mountain', 'img/upper_mountain.png');
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
         game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
@@ -250,7 +250,7 @@ var Game = {
 
     createAliens : function() {
 
-        for (var i = 0; i < stage*3; i++) {
+        for (var i = 0; i < 15; i++) {
             var alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
             while(game.physics.arcade.overlap(alien, aliens)){
                 alien.kill();
@@ -356,7 +356,8 @@ var Game = {
             countstage++;
             stage++;
             stageText.text = stageString + stage;
-
+		
+            
         }
     },
 
@@ -522,3 +523,4 @@ var Game = {
     }
 
 }
+
