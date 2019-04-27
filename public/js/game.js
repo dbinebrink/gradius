@@ -368,9 +368,16 @@ var Game = {
                 if (bullet) {
                     sfx_fire.play();
                     //  And fire it
-                    bullet.reset(player.x + 8, player.y + Math.pow(-1, n) * 7 * n);
-                    bullet.body.velocity.x = 400;
-                    bulletTime = game.time.now + 200;
+                    if (n%2 === 0) {
+                        bullet.reset(player.x + 8, player.y + Math.pow(-1, n) * 7 * n);
+                        bullet.body.velocity.x = 800;
+                        bulletTime = game.time.now + 200;
+                    }
+                    else {
+                        bullet.reset(player.x + 8, player.y + Math.pow(-1, n) * 7 * n);
+                        bullet.body.velocity.x = 400;
+                        bulletTime = game.time.now + 200;
+                    }
                 }
             }
         }
