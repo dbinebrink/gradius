@@ -286,7 +286,7 @@ var Game = {
         aliens.y = 30;
 
 
-        //  Start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
+        //  Alien movements
         if (stage > 18) {
             var tween = game.add.tween(aliens).to( { x: 200 }, 1500, Phaser.Easing.Cubic.Out, true, 0, 1000, true);
             var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 1000, true);
