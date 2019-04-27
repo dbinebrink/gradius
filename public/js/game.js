@@ -26,7 +26,11 @@ var stage = 1;
 var stageString = '';
 var stageText;
 var sfx_stage_clear;
-var easyPause;
+var speedup;
+var player_speed;
+var power_up_count = 1;
+var power_up;
+var settings;
 var speed_up;
 var player_speed;
 var power_up_count = 1;
@@ -60,9 +64,12 @@ var Game = {
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
-        // load the pause icon
-        game.load.image('pausebutton','img/pausebutton.png');
-
+        // load the setting icon
+        game.load.image('settingButton', 'img/settingButton.png');
+        game.load.image('settingBack', 'img/settingBackground.png');
+        game.load.image('resumeButton', 'img/resumeButton.png');
+        game.load.image('onButton', 'img/onButton.png');
+        game.load.image('offButton', 'img/offButton.png');
     },
 
     create  : function() {
@@ -140,9 +147,9 @@ var Game = {
         aliens.enableBody = true;
         aliens.physicsBodyType = Phaser.Physics.ARCADE;
 
-        // the pause button
-        game.add.button(0,0,'pausebutton', this.pauseGame, this);
-        easyPause = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+        // The setting button
+        game.add.button(30,20, 'settingButton', this.showSettingMessageBox, this);
+        settings = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
 
         // The stage
         stageString = 'Stage: ';
@@ -209,10 +216,10 @@ var Game = {
         upper_mountain.tilePosition.x -= 1;
         lower_mountain.tilePosition.x -= 1;
 
-        // Pause the game with an alert
-        if (easyPause.isDown){
+        // Setting
+        if (settings.isDown){
             music.stop();
-            this.pauseGame();
+            this.showSettingMessageBox();
             music.play();
         }
 
@@ -596,13 +603,7 @@ var Game = {
         //  Called if the bullet goes out of the screen
         bullet.kill();
     },
-
-    pauseGame : function(){
-        music.stop();
-        alert('Click OK to resume')
-        music.play();
-    },
-
+  
     getScore_up_2 : function(player, score_up_2){
         score_up_2.kill();
         //if(player_speed <340){
@@ -626,7 +627,65 @@ var Game = {
         if(player_speed <340){
             player_speed += 20;
         }
-    }
+    },
 
+    showSettingMessageBox : function(){
+        game.paused = true;
+
+        if(this.msgBox){
+            this.msgBox.destroy();
+        }
+
+        var msgBox = game.add.group();
+        var back = game.add.sprite(0,0,'settingBack');
+        var resumeButton = game.add.sprite(0, 0, 'resumeButton');
+        var musicOnButton = game.add.sprite(0,0, 'onButton');
+        var musicOffButton = game.add.sprite(0,0,'offButton');
+        var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic');
+
+        msgBox.add(back);
+        msgBox.add(resumeButton);
+        msgBox.add(musicOnButton);
+        msgBox.add(musicOffButton);
+        msgBox.add(backgroundMusicText);
+
+        msgBox.x = game.width / 2 - msgBox.width / 2;
+        msgBox.y = game.height / 2 - msgBox.height / 2;
+
+        resumeButton.x = msgBox.width / 2 - resumeButton.width / 2;
+        resumeButton.y = msgBox.height - resumeButton.height*2;
+        resumeButton.inputEnabled = true;
+        resumeButton.events.onInputDown.add(this.hideBox,this);
+
+        backgroundMusicText.wordWrapWidth = back * 0.8;
+        backgroundMusicText.x = msgBox.width / 2 - backgroundMusicText.width / 2;
+        backgroundMusicText.y = msgBox.y;
+        backgroundMusicText.addColor("#ffffff", 0);
+
+        musicOnButton.x = msgBox.width / 2 - musicOnButton.width - 10;
+        musicOnButton.y = msgBox.y + backgroundMusicText.height;
+        musicOnButton.inputEnabled = true;
+        musicOnButton.events.onInputDown.add(this.turnOnMusic,this);
+
+        musicOffButton.x = msgBox.width / 2 + 10;
+        musicOffButton.y = msgBox.y + backgroundMusicText.height;
+        musicOffButton.inputEnabled = true;
+        musicOffButton.events.onInputDown.add(this.turnOffMusic,this);
+
+        this.msgBox = msgBox;
+    },
+
+    hideBox : function(){
+        this.msgBox.destroy();
+        game.paused = false;
+    },
+
+    turnOnMusic : function(){
+        music.play();
+    },
+
+    turnOffMusic : function(){
+        music.stop();
+    }
 }
 
