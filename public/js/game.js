@@ -277,7 +277,7 @@ var Game = {
 
     createAliens : function() {
 
-        for (var i = 0; i < 15; i++) {
+        for (var i = 0; i < stage * 3; i++) {
             var alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
             while(game.physics.arcade.overlap(alien, aliens)){
                 alien.kill();
