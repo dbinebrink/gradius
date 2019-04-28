@@ -67,7 +67,9 @@ var Game = {
         // load the setting icon
         game.load.image('settingButton', 'img/settingButton.png');
         game.load.image('settingBack', 'img/settingBackground.png');
+        game.load.image('restartButton1','img/restartButton-1.png');
         game.load.image('resumeButton', 'img/resumeButton.png');
+        game.load.image('mainMenu', 'img/mainMenu.png');
         game.load.image('onButton', 'img/onButton.png');
         game.load.image('offButton', 'img/offButton.png');
     },
@@ -645,12 +647,14 @@ var Game = {
 
         var msgBox = game.add.group();
         var back = game.add.sprite(0,0,'settingBack');
+        var restartButton1 = game.add.sprite(0, 0, 'restartButton1');
         var resumeButton = game.add.sprite(0, 0, 'resumeButton');
         var musicOnButton = game.add.sprite(0,0, 'onButton');
         var musicOffButton = game.add.sprite(0,0,'offButton');
         var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic');
 
         msgBox.add(back);
+        msgBox.add(restartButton1);
         msgBox.add(resumeButton);
         msgBox.add(musicOnButton);
         msgBox.add(musicOffButton);
@@ -658,6 +662,11 @@ var Game = {
 
         msgBox.x = game.width / 2 - msgBox.width / 2;
         msgBox.y = game.height / 2 - msgBox.height / 2;
+
+        restartButton1.x = msgBox.width / 2 - restartButton1.width / 2;
+        restartButton1.y = msgBox.height - restartButton1.height*3;
+        restartButton1.inputEnabled = true;
+        restartButton1.events.onInputDown.add(this.startGame,this);
 
         resumeButton.x = msgBox.width / 2 - resumeButton.width / 2;
         resumeButton.y = msgBox.height - resumeButton.height*2;
@@ -682,6 +691,13 @@ var Game = {
         this.msgBox = msgBox;
     },
 
+    startGame : function() {
+        //this.Game.destroy();
+        this.msgBox.destroy();
+        game.paused = false;
+        music.stop();
+        game.state.start('Game');
+    },
     hideBox : function(){
         this.msgBox.destroy();
         game.paused = false;
@@ -694,5 +710,6 @@ var Game = {
     turnOffMusic : function(){
         music.stop();
     }
+    
 }
 
