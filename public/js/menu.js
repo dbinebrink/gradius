@@ -8,6 +8,7 @@ var mainMenu = {
         game.load.image('startButton', 'img/startbutton.png');
         game.load.image('controls', 'img/controls.png');       
         game.load.image('controlkey', 'img/controlkey.png');
+        game.load.image('backButton', 'img/backButton.png');
         mainMenu.load.audio('start_sound', 'audio/start_sound.mp3')
     },
 
@@ -36,5 +37,6 @@ var mainMenu = {
 
     ViewControls : function() {
        game.add.button(220,330,'controlkey', this.ViewControls, this);
+       game.add.button(600,330,'backButton', this.create, this);
     },
 }
