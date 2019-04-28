@@ -12,6 +12,8 @@ var score = 0;
 var scoreString = '';
 var scoreText;
 var lives;
+var live_count;
+var max_live = 3;
 var enemyBullet;
 var firingTimer = 0;
 var livingEnemies = [];
@@ -19,7 +21,6 @@ var music;
 var sfx_fire;
 var sfx_enemy_die;
 var heart;
-var live_count = 3;
 var last = -1;
 var first = 0;
 var stage = 1;
@@ -67,7 +68,9 @@ var Game = {
         // load the setting icon
         game.load.image('settingButton', 'img/settingButton.png');
         game.load.image('settingBack', 'img/settingBackground.png');
+        game.load.image('restartButton1','img/restartButton-1.png');
         game.load.image('resumeButton', 'img/resumeButton.png');
+        game.load.image('mainMenu', 'img/mainMenu.png');
         game.load.image('onButton', 'img/onButton.png');
         game.load.image('offButton', 'img/offButton.png');
     },
@@ -163,6 +166,13 @@ var Game = {
 
         //  Lives
         lives = game.add.group();
+        for (var i = 2; i >= 0; i--) {
+            var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
+            ship.anchor.setTo(0.5, 0.5);
+            ship.angle = 0;
+            ship.alpha = 0.4;
+        }
+        live_count = 3
         game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
 
         // hearts
@@ -191,12 +201,6 @@ var Game = {
         score_up_3.enableBody = true;
         score_up_3.physicsBodyType = Phaser.Physics.ARCADE;
 
-        for (var i = 2; i >= 0; i--) {
-            var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
-            ship.anchor.setTo(0.5, 0.5);
-            ship.angle = 0;
-            ship.alpha = 0.4;
-        }
 
         //  An explosion pool
         explosions = game.add.group();
@@ -420,16 +424,16 @@ var Game = {
 
         //  Increase the score
         if (score_2_switch === true && score_3_switch === false) {
-            score += 40*lives.countLiving();
+            score += 40*live_count;
         }
         else if (score_2_switch === false && score_3_switch == true) {
-            score += 60*lives.countLiving();
+            score += 60*live_count;
         }
         else if (score_2_switch === true && score_3_switch == true) {
-            score += 120*lives.countLiving();
+            score += 120*live_count;
         }
         else {
-        score += 20*lives.countLiving();
+        score += 20*live_count;
         }
         scoreText.text = scoreString + score;
         //  And create an explosion :)
@@ -501,11 +505,9 @@ var Game = {
         sfx_player_hit.play();
         object.kill();
 
-        live = lives.getFirstAlive();
-        if(live){
-            live.kill();
-            live_count--;
-        }
+        live = lives.getChildAt(max_live-live_count);
+        live.alpha = 0;
+        live_count--;
 
         // reset player's power & speed
         player_speed = 200;
@@ -520,7 +522,7 @@ var Game = {
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
 
-        if (lives.countLiving() < 1) {
+        if (live_count < 1) {
             countstage = 1;
             this.finishGame();
         }
@@ -543,19 +545,9 @@ var Game = {
         heart.kill();
       
         if (live_count < 3){
-	        for (var i = live_count; i >= 0; i--) {
-	            var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
-	            ship.anchor.setTo(0.5, 0.5);
-	            ship.angle = 0;
-	            ship.alpha = 0.4;
-	        }
-	        for (var i = 0; i < live_count; i++)
-			{        
-				live = lives.getFirstAlive();
-	    	    if(live)
-	    	        live.kill();
-		    }
-		    live_count++;
+            live_count++;
+            live = lives.getChildAt(max_live-live_count);
+            live.alpha = 0.4;
 		}
 	},
 
@@ -566,9 +558,7 @@ var Game = {
     },
 
     finishGame : function() {
-        if (lives.countLiving() < 1) {
-            player.kill();
-        }
+        player.kill();
 
         music.stop();
 
@@ -645,12 +635,14 @@ var Game = {
 
         var msgBox = game.add.group();
         var back = game.add.sprite(0,0,'settingBack');
+        var restartButton1 = game.add.sprite(0, 0, 'restartButton1');
         var resumeButton = game.add.sprite(0, 0, 'resumeButton');
         var musicOnButton = game.add.sprite(0,0, 'onButton');
         var musicOffButton = game.add.sprite(0,0,'offButton');
         var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic');
 
         msgBox.add(back);
+        msgBox.add(restartButton1);
         msgBox.add(resumeButton);
         msgBox.add(musicOnButton);
         msgBox.add(musicOffButton);
@@ -658,6 +650,11 @@ var Game = {
 
         msgBox.x = game.width / 2 - msgBox.width / 2;
         msgBox.y = game.height / 2 - msgBox.height / 2;
+
+        restartButton1.x = msgBox.width / 2 - restartButton1.width / 2;
+        restartButton1.y = msgBox.height - restartButton1.height*3;
+        restartButton1.inputEnabled = true;
+        restartButton1.events.onInputDown.add(this.startGame,this);
 
         resumeButton.x = msgBox.width / 2 - resumeButton.width / 2;
         resumeButton.y = msgBox.height - resumeButton.height*2;
@@ -682,6 +679,13 @@ var Game = {
         this.msgBox = msgBox;
     },
 
+    startGame : function() {
+        //this.Game.destroy();
+        this.msgBox.destroy();
+        game.paused = false;
+        music.stop();
+        game.state.start('Game');
+    },
     hideBox : function(){
         this.msgBox.destroy();
         game.paused = false;
@@ -694,5 +698,6 @@ var Game = {
     turnOffMusic : function(){
         music.stop();
     }
+    
 }
 
