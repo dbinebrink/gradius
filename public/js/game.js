@@ -12,6 +12,8 @@ var score = 0;
 var scoreString = '';
 var scoreText;
 var lives;
+var live_count;
+var max_live = 3;
 var enemyBullet;
 var firingTimer = 0;
 var livingEnemies = [];
@@ -19,7 +21,6 @@ var music;
 var sfx_fire;
 var sfx_enemy_die;
 var heart;
-var live_count = 3;
 var last = -1;
 var first = 0;
 var stage = 1;
@@ -163,6 +164,13 @@ var Game = {
 
         //  Lives
         lives = game.add.group();
+        for (var i = 2; i >= 0; i--) {
+            var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
+            ship.anchor.setTo(0.5, 0.5);
+            ship.angle = 0;
+            ship.alpha = 0.4;
+        }
+        live_count = 3
         game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
 
         // hearts
@@ -191,12 +199,6 @@ var Game = {
         score_up_3.enableBody = true;
         score_up_3.physicsBodyType = Phaser.Physics.ARCADE;
 
-        for (var i = 2; i >= 0; i--) {
-            var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
-            ship.anchor.setTo(0.5, 0.5);
-            ship.angle = 0;
-            ship.alpha = 0.4;
-        }
 
         //  An explosion pool
         explosions = game.add.group();
@@ -420,16 +422,16 @@ var Game = {
 
         //  Increase the score
         if (score_2_switch === true && score_3_switch === false) {
-            score += 40*lives.countLiving();
+            score += 40*live_count;
         }
         else if (score_2_switch === false && score_3_switch == true) {
-            score += 60*lives.countLiving();
+            score += 60*live_count;
         }
         else if (score_2_switch === true && score_3_switch == true) {
-            score += 120*lives.countLiving();
+            score += 120*live_count;
         }
         else {
-        score += 20*lives.countLiving();
+        score += 20*live_count;
         }
         scoreText.text = scoreString + score;
         //  And create an explosion :)
@@ -501,11 +503,9 @@ var Game = {
         sfx_player_hit.play();
         object.kill();
 
-        live = lives.getFirstAlive();
-        if(live){
-            live.kill();
-            live_count--;
-        }
+        live = lives.getChildAt(max_live-live_count);
+        live.alpha = 0;
+        live_count--;
 
         // reset player's power & speed
         player_speed = 200;
@@ -520,7 +520,7 @@ var Game = {
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
 
-        if (lives.countLiving() < 1) {
+        if (live_count < 1) {
             countstage = 1;
             this.finishGame();
         }
@@ -543,19 +543,9 @@ var Game = {
         heart.kill();
       
         if (live_count < 3){
-	        for (var i = live_count; i >= 0; i--) {
-	            var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
-	            ship.anchor.setTo(0.5, 0.5);
-	            ship.angle = 0;
-	            ship.alpha = 0.4;
-	        }
-	        for (var i = 0; i < live_count; i++)
-			{        
-				live = lives.getFirstAlive();
-	    	    if(live)
-	    	        live.kill();
-		    }
-		    live_count++;
+            live_count++;
+            live = lives.getChildAt(max_live-live_count);
+            live.alpha = 0.4;
 		}
 	},
 
@@ -566,9 +556,7 @@ var Game = {
     },
 
     finishGame : function() {
-        if (lives.countLiving() < 1) {
-            player.kill();
-        }
+        player.kill();
 
         music.stop();
 
