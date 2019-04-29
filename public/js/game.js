@@ -203,30 +203,30 @@ var Game = {
 
         if (player.alive) {
             //  Reset the player, then check for movement keys
-            player.body.velocity.setTo(0, 0);
-            if(cursors.left.isDown && (40 < player.x) && cursors.up.isDown && (40 < player.y)){
-                player.body.velocity.x = -player_speed * Math.sqrt(2) / 2;
-                player.body.velocity.y = -player_speed * Math.sqrt(2) / 2;
-                player.animations.play('up');
+           player.body.velocity.setTo(0, 0);
 
+            if(cursors.left.isDown && (40 < player.x) && cursors.up.isDown && (40 < player.y)){
+                player.body.velocity.x = -player_speed * Math.sqrt2 / 2;
+                player.body.velocity.y = -player_speed * Math.sqrt2 / 2;
+                player.animations.play('up');
             }
+
             else if(cursors.left.isDown && (40 < player.x) && cursors.down.isDown && (player.y < 560)){
-                player.body.velocity.x = -player_speed * Math.sqrt(2) / 2;
-                player.body.velocity.y = player_speed * Math.sqrt(2) / 2;
+                player.body.velocity.x = -player_speed  * Math.sqrt2 / 2;
+                player.body.velocity.y = player_speed  * Math.sqrt2 / 2;
                 player.animations.play('down');
             }
             else if(cursors.right.isDown && (player.x < 860) && cursors.up.isDown && (40 < player.y)){
-                player.body.velocity.x = player_speed * Math.sqrt(2) / 2;
-                player.body.velocity.y = -player_speed * Math.sqrt(2) / 2;
+                player.body.velocity.x = player_speed * Math.sqrt2 / 2;
+                player.body.velocity.y = -player_speed * Math.sqrt2 / 2;
                 player.animations.play('up');
             }
-            else if(cursors.right.isDown && (player.x < 860) && cursors.down.isDown && (player.y < 560)){
-                player.body.velocity.x = player_speed * Math.sqrt(2) / 2;
-                player.body.velocity.y = player_speed * Math.sqrt(2) / 2;
-                player.animations.play('up');
+            else if(cursors.right.isDown && (player.x < 860) && cursors.down.isDown && (player.y) < 560){
+                player.body.velocity.x = player_speed  * Math.sqrt2 / 2;
+                player.body.velocity.y = player_speed  * Math.sqrt2 / 2;
+                player.animations.play('down');
             }
-            
-            
+
             else if (cursors.left.isDown && (40 < player.x)) {
                 player.body.velocity.x = -player_speed;
             }
