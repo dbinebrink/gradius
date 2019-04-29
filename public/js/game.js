@@ -483,26 +483,23 @@ var Game = {
         var random = Math.random();
         if(random < 0.22){
             var power = power_up.create(bullet.body.x+30, bullet.body.y,'power_up');
-            //game.physics.arcade.moveToObject(power, power, 0);
+            //game.physics.arcade.moveToObject(power, player, 5 * stage);
         }
         else if(random < 0.44){
             var speed_up_1 = speed_up.create(bullet.body.x+30, bullet.body.y, 'speed_up');
-            //game.physics.arcade.moveToObject(speed_up_1, speed_up_1,0);
-
+            //game.physics.arcade.moveToObject(speed_up_1, player, 5 * stage);
         }
         else if(random < 0.66){
             var score_2 = score_up_2.create(bullet.body.x+30, bullet.body.y, 'score_up_2');
-            //game.physics.arcade.moveToObject(score_2, score_2, 0);
-
+            //game.physics.arcade.moveToObject(score_2, player, 5 * stage);
         }
         else if(random < 0.77){
             var score_3 = score_up_3.create(bullet.body.x+30, bullet.body.y, 'score_up_3');
-            //game.physics.arcade.moveToObject(score_3, score_3, 0);
-
+            //game.physics.arcade.moveToObject(score_3, player, 5 * stage);
         }
         else{
             var heart_1 = heart.create(bullet.body.x+30, bullet.body.y, 'heart');
-            //game.physics.arcade.moveToObject(heart_1, heart_1, 0);
+            //game.physics.arcade.moveToObject(heart_1, player, 5 * stage);
         }
         bullet.kill();
     },
