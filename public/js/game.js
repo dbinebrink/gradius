@@ -657,6 +657,7 @@ var Game = {
 
         var msgBox = game.add.group();
         var back = game.add.sprite(0,0,'settingBack');
+        var mainMenu = game.add.sprite(0, 0, 'mainMenu');
         var restartButton1 = game.add.sprite(0, 0, 'restartButton1');
         var resumeButton = game.add.sprite(0, 0, 'resumeButton');
         var musicOnButton = game.add.sprite(0,0, 'onButton');
@@ -664,6 +665,7 @@ var Game = {
         var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic');
 
         msgBox.add(back);
+        msgBox.add(mainMenu);
         msgBox.add(restartButton1);
         msgBox.add(resumeButton);
         msgBox.add(musicOnButton);
@@ -673,8 +675,13 @@ var Game = {
         msgBox.x = game.width / 2 - msgBox.width / 2;
         msgBox.y = game.height / 2 - msgBox.height / 2;
 
+        mainMenu.x = msgBox.width / 2 - mainMenu.width / 2;
+        mainMenu.y = msgBox.height - mainMenu.height*2.5;
+        mainMenu.inputEnabled = true;
+        mainMenu.events.onInputDown.add(this.goMenu,this);
+
         restartButton1.x = msgBox.width / 2 - restartButton1.width / 2;
-        restartButton1.y = msgBox.height - restartButton1.height*3;
+        restartButton1.y = msgBox.height - restartButton1.height*4;
         restartButton1.inputEnabled = true;
         restartButton1.events.onInputDown.add(this.startGame,this);
 
@@ -701,6 +708,12 @@ var Game = {
         this.msgBox = msgBox;
     },
 
+    goMenu : function() {
+        this.msgBox.destroy();
+        game.paused = false;
+        music.stop();
+        game.state.start('mainMenu');
+    },
     startGame : function() {
         //this.Game.destroy();
         this.msgBox.destroy();

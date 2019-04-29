@@ -15,8 +15,8 @@ var mainMenu = {
     create : function() {
     	var image = game.add.image(0,0,'Wall_paper');
         game.stage.background = image;
-        game.add.button(350,270,'startButton', this.startGame, this);
-        game.add.button(350,330,'controls', this.ViewControls, this);
+        game.add.button(350,210,'startButton', this.startGame, this);
+        game.add.button(350,280,'controls', this.ViewControls, this);
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         music = game.add.audio('start_sound');
         music.play();
@@ -36,7 +36,7 @@ var mainMenu = {
     },
 
     ViewControls : function() {
-       game.add.button(220,330,'controlkey', this.ViewControls, this);
-       game.add.button(600,330,'backButton', this.create, this);
+       game.add.button(220,360,'controlkey', this.ViewControls, this);
+       game.add.button(600,360,'backButton', this.create, this);
     },
 }
