@@ -1,6 +1,5 @@
 var player;
 var aliens;
-var bullets;
 var bulletTime = 0;
 var invincibleTime = 0;
 var cursors;
@@ -65,10 +64,10 @@ var Game = {
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
+        
         // load the setting icon
         game.load.image('settingButton', 'img/settingButton.png');
         game.load.image('settingBack', 'img/settingBackground.png');
-
     },
 
     create  : function() {
@@ -122,14 +121,17 @@ var Game = {
         player.animations.add('down', [0, 1], 2, false);
 
         //  Our bullet group
-        bullets = game.add.group();
-        bullets.enableBody = true;
-        bullets.physicsBodyType = Phaser.Physics.ARCADE;
-        bullets.createMultiple(200, 'laser', [0,1,2,3,4], false);
-        bullets.setAll('anchor.x', 0.5);
-        bullets.setAll('anchor.y', 1);
-        bullets.setAll('outOfBoundsKill', true);
-        bullets.setAll('checkWorldBounds', true);
+        // console.log(Bullets);
+        Bullets.initalize(game);
+
+        // bullets = game.add.group();
+        // bullets.enableBody = true;
+        // bullets.physicsBodyType = Phaser.Physics.ARCADE;
+        // bullets.createMultiple(2, 'laser', [0,1,2,3,4], false);
+        // bullets.setAll('anchor.x', 0.5);
+        // bullets.setAll('anchor.y', 1);
+        // bullets.setAll('outOfBoundsKill', true);
+        // bullets.setAll('checkWorldBounds', true);
 
         // The enemy's bullets
         enemyBullets = game.add.group();
@@ -210,7 +212,6 @@ var Game = {
     },
 
     update : function() {
-
         //  Scroll the background
         starfield.tilePosition.x -= 3;
         upper_mountain.tilePosition.x -= 1;
@@ -272,7 +273,8 @@ var Game = {
 
             //  Firing?
             if (fireButton.isDown) {
-                this.fireBullet();
+                // this.fireBullet();
+                Bullets.fire(player, game.time.now);
             }
 
             if (game.time.now > firingTimer) {
@@ -280,15 +282,15 @@ var Game = {
             }
 
             //  Run collision
-            game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
-            game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
+            game.physics.arcade.overlap(Bullets.bulletGroup, aliens, this.collisionHandler, null, this);
+            game.physics.arcade.overlap(Bullets.bulletGroup, enemyBullets, this.playerBreakEnemyBullet, null, this);
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
-            game.physics.arcade.overlap(bullets, heart, this.changeItem, null, this);
-            game.physics.arcade.overlap(bullets, speed_up, this.changeItem, null, this);
-            game.physics.arcade.overlap(bullets, power_up, this.changeItem, null, this);
-            game.physics.arcade.overlap(bullets, score_up_2, this.changeItem, null, this);
-            game.physics.arcade.overlap(bullets, score_up_3, this.changeItem, null, this);
+            game.physics.arcade.overlap(Bullets.bulletGroup, heart, this.changeItem, null, this);
+            game.physics.arcade.overlap(Bullets.bulletGroup, speed_up, this.changeItem, null, this);
+            game.physics.arcade.overlap(Bullets.bulletGroup, power_up, this.changeItem, null, this);
+            game.physics.arcade.overlap(Bullets.bulletGroup, score_up_2, this.changeItem, null, this);
+            game.physics.arcade.overlap(Bullets.bulletGroup, score_up_3, this.changeItem, null, this);
             game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
             game.physics.arcade.overlap(player, power_up, this.getPower_up, null, this);
             game.physics.arcade.overlap(player, speed_up, this.getspeed_up, null, this);
@@ -376,39 +378,39 @@ var Game = {
         // game.debug.body(aliens.getFirstAlive());
     },
 
-    fireBullet : function() {
-        game.add.audio('sfx_fire');
-        sfx_fire.volume = 0.2;
+    // fireBullet : function() {
+    //     game.add.audio('sfx_fire');
+    //     sfx_fire.volume = 0.2;
 
-        //  To avoid them being allowed to fire too fast we set a time limit
-        if (game.time.now > bulletTime) {
+    //     //  To avoid them being allowed to fire too fast we set a time limit
+    //     if (game.time.now > bulletTime) {
 
-            //  Grab the first bullet we can from the pool
-            for(var n = power_up_count; n > 0; n--){
-                bullet = bullets.getFirstExists(false);
+    //         //  Grab the first bullet we can from the pool
+    //         for(var n = power_up_count; n > 0; n--){
+    //             bullet = bullets.getFirstExists(false);
                 
-                if (bullet) {
-                    sfx_fire.play();
-                    bullet.reset(player.x+30, player.y);
-                    bullet.anchor.setTo(0, 0.5);
-                    bullet.update = function(){
-                        this.body.velocity.x = player.body.velocity.x;
-                        this.body.velocity.y = player.body.velocity.y;
-                    };
-                    bullet.animations.add('shootBeam', [0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4]);
-                    bullet.play('shootBeam', 120, false, true);
-                    //  And fire it
-                    bullet.body.velocity.x = 0;
-                    bullet.body.velocity.y = 0;
-                    bulletTime = game.time.now + 1800;
-                }
-            }
-        }
-    },
+    //             if (bullet) {
+    //                 sfx_fire.play();
+    //                 bullet.reset(player.x+30, player.y);
+    //                 bullet.anchor.setTo(0, 0.5);
+    //                 bullet.update = function(){
+    //                     this.body.velocity.x = player.body.velocity.x;
+    //                     this.body.velocity.y = player.body.velocity.y;
+    //                 };
+    //                 bullet.animations.add('shootBeam', [0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4]);
+    //                 bullet.play('shootBeam', 120, false, true);
+    //                 //  And fire it
+    //                 bullet.body.velocity.x = 0;
+    //                 bullet.body.velocity.y = 0;
+    //                 bulletTime = game.time.now + 1800;
+    //             }
+    //         }
+    //     }
+    // },
 
     collisionHandler : function(bullet, alien) {
         //  When a bullet hits an alien we kill them both
-        // bullet.kill();
+        Bullets.killBullet(bullet);
 
         if(Math.random() * 1000 < 20) {
             this.makeRandomItem(alien.body.x, alien.body.y, -200, (Math.random()*2-1)*200 );
@@ -454,7 +456,6 @@ var Game = {
     },
 
     makeRandomItem : function(x, y, x_vel = 0, y_vel = 0){
-        console.log(x,y,x_vel,y_vel);
         var random = Math.random();
         var item;
         if(random < 0.22){
@@ -491,11 +492,11 @@ var Game = {
         var y = object.y;
         object.kill();
         var item = this.makeRandomItem(x, y, x_vel, y_vel);
-        bullet.kill();
+        Bullets.killBullet(bullet);
     },
 
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
-        // bullet.kill();
+        Bullets.killBullet(bullet);
         enemyBullet.kill();
 
         game.add.audio('sfx_enemy_die');
@@ -603,11 +604,6 @@ var Game = {
             game.physics.arcade.moveToObject(enemyBullet,player,100 + 20 * countstage);
             firingTimer = game.time.now + 2000 / countstage;
         }
-    },
-
-    resetBullet : function(bullet) {
-        //  Called if the bullet goes out of the screen
-        bullet.kill();
     },
   
     getScore_up_2 : function(player, score_up_2){
@@ -730,5 +726,4 @@ var Game = {
     turnOffMusic : function(){
         music.stop();
     }
-    
 }

@@ -1,1 +1,0 @@
-var laser_item = new item();
