@@ -43,10 +43,10 @@ var score_3_switch = false;
 var Game = {
 
     preload : function() {
-
         // load all sprites
         game.load.image('speed_up', 'img/speed_up.png');
         game.load.image('bullet', 'img/bullet.png');
+        game.load.spritesheet('laser', 'bullet_img/blue_beam_ani.png', 900, 30);
         game.load.image('enemyBullet', 'img/enemy-bullet.png');
         game.load.spritesheet('invader', 'img/invader32x32x4.png', 32, 32);
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
@@ -125,7 +125,7 @@ var Game = {
         bullets = game.add.group();
         bullets.enableBody = true;
         bullets.physicsBodyType = Phaser.Physics.ARCADE;
-        bullets.createMultiple(200, 'bullet', 100, false);
+        bullets.createMultiple(200, 'laser', [0,1,2,3,4], false);
         bullets.setAll('anchor.x', 0.5);
         bullets.setAll('anchor.y', 1);
         bullets.setAll('outOfBoundsKill', true);
@@ -386,20 +386,21 @@ var Game = {
             //  Grab the first bullet we can from the pool
             for(var n = power_up_count; n > 0; n--){
                 bullet = bullets.getFirstExists(false);
-
+                
                 if (bullet) {
                     sfx_fire.play();
+                    bullet.reset(player.x+30, player.y);
+                    bullet.anchor.setTo(0, 0.5);
+                    bullet.update = function(){
+                        this.body.velocity.x = player.body.velocity.x;
+                        this.body.velocity.y = player.body.velocity.y;
+                    };
+                    bullet.animations.add('shootBeam', [0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4]);
+                    bullet.play('shootBeam', 120, false, true);
                     //  And fire it
-                    if (n%2 === 0) {
-                        bullet.reset(player.x + 8, player.y + Math.pow(-1, n) * 7 * n);
-                        bullet.body.velocity.x = 800;
-                        bulletTime = game.time.now + 200;
-                    }
-                    else {
-                        bullet.reset(player.x + 8, player.y + Math.pow(-1, n) * 7 * n);
-                        bullet.body.velocity.x = 400;
-                        bulletTime = game.time.now + 200;
-                    }
+                    bullet.body.velocity.x = 0;
+                    bullet.body.velocity.y = 0;
+                    bulletTime = game.time.now + 1800;
                 }
             }
         }
@@ -407,7 +408,7 @@ var Game = {
 
     collisionHandler : function(bullet, alien) {
         //  When a bullet hits an alien we kill them both
-        bullet.kill();
+        // bullet.kill();
 
         if(Math.random() * 1000 < 20) {
             this.makeRandomItem(alien.body.x, alien.body.y, -200, (Math.random()*2-1)*200 );
@@ -494,7 +495,7 @@ var Game = {
     },
 
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
-        bullet.kill();
+        // bullet.kill();
         enemyBullet.kill();
 
         game.add.audio('sfx_enemy_die');
