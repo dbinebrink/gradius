@@ -40,11 +40,6 @@ var score_up_2;
 var score_2_switch = false;
 var score_up_3;
 var score_3_switch = false;
-var mainMenu;
-var onButton;
-var offButton;
-var restartButton1;
-var resumeButton;
 var Game = {
 
     preload : function() {
@@ -73,11 +68,7 @@ var Game = {
         // load the setting icon
         game.load.image('settingButton', 'img/settingButton.png');
         game.load.image('settingBack', 'img/settingBackground.png');
-        game.load.image('restartButton1','img/restartButton-1.png');
-        game.load.image('resumeButton', 'img/resumeButton.png');
-        game.load.image('mainMenu', 'img/mainMenu.png');
-        game.load.image('onButton', 'img/onButton.png');
-        game.load.image('offButton', 'img/offButton.png');
+
     },
 
     create  : function() {
@@ -310,7 +301,7 @@ var Game = {
 
         for (var i = 0; i < stage * 3; i++) {
             var alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
-            while(game.physics.arcade.overlap(alien, aliens)){
+            while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
                 alien.kill();
                 alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
             }
@@ -418,30 +409,8 @@ var Game = {
         //  When a bullet hits an alien we kill them both
         bullet.kill();
 
-        // hearts
         if(Math.random() * 1000 < 20) {
-            var heart_1 = heart.create(alien.body.x, alien.body.y, 'heart');
-            game.physics.arcade.moveToObject(heart_1, player, 100 + 10 * stage);
-        }
-        // power
-        else if(Math.random() * 1000 < 20){
-            var power = power_up.create(alien.body.x, alien.body.y,'power_up');
-            game.physics.arcade.moveToObject(power, player, 100 + 10 * stage);
-        }
-        // speed up
-        else if(Math.random() * 1000 < 20){
-            var speed_up_1 = speed_up.create(alien.body.x, alien.body.y, 'speed_up');
-            game.physics.arcade.moveToObject(speed_up_1, player, 100 + 10 * stage);
-        }
-        // score up 2
-        else if(Math.random() * 1000 < 20){
-            var score_2 = score_up_2.create(alien.body.x, alien.body.y,'score_up_2');
-            game.physics.arcade.moveToObject(score_2, player, 100 + 10 * stage);
-        }
-        // score up 3
-        else if(Math.random() * 1000 < 20){
-            var score_3 = score_up_3.create(alien.body.x, alien.body.y,'score_up_3');
-            game.physics.arcade.moveToObject(score_3, player, 100 + 10 * stage);
+            this.makeRandomItem(alien.body.x, alien.body.y, -200, (Math.random()*2-1)*200 );
         }
         alien.kill();
 
@@ -483,32 +452,44 @@ var Game = {
         }
     },
 
-    changeItem : function(bullet, object){
-        object.kill();
+    makeRandomItem : function(x, y, x_vel = 0, y_vel = 0){
+        console.log(x,y,x_vel,y_vel);
         var random = Math.random();
+        var item;
         if(random < 0.22){
-            var power = power_up.create(bullet.body.x+30, bullet.body.y,'power_up');
-            game.physics.arcade.moveToObject(power, player, 5 * stage);
+            item = power_up.create(x, y,'power_up');
         }
         else if(random < 0.44){
-            var speed_up_1 = speed_up.create(bullet.body.x+30, bullet.body.y, 'speed_up');
-            game.physics.arcade.moveToObject(speed_up_1, player, 5 * stage);
+            item = speed_up.create(x, y, 'speed_up');
 
         }
         else if(random < 0.66){
-            var score_2 = score_up_2.create(bullet.body.x+30, bullet.body.y, 'score_up_2');
-            game.physics.arcade.moveToObject(score_2, player, 5 * stage);
+            item = score_up_2.create(x, y, 'score_up_2');
 
         }
         else if(random < 0.77){
-            var score_3 = score_up_3.create(bullet.body.x+30, bullet.body.y, 'score_up_3');
-            game.physics.arcade.moveToObject(score_3, player, 5 * stage);
-
+            item = score_up_3.create(x, y, 'score_up_3');
         }
         else{
-            var heart_1 = heart.create(bullet.body.x+30, bullet.body.y, 'heart');
-            game.physics.arcade.moveToObject(heart_1, player, 5 * stage);
+            item = heart.create(x, y, 'heart');
         }
+        item.anchor.setTo(0.5, 0.5);
+        if(x_vel != 0){
+            item.body.velocity.x = x_vel;
+        }
+        if(y_vel != 0){
+            item.body.velocity.y = y_vel;
+        }
+        return item;
+    },
+
+    changeItem : function(bullet, object){
+        var x_vel = object.body.velocity.x;
+        var y_vel = object.body.velocity.y;
+        var x = object.x;
+        var y = object.y;
+        object.kill();
+        var item = this.makeRandomItem(x, y, x_vel, y_vel);
         bullet.kill();
     },
 
@@ -683,38 +664,23 @@ var Game = {
         mainMenu.wordWrapWidth = back * 0.8;
         mainMenu.addColor("#ffffff", 0);
         mainMenu.x = msgBox.width / 2 - mainMenu.width / 2;
-        mainMenu.y = msgBox.height - mainMenu.height*4.5;
+        mainMenu.y = msgBox.height - mainMenu.height*5;
         mainMenu.inputEnabled = true;
         mainMenu.events.onInputDown.add(this.goMenu,this);
         
         restartButton1.wordWrapWidth = back * 0.8;
         restartButton1.addColor("#ffffff", 0);
         restartButton1.x = msgBox.width / 2 - restartButton1.width / 2;
-        restartButton1.y = msgBox.height - restartButton1.height*7;
+        restartButton1.y = msgBox.height - restartButton1.height*7.5;
         restartButton1.inputEnabled = true;
         restartButton1.events.onInputDown.add(this.startGame,this);
 
         resumeButton.wordWrapWidth = back * 0.8;
         resumeButton.addColor("#ffffff", 0);
-        // resumeButton.setInteractive();
-
-        // this.input.on('gameobjectover', function (pointer, resumeButton) {
-
-        // resumeButton.addColor("#3a4f77", 0);
-
-        // });
-
-        // this.input.on('gameobjectout', function (pointer, resumeButton) {
-
-        //     resumeButton.clearTint();
-
-        // });
-
         resumeButton.x = msgBox.width / 2 - resumeButton.width / 2;
-        resumeButton.y = msgBox.height - resumeButton.height*2;
+        resumeButton.y = msgBox.height - resumeButton.height*2.5;
         resumeButton.inputEnabled = true;
         resumeButton.events.onInputDown.add(this.hideBox,this);
-
 
         backgroundMusicText.wordWrapWidth = back * 0.8;
         backgroundMusicText.x = msgBox.width / 2 - backgroundMusicText.width / 2;
