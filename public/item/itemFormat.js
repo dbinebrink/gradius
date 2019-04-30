@@ -29,6 +29,8 @@ class item {
     }
 }
 
+// 웹브라우저 콘솔에서 게임을 실행시킨 후 Bullets.addItem(laser_item);
+// 를 입력하면 공격이 레이저로 바뀝니다.
 // make laser item
 var laser_item = new item("laser", "uncommon");
 laser_item.addAbility("damage", function(x){return x+3});
