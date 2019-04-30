@@ -58,7 +58,7 @@ var Game = {
         game.load.image('score_up_3', 'img/score_up_3.png');
         game.load.image('lower_mountain', 'img/lower_mountain.png');
         game.load.image('upper_mountain', 'img/upper_mountain.png');
-
+        
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
         game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
@@ -301,7 +301,7 @@ var Game = {
 
         for (var i = 0; i < stage * 3; i++) {
             var alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
-            while(game.physics.arcade.overlap(alien, aliens)){
+            while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
                 alien.kill();
                 alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
             }
@@ -409,30 +409,8 @@ var Game = {
         //  When a bullet hits an alien we kill them both
         bullet.kill();
 
-        // hearts
         if(Math.random() * 1000 < 20) {
-            var heart_1 = heart.create(alien.body.x, alien.body.y, 'heart');
-            game.physics.arcade.moveToObject(heart_1, player, 100 + 10 * stage);
-        }
-        // power
-        else if(Math.random() * 1000 < 20){
-            var power = power_up.create(alien.body.x, alien.body.y,'power_up');
-            game.physics.arcade.moveToObject(power, player, 100 + 10 * stage);
-        }
-        // speed up
-        else if(Math.random() * 1000 < 20){
-            var speed_up_1 = speed_up.create(alien.body.x, alien.body.y, 'speed_up');
-            game.physics.arcade.moveToObject(speed_up_1, player, 100 + 10 * stage);
-        }
-        // score up 2
-        else if(Math.random() * 1000 < 20){
-            var score_2 = score_up_2.create(alien.body.x, alien.body.y,'score_up_2');
-            game.physics.arcade.moveToObject(score_2, player, 100 + 10 * stage);
-        }
-        // score up 3
-        else if(Math.random() * 1000 < 20){
-            var score_3 = score_up_3.create(alien.body.x, alien.body.y,'score_up_3');
-            game.physics.arcade.moveToObject(score_3, player, 100 + 10 * stage);
+            this.makeRandomItem(alien.body.x, alien.body.y, -200, (Math.random()*2-1)*200 );
         }
         alien.kill();
 
@@ -469,37 +447,49 @@ var Game = {
             countstage++;
             stage++;
             stageText.text = stageString + stage;
-
-
+        
+            
         }
     },
 
-    changeItem : function(bullet, object){
-        object.kill();
+    makeRandomItem : function(x, y, x_vel = 0, y_vel = 0){
+        console.log(x,y,x_vel,y_vel);
         var random = Math.random();
+        var item;
         if(random < 0.22){
-            var power = power_up.create(bullet.body.x+30, bullet.body.y,'power_up');
-            //game.physics.arcade.moveToObject(power, player, 5 * stage);
+            item = power_up.create(x, y,'power_up');
         }
         else if(random < 0.44){
-            var speed_up_1 = speed_up.create(bullet.body.x+30, bullet.body.y, 'speed_up');
-            //game.physics.arcade.moveToObject(speed_up_1, player, 5 * stage);
+            item = speed_up.create(x, y, 'speed_up');
 
         }
         else if(random < 0.66){
-            var score_2 = score_up_2.create(bullet.body.x+30, bullet.body.y, 'score_up_2');
-            //game.physics.arcade.moveToObject(score_2, player, 5 * stage);
+            item = score_up_2.create(x, y, 'score_up_2');
 
         }
         else if(random < 0.77){
-            var score_3 = score_up_3.create(bullet.body.x+30, bullet.body.y, 'score_up_3');
-            //game.physics.arcade.moveToObject(score_3, player, 5 * stage);
-
+            item = score_up_3.create(x, y, 'score_up_3');
         }
         else{
-            var heart_1 = heart.create(bullet.body.x+30, bullet.body.y, 'heart');
-            //game.physics.arcade.moveToObject(heart_1, player, 5 * stage);
+            item = heart.create(x, y, 'heart');
         }
+        item.anchor.setTo(0.5, 0.5);
+        if(x_vel != 0){
+            item.body.velocity.x = x_vel;
+        }
+        if(y_vel != 0){
+            item.body.velocity.y = y_vel;
+        }
+        return item;
+    },
+
+    changeItem : function(bullet, object){
+        var x_vel = object.body.velocity.x;
+        var y_vel = object.body.velocity.y;
+        var x = object.x;
+        var y = object.y;
+        object.kill();
+        var item = this.makeRandomItem(x, y, x_vel, y_vel);
         bullet.kill();
     },
 
@@ -561,7 +551,7 @@ var Game = {
 
     getHeart: function(player, heart) {
         heart.kill();
-
+      
         if (live_count < 3){
             live_count++;
             live = lives.getChildAt(max_live-live_count);
@@ -618,7 +608,7 @@ var Game = {
         //  Called if the bullet goes out of the screen
         bullet.kill();
     },
-
+  
     getScore_up_2 : function(player, score_up_2){
         score_up_2.kill();
         //if(player_speed <340){
@@ -677,7 +667,7 @@ var Game = {
         mainMenu.y = msgBox.height - mainMenu.height*5;
         mainMenu.inputEnabled = true;
         mainMenu.events.onInputDown.add(this.goMenu,this);
-
+        
         restartButton1.wordWrapWidth = back * 0.8;
         restartButton1.addColor("#ffffff", 0);
         restartButton1.x = msgBox.width / 2 - restartButton1.width / 2;
@@ -739,5 +729,5 @@ var Game = {
     turnOffMusic : function(){
         music.stop();
     }
-
+    
 }
