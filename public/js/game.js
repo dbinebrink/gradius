@@ -59,6 +59,7 @@ var Game = {
         game.load.image('score_up_3', 'img/score_up_3.png');
         game.load.image('lower_mountain', 'img/lower_mountain.png');
         game.load.image('upper_mountain', 'img/upper_mountain.png');
+        game.load.image('debug_message', 'img/debugMessage.png');
         
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
@@ -687,6 +688,9 @@ var Game = {
         var musicOnButton = game.add.text(0,0, 'ON');
         var musicOffButton = game.add.text(0,0,'OFF');
         var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic');
+        var dbgMsgText = game.add.text(0, 0, "Debug Message");
+        var dbgMsgOnButton = game.add.text(0,0, 'ON');
+        var dbgMsgOffButton = game.add.text(0,0,'OFF');
 
         msgBox.add(back);
         msgBox.add(mainMenu);
@@ -695,6 +699,9 @@ var Game = {
         msgBox.add(musicOnButton);
         msgBox.add(musicOffButton);
         msgBox.add(backgroundMusicText);
+        msgBox.add(dbgMsgText);
+        msgBox.add(dbgMsgOnButton);
+        msgBox.add(dbgMsgOffButton);
 
         msgBox.x = game.width / 2 - msgBox.width / 2;
         msgBox.y = game.height / 2 - msgBox.height / 2;
@@ -722,22 +729,41 @@ var Game = {
 
         backgroundMusicText.wordWrapWidth = back * 0.8;
         backgroundMusicText.x = msgBox.width / 2 - backgroundMusicText.width / 2;
-        backgroundMusicText.y = msgBox.y;
+        backgroundMusicText.y = msgBox.y - 30;
         backgroundMusicText.addColor("#ffffff", 0);
 
         musicOnButton.wordWrapWidth = back * 0.8;
         musicOnButton.addColor("#ffffff", 0);
         musicOnButton.x = msgBox.width / 2 - musicOnButton.width - 10;
-        musicOnButton.y = msgBox.y + backgroundMusicText.height;
+        musicOnButton.y = msgBox.y + backgroundMusicText.height - 30;
         musicOnButton.inputEnabled = true;
         musicOnButton.events.onInputDown.add(this.turnOnMusic,this);
 
         musicOffButton.wordWrapWidth = back * 0.8;
         musicOffButton.addColor("#ffffff", 0);
         musicOffButton.x = msgBox.width / 2 + 10;
-        musicOffButton.y = msgBox.y + backgroundMusicText.height;
+        musicOffButton.y = msgBox.y + backgroundMusicText.height - 30;
         musicOffButton.inputEnabled = true;
         musicOffButton.events.onInputDown.add(this.turnOffMusic,this);
+
+        dbgMsgText.wordWrapWidth = back * 0.8;
+        dbgMsgText.x = msgBox.width / 2 - dbgMsgText.width / 2;
+        dbgMsgText.y = msgBox.y + 35;
+        dbgMsgText.addColor("#ffffff", 0);
+
+        dbgMsgOnButton.wordWrapWidth = back * 0.8;
+        dbgMsgOnButton.addColor("#ffffff", 0);
+        dbgMsgOnButton.x = msgBox.width / 2 - dbgMsgOnButton.width - 10;
+        dbgMsgOnButton.y = msgBox.y + dbgMsgText.height + 35;
+        dbgMsgOnButton.inputEnabled = true;
+        dbgMsgOnButton.events.onInputDown.add(this.turnOnDbgMsg,this);
+
+        dbgMsgOffButton.wordWrapWidth = back * 0.8;
+        dbgMsgOffButton.addColor("#ffffff", 0);
+        dbgMsgOffButton.x = msgBox.width / 2 + 10;
+        dbgMsgOffButton.y = msgBox.y + dbgMsgText.height + 35;
+        dbgMsgOffButton.inputEnabled = true;
+        dbgMsgOffButton.events.onInputDown.add(this.turnOffDbgMsg,this);
 
         this.msgBox = msgBox;
     },
@@ -767,8 +793,18 @@ var Game = {
     turnOffMusic : function(){
         music.stop();
     },
+
+    turnOnDbgMsg : function(){
+        debugFlag = true;
+        console.log("debugFlag is now on");
+    },
     
-    debugCollisionMessage : function(object1, object2 = null){
+    turnOffDbgMsg : function(){
+        debugFlag = false;
+        console.log("debugFlag is now off");
+    },
+    
+    debugCollisionMessage : function(object1, object2){
         
         if (object1.key.localeCompare("bullet") == 0){
             if (object2.key.localeCompare("invader") == 0){
