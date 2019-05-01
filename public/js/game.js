@@ -40,6 +40,7 @@ var score_up_2;
 var score_2_switch = false;
 var score_up_3;
 var score_3_switch = false;
+var debugFlag = false;
 var Game = {
 
     preload : function() {
@@ -373,6 +374,7 @@ var Game = {
 
     render : function() {
         // game.debug.body(player);
+        // game.debug.spriteInfo(player);
         // game.debug.body(aliens.getFirstAlive());
     },
 
@@ -406,6 +408,10 @@ var Game = {
     },
 
     collisionHandler : function(bullet, alien) {
+
+        if (debugFlag){
+            this.debugCollisionMessage(bullet, alien);
+        }
         //  When a bullet hits an alien we kill them both
         bullet.kill();
 
@@ -447,7 +453,10 @@ var Game = {
             countstage++;
             stage++;
             stageText.text = stageString + stage;
-        
+            
+            if(debugFlag){
+                console.log("%c STAGE "+stage, 'background: #222; color: #bada55');
+            }
             
         }
     },
@@ -484,6 +493,9 @@ var Game = {
     },
 
     changeItem : function(bullet, object){
+        if(debugFlag){
+            this.debugCollisionMessage(bullet, object);
+        }
         var x_vel = object.body.velocity.x;
         var y_vel = object.body.velocity.y;
         var x = object.x;
@@ -494,6 +506,9 @@ var Game = {
     },
 
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
+        if(debugFlag){
+            this.debugCollisionMessage(bullet, enemyBullet);
+        }
         bullet.kill();
         enemyBullet.kill();
 
@@ -507,6 +522,9 @@ var Game = {
     },
 
     enemyHitsPlayer : function(player, object) {
+        if(debugFlag){
+            this.debugCollisionMessage(player, object);
+        }
         if ((game.time.now < player.invincibleTime) || !aliens.countLiving()) return;
         game.add.audio('sfx_player_hit');
         sfx_player_hit.volume = 0.6;
@@ -544,12 +562,19 @@ var Game = {
             stage++;
             stageText.text = stageString + stage;
 
+            if(debugFlag){
+                console.log("%c STAGE "+stage, 'background: #222; color: #bada55');
+            }
+
         }
         score_2_switch = false;
         score_3_switch = false;
     },
 
     getHeart: function(player, heart) {
+        if(debugFlag){
+            this.debugCollisionMessage(player, heart);
+        }
         heart.kill();
       
         if (live_count < 3){
@@ -560,12 +585,16 @@ var Game = {
     },
 
      getPower_up: function(player, power_up){
+        if(debugFlag){
+            this.debugCollisionMessage(player, power_up);
+        }
         power_up.kill();
         power_up_count++;
         if(power_up_count > 6) power_up_count = 6;
     },
 
     finishGame : function() {
+        
         player.kill();
 
         music.stop();
@@ -610,6 +639,9 @@ var Game = {
     },
   
     getScore_up_2 : function(player, score_up_2){
+        if(debugFlag){
+            this.debugCollisionMessage(player, score_up_2);
+        }
         score_up_2.kill();
         //if(player_speed <340){
             //player_speed += 20;
@@ -619,6 +651,9 @@ var Game = {
     },
 
     getScore_up_3 : function(player, score_up_3){
+        if(debugFlag){
+            this.debugCollisionMessage(player, score_up_3);
+        }
         score_up_3.kill();
         //if(player_speed <340){
             //player_speed += 20;
@@ -628,6 +663,9 @@ var Game = {
     },
 
     getspeed_up : function(player, speed_up){
+        if(debugFlag){
+            this.debugCollisionMessage(player, speed_up);
+        }
         speed_up.kill();
         if(player_speed <340){
             player_speed += 20;
@@ -728,6 +766,67 @@ var Game = {
 
     turnOffMusic : function(){
         music.stop();
-    }
+    },
     
+    debugCollisionMessage : function(object1, object2 = null){
+        
+        if (object1.key.localeCompare("bullet") == 0){
+            if (object2.key.localeCompare("invader") == 0){
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "color:blue",
+                        "color:black",
+                        "color:red",
+                        "color:black");
+            }
+            else if (object2.key.localeCompare("enemyBullet") == 0){
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "color:blue",
+                        "color:black",
+                        "color:purple",
+                        "color:black");
+            }
+            else{
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "color:blue",
+                        "color:black",
+                        "color:green",
+                        "color:black");
+            }
+        }
+        else if (object1.key.localeCompare("ship") == 0){
+            if (object2.key.localeCompare("invader") == 0){
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "background:blue; color:white",
+                        "color:black",
+                        "color:red",
+                        "color:black");
+            }
+            else if (object2.key.localeCompare("enemyBullet") == 0){
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "background:blue; color:white",
+                        "color:black",
+                        "color:purple",
+                        "color:black");
+            }
+            else{
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "background:blue; color:white",
+                        "color:black",
+                        "color:green",
+                        "color:black");
+            }
+        }
+    }    
 }
