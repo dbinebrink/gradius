@@ -41,6 +41,7 @@ var score_2_switch = false;
 var score_up_3;
 var score_3_switch = false;
 var debugFlag = false;
+var bulletsCollision = true;
 var Game = {
 
     preload : function() {
@@ -283,7 +284,9 @@ var Game = {
 
             //  Run collision
             game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
-            game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
+            if (bulletsCollision){
+                game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
+            }
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(bullets, heart, this.changeItem, null, this);
@@ -680,17 +683,22 @@ var Game = {
             this.msgBox.destroy();
         }
 
+        var textStyle = { fontSize: 19 };
+
         var msgBox = game.add.group();
         var back = game.add.sprite(0,0,'settingBack');
         var mainMenu = game.add.text(0, 0, 'MAIN MENU');
         var restartButton1 = game.add.text(0, 0, 'RESTART');
         var resumeButton = game.add.text(0, 0, 'RESUME');
-        var musicOnButton = game.add.text(0,0, 'ON');
-        var musicOffButton = game.add.text(0,0,'OFF');
-        var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic');
-        var dbgMsgText = game.add.text(0, 0, "Debug Message");
-        var dbgMsgOnButton = game.add.text(0,0, 'ON');
-        var dbgMsgOffButton = game.add.text(0,0,'OFF');
+        var musicOnButton = game.add.text(0,0, 'ON', textStyle);
+        var musicOffButton = game.add.text(0,0,'OFF', textStyle);
+        var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic', textStyle);
+        var dbgMsgText = game.add.text(0, 0, "Debug Message", textStyle);
+        var dbgMsgOnButton = game.add.text(0,0, 'ON', textStyle);
+        var dbgMsgOffButton = game.add.text(0,0,'OFF', textStyle);
+        var bulletCollitionText = game.add.text(0, 0, 'Bullets Collision', textStyle);
+        var bulletCollisionOnButton = game.add.text(0,0, 'ON', textStyle);
+        var bulletCollisionOffButton = game.add.text(0,0, 'OFF', textStyle);
 
         msgBox.add(back);
         msgBox.add(mainMenu);
@@ -702,6 +710,9 @@ var Game = {
         msgBox.add(dbgMsgText);
         msgBox.add(dbgMsgOnButton);
         msgBox.add(dbgMsgOffButton);
+        msgBox.add(bulletCollitionText);
+        msgBox.add(bulletCollisionOffButton);
+        msgBox.add(bulletCollisionOnButton);
 
         msgBox.x = game.width / 2 - msgBox.width / 2;
         msgBox.y = game.height / 2 - msgBox.height / 2;
@@ -729,41 +740,60 @@ var Game = {
 
         backgroundMusicText.wordWrapWidth = back * 0.8;
         backgroundMusicText.x = msgBox.width / 2 - backgroundMusicText.width / 2;
-        backgroundMusicText.y = msgBox.y - 30;
+        backgroundMusicText.y = msgBox.y - 40;
         backgroundMusicText.addColor("#ffffff", 0);
 
         musicOnButton.wordWrapWidth = back * 0.8;
         musicOnButton.addColor("#ffffff", 0);
         musicOnButton.x = msgBox.width / 2 - musicOnButton.width - 10;
-        musicOnButton.y = msgBox.y + backgroundMusicText.height - 30;
+        musicOnButton.y = msgBox.y + backgroundMusicText.height - 40;
         musicOnButton.inputEnabled = true;
         musicOnButton.events.onInputDown.add(this.turnOnMusic,this);
 
         musicOffButton.wordWrapWidth = back * 0.8;
         musicOffButton.addColor("#ffffff", 0);
         musicOffButton.x = msgBox.width / 2 + 10;
-        musicOffButton.y = msgBox.y + backgroundMusicText.height - 30;
+        musicOffButton.y = msgBox.y + backgroundMusicText.height - 40;
         musicOffButton.inputEnabled = true;
         musicOffButton.events.onInputDown.add(this.turnOffMusic,this);
 
         dbgMsgText.wordWrapWidth = back * 0.8;
         dbgMsgText.x = msgBox.width / 2 - dbgMsgText.width / 2;
-        dbgMsgText.y = msgBox.y + 35;
+        dbgMsgText.y = msgBox.y + 15;
         dbgMsgText.addColor("#ffffff", 0);
 
         dbgMsgOnButton.wordWrapWidth = back * 0.8;
         dbgMsgOnButton.addColor("#ffffff", 0);
         dbgMsgOnButton.x = msgBox.width / 2 - dbgMsgOnButton.width - 10;
-        dbgMsgOnButton.y = msgBox.y + dbgMsgText.height + 35;
+        dbgMsgOnButton.y = msgBox.y + dbgMsgText.height + 15;
         dbgMsgOnButton.inputEnabled = true;
         dbgMsgOnButton.events.onInputDown.add(this.turnOnDbgMsg,this);
 
         dbgMsgOffButton.wordWrapWidth = back * 0.8;
         dbgMsgOffButton.addColor("#ffffff", 0);
         dbgMsgOffButton.x = msgBox.width / 2 + 10;
-        dbgMsgOffButton.y = msgBox.y + dbgMsgText.height + 35;
+        dbgMsgOffButton.y = msgBox.y + dbgMsgText.height + 15;
         dbgMsgOffButton.inputEnabled = true;
         dbgMsgOffButton.events.onInputDown.add(this.turnOffDbgMsg,this);
+
+        bulletCollitionText.wordWrapWidth = back * 0.8;
+        bulletCollitionText.x = msgBox.width / 2 - bulletCollitionText.width / 2;
+        bulletCollitionText.y = msgBox.y + 70;
+        bulletCollitionText.addColor("#ffffff", 0);
+
+        bulletCollisionOnButton.wordWrapWidth = back * 0.8;
+        bulletCollisionOnButton.addColor("#ffffff", 0);
+        bulletCollisionOnButton.x = msgBox.width / 2 - bulletCollisionOnButton.width - 10;
+        bulletCollisionOnButton.y = msgBox.y + bulletCollitionText.height + 70;
+        bulletCollisionOnButton.inputEnabled = true;
+        bulletCollisionOnButton.events.onInputDown.add(this.turnOnBulletsCollision,this);
+
+        bulletCollisionOffButton.wordWrapWidth = back * 0.8;
+        bulletCollisionOffButton.addColor("#ffffff", 0);
+        bulletCollisionOffButton.x = msgBox.width / 2 + 10;
+        bulletCollisionOffButton.y = msgBox.y + bulletCollitionText.height + 70;
+        bulletCollisionOffButton.inputEnabled = true;
+        bulletCollisionOffButton.events.onInputDown.add(this.turnOffBulletsCollision,this);
 
         this.msgBox = msgBox;
     },
@@ -802,6 +832,16 @@ var Game = {
     turnOffDbgMsg : function(){
         debugFlag = false;
         console.log("debugFlag is now off");
+    },
+
+    turnOnBulletsCollision : function(){
+        bulletsCollision = true;
+        console.log("bulletsCollision is now on");
+    },
+    
+    turnOffBulletsCollision : function(){
+        bulletsCollision = false;
+        console.log("bulletsCollision is now off");
     },
     
     debugCollisionMessage : function(object1, object2){
