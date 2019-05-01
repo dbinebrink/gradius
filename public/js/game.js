@@ -183,7 +183,6 @@ var Game = {
         power_up.enableBody = true;
         power_up.physicsBodyType = Phaser.Physics.ARCADE;
 
-
         //speed_up
         speed_up = game.add.group();
         speed_up.enableBody = true;
@@ -198,7 +197,6 @@ var Game = {
         score_up_3 = game.add.group();
         score_up_3.enableBody = true;
         score_up_3.physicsBodyType = Phaser.Physics.ARCADE;
-
 
         //  An explosion pool
         explosions = game.add.group();
@@ -278,7 +276,7 @@ var Game = {
             }
 
             if (game.time.now > firingTimer) {
-                this.enemyFires();
+                // this.enemyFires();
             }
 
             //  Run collision
@@ -296,15 +294,32 @@ var Game = {
             game.physics.arcade.overlap(player, speed_up, this.getspeed_up, null, this);
             game.physics.arcade.overlap(player, score_up_2, this.getScore_up_2, null, this);
             game.physics.arcade.overlap(player, score_up_3, this.getScore_up_3, null, this);
+
+            
+            if (aliens.countLiving() === 0) {
+                game.add.audio('stage_clear');
+                sfx_stage_clear.volume = 2.0;
+                sfx_stage_clear.play();
+
+                this.createAliens();
+                countstage++;
+                stage++;
+                stageText.text = stageString + stage;
+            }
+            // else { // for debugging
+            //     // console.clear();
+            //     console.log(aliens.getClosestTo({"x":player.x - aliens.x,"y":player.y-30}).children[0].text);
+            // }
         }
     },
 
     createAliens : function() {
-
-        for (var i = 0; i < stage * 3; i++) {
-            var alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
+        let alien;
+        let alienText;
+        for (let i = 0; i < stage * 3; i++) {
+            alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
             while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
-                alien.kill();
+                alien.destroy();
                 alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
             }
             alien.anchor.setTo(0.5, 0.5);
@@ -312,6 +327,9 @@ var Game = {
             alien.play('fly');
             alien.body.moves = false;
             alien.body.setSize(24,32,0,0);
+            alienText = game.make.text(0, -30, i+"번째", { font: "18px Arial", fill: "#ff0044", align: "center" });
+            alienText.anchor.setTo(0.5, 0.5);
+            alien.addChild(alienText);
         }
 
         aliens.x = 600;
@@ -440,19 +458,6 @@ var Game = {
         explosion.reset(alien.body.x, alien.body.y);
         explosion.play('kaboom', 30, false, true);
         /*setTimeout(function() { explosion.kill(); }, 750);*/
-
-        if (aliens.countLiving() === 0) {
-            game.add.audio('stage_clear');
-            sfx_stage_clear.volume = 2.0;
-            sfx_stage_clear.play();
-
-            this.createAliens();
-            countstage++;
-            stage++;
-            stageText.text = stageString + stage;
-        
-            
-        }
     },
 
     makeRandomItem : function(x, y, x_vel = 0, y_vel = 0){
