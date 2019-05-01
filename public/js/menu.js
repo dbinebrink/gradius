@@ -15,8 +15,8 @@ var mainMenu = {
     create : function() {
     	var image = game.add.image(0,0,'Wall_paper');
         game.stage.background = image;
-        game.add.button(game.world.centerX-110,250,'startButton', this.startGame, this);
-        game.add.button(game.world.centerX-110,350,'controls', this.ViewControls, this);
+        game.add.button(game.world.centerX-110,210,'startButton', this.startGame, this);
+        game.add.button(game.world.centerX-110,310,'controls', this.ViewControls, this);
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         music = game.add.audio('start_sound');
         music.play();
