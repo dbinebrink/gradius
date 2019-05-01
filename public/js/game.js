@@ -304,62 +304,64 @@ var Game = {
 
     createAliens : function() {
 
-        for (var i = 0; i < stage * 3; i++) {
-            var alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
+        
+
+        for (var i = 0; i < 3 * stage; i++) {
+            var movepoint_x = Math.random() * 600 + 300;
+            var movepoint_y = Math.random() * 540 + 30;
+            var alien = aliens.create(movepoint_x, movepoint_y, 'invader');
             while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
                 alien.kill();
-                alien = aliens.create(Math.random() * 290, Math.random() * 540, 'invader');
+                movepoint_x = Math.random() * 600 + 300;
+                movepoint_y = Math.random() * 540 + 30;
+                alien = aliens.create(movepoint_x, movepoint_y, 'invader');
             }
             alien.anchor.setTo(0.5, 0.5);
             alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-            alien.play('fly');
+            alien.play('fly'); 
             alien.body.moves = false;
             alien.body.setSize(24,32,0,0);
+
+            var movestyle = Phaser.Easing;
+            var style = Math.random();
+            if (style < 0.2)
+                movestyle = movestyle.Cubic;
+            else if (style < 0.4)
+                movestyle = movestyle.Back;
+            else if (style < 0.6)
+                movestyle = movestyle.Circular;
+            else if (style < 0.8)
+                movestyle = movestyle.Linear;
+            style = Math.random();
+            if (style < 0.33)
+                movestyle = movestyle.In;
+            else if (style < 0.66)
+                movestyle = movestyle.InOut;
+            else
+                movestyle = movestyle.Out;
+            
+            if(movepoint_x < 600)
+                movepoint_x = 700 + Math.random()*200;
+            else
+                movepoint_x = 300 + Math.random()*200;
+            if(movepoint_y < 300)
+                movepoint_y = 350 + Math.random()*190;
+            else
+                movepoint_y = 30 + Math.random()*190;
+
+            var difficulty = stage;
+            if (difficulty > 20)
+                difficulty = 20;
+
+            var tween = game.add.tween(alien).to( { x: movepoint_x }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
+            var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
         }
-
-        aliens.x = 600;
-        aliens.y = 30;
-
 
         //  Alien movements
-        if (stage > 18) {
-            var tween = game.add.tween(aliens).to( { x: 200 }, 1500, Phaser.Easing.Cubic.Out, true, 0, 1000, true);
-            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 1000, true);
-        }
-        else if (stage > 16) {
-            var tween = game.add.tween(aliens).to( { x: 200 }, 1500, Phaser.Easing.Sinusoidal.In, true, 0, 1000, true);
-            var tween = game.add.tween(aliens).to( { y: 50 }, 1000, Phaser.Easing.Sinusoidal.In, true, 0, 1000, true);
-        }
-        else if (stage > 14) {
-            var tween = game.add.tween(aliens).to( { x: 15 }, 2500, Phaser.Easing.Linear.None, true, 0, 1000, true);
-            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-        }
-        else if (stage > 12) {
-            var tween = game.add.tween(aliens).to( { x: 200 }, 1500, Phaser.Easing.Cubic.Out, true, 0, 1000, true);
-            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 1000, true);
-        }
-        else if (stage > 10) {
-            var tween = game.add.tween(aliens).to( { x: 15 }, 2500, Phaser.Easing.Linear.None, true, 0, 1000, true);
-            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-        }
-        else if (stage > 8) {
-            var tween = game.add.tween(aliens).to( { x: 200 }, 2000, Phaser.Easing.Quintic.Out, true, 0, 1000, true);
-            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Quintic.Out, true, 0, 1000, true);
-        }
-        else if (stage > 6) {
-            var tween = game.add.tween(aliens).to( { x: 250 }, 2000, Phaser.Easing.Quintic.Out, true, 0, 1000, true);
-            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Quintic.Out, true, 0, 1000, true);
-        }
-        else if (stage > 4) {
-            var tween = game.add.tween(aliens).to( { x: 200 }, 1500, Phaser.Easing.Linear.None, true, 0, 1000, true);
-            var tween = game.add.tween(aliens).to( { y: 50 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-        }
-        else if (stage > 2) {
-            var tween = game.add.tween(aliens).to( { x: 300 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-        }
-        else {
-            var tween = game.add.tween(aliens).to( { x: 400 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-        }
+
+            
+            //var tween = game.add.tween(aliens).to( { y: 500 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 0, true);
+
 
         //  When the tween loops it calls descend
         tween.onLoop.add(this.descend, this);
@@ -449,6 +451,7 @@ var Game = {
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
         if (aliens.countLiving() === 0) {
+            aliens.removeAll();
             game.add.audio('stage_clear');
             sfx_stage_clear.volume = 2.0;
             sfx_stage_clear.play();
