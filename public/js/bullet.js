@@ -1,6 +1,6 @@
 var Bullets = {
     bulletTypeList : ['bullet', 'laser', 'rocket'],
-    basicParamList : ["damage", "bulletSpeed", "fireRate", "bulletType", "pierceing", "maxBulletCount"],
+    basicParamList : ["damage", "bulletSpeed", "fireRate", "bulletType", "pierceing", "maxBulletCount", "bulletCollision"],
     basicMethodList : ["bulletAnimation", "bulletMovement"],
     activatePositionList : ["beforeFire", "firing", "afterFire", "always", "hitEnemy"],
 
@@ -36,6 +36,7 @@ var Bullets = {
         this.info.fireRate = 0.6;
         this.info.pierceing = 1;
         this.info.maxBulletCount = 100;
+        this.info.bulletsCollision = true;
         this.bulletTime = 0;
         
         this.info.bulletFireSound = game.add.audio('sfx_fire');

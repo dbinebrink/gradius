@@ -18,7 +18,7 @@ class item {
     
     static getAbilityList() {
         return ["damage", "bulletSpeed", "fireRate", "playerSpeed", "evasion", "pierceing",
-        "bulletType", "bulletMovement", "beforeFire", "firing", "afterFire",
+        "bulletType", "bulletMovement", "beforeFire", "firing", "afterFire", "bulletCollision",
         "hitEnemy", "always", "using", "playerImage", "bulletAnimation", "bulletFireSound"];
     }
 

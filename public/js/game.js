@@ -40,7 +40,6 @@ var score_2_switch = false;
 var score_up_3;
 var score_3_switch = false;
 var debugFlag = false;
-var bulletsCollision = true;
 var Game = {
 
     preload : function() {
@@ -279,13 +278,13 @@ var Game = {
             }
 
             if (game.time.now > firingTimer) {
-                // this.enemyFires();
+                this.enemyFires();
             }
 
             //  Run collision
-            game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
-            if (bulletsCollision){
-                game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
+            game.physics.arcade.overlap(Bullets.bulletGroup, aliens, this.collisionHandler, null, this);
+            if (Bullets.info.bulletsCollision){
+                game.physics.arcade.overlap(Bullets.bulletGroup, enemyBullets, this.playerBreakEnemyBullet, null, this);
             }
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
@@ -832,12 +831,12 @@ var Game = {
     },
 
     turnOnBulletsCollision : function(){
-        bulletsCollision = true;
+        Bullets.info.bulletsCollision = true;
         console.log("bulletsCollision is now on");
     },
     
     turnOffBulletsCollision : function(){
-        bulletsCollision = false;
+        Bullets.info.bulletsCollision = false;
         console.log("bulletsCollision is now off");
     },
     
