@@ -514,7 +514,7 @@ var Game = {
         if(debugFlag){
             this.debugCollisionMessage(bullet, enemyBullet);
         }
-        bullet.kill();
+        Bullets.killBullet(bullet);
         enemyBullet.kill();
 
         game.add.audio('sfx_enemy_die');

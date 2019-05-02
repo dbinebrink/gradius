@@ -1,6 +1,6 @@
 var Bullets = {
     bulletTypeList : ['bullet', 'laser', 'rocket'],
-    basicParamList : ["damage", "bulletSpeed", "fireRate", "bulletType", "pierceing", "maxBulletCount", "bulletCollision"],
+    basicParamList : ["damage", "bulletSpeed", "fireRate", "bulletType", "piercing", "maxBulletCount", "bulletCollision"],
     basicMethodList : ["bulletAnimation", "bulletMovement"],
     activatePositionList : ["beforeFire", "firing", "afterFire", "always", "hitEnemy"],
 
@@ -34,7 +34,7 @@ var Bullets = {
         this.info.damage = 1;
         this.info.bulletSpeed = 6;
         this.info.fireRate = 0.6;
-        this.info.pierceing = 1;
+        this.info.piercing = 1;
         this.info.maxBulletCount = 100;
         this.info.bulletsCollision = true;
         this.bulletTime = 0;
@@ -49,23 +49,21 @@ var Bullets = {
             this.info.activatePosition = [];
         }
         
-        this.bulletGroup = this.makeBulletGroup();
+        this.bulletGroup = game.add.group();
+        this.bulletGroup.enableBody = true;
+        this.bulletGroup.physicsBodyType = Phaser.Physics.ARCADE;
+        this.bulletGroup.setAll('anchor.x', 0.5);
+        this.bulletGroup.setAll('anchor.y', 1);
+        this.bulletGroup.setAll('outOfBoundsKill', true);
+        this.bulletGroup.setAll('checkWorldBounds', true);
+        this.setBulletGroup();
     },
     
-    makeBulletGroup : function(){
-        var bulletGroup = game.add.group();
-        bulletGroup.enableBody = true;
-        bulletGroup.physicsBodyType = Phaser.Physics.ARCADE;
-        bulletGroup.createMultiple(this.info.maxBulletCount, this.info.bulletType, 100);
-        bulletGroup.setAll('anchor.x', 0.5);
-        bulletGroup.setAll('anchor.y', 1);
-        bulletGroup.setAll('outOfBoundsKill', true);
-        bulletGroup.setAll('checkWorldBounds', true);
-        if( this.info.pierceing != -1 ){
-            bulletGroup.setAll('health', this.info.pierceing);
-        }
-
-        return bulletGroup;
+    setBulletGroup : function(){
+        this.bulletGroup.removeAll(true, true, false);
+        this.bulletGroup.createMultiple(this.info.maxBulletCount, this.info.bulletType, 100);
+        Bullets.bulletGroup.forEach((x, y) => {x.piercing = y;}, this, false, this.info.piercing);
+        return this.bulletGroup;
     },
 
     addItem : function(getItem){
@@ -82,15 +80,14 @@ var Bullets = {
                     this.info[key].push(value[i]);
                 } 
             }
-            console.log(this.info[key]);
+            // console.log(this.info[key]);
         }
         
-        this.bulletGroup = this.makeBulletGroup();
+        this.setBulletGroup();
     },
 
     fire : function(player, currentTime){
         if (currentTime > this.bulletTime) {
-            console.log("relly fire");
             bullet = this.bulletGroup.getFirstExists(false);
             
             if (bullet) {
@@ -119,9 +116,10 @@ var Bullets = {
     },
 
     killBullet : function(bullet){
-        if(this.info.pierceing != -1){
-            bullet.health--;
-            if(bullet.health == 0){
+        if(bullet.piercing != -1){
+            bullet.piercing--;
+            if(bullet.piercing == 0){
+                bullet.piercing = this.info.piercing;
                 bullet.kill();
             }
         }

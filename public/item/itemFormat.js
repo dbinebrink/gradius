@@ -17,7 +17,7 @@ class item {
     }
     
     static getAbilityList() {
-        return ["damage", "bulletSpeed", "fireRate", "playerSpeed", "evasion", "pierceing",
+        return ["damage", "bulletSpeed", "fireRate", "playerSpeed", "evasion", "piercing",
         "bulletType", "bulletMovement", "beforeFire", "firing", "afterFire", "bulletCollision",
         "hitEnemy", "always", "using", "playerImage", "bulletAnimation", "bulletFireSound"];
     }
@@ -36,7 +36,7 @@ var laser_item = new item("laser", "uncommon");
 laser_item.addAbility("damage", x => x+3);
 laser_item.addAbility("fireRate", x => x*3);
 laser_item.addAbility("bulletType", x => "laser");
-laser_item.addAbility("pierceing", x => -1);
+laser_item.addAbility("piercing", x => -1);
 laser_item.addAbility("bulletMovement", (object) => {
     return {
         x : player.body.velocity.x,
@@ -49,7 +49,7 @@ laser_item.addAbility("bulletAnimation", object => {
 });
 
 var pierce_item = new item("pierce", "common");
-pierce_item.addAbility("pierceing", x => x+1);
+pierce_item.addAbility("piercing", x => x+1);
 
 var tracking_item = new item("tracking", "common");
 // tracking_item.addAbility("bulletSpeed", x => x)
