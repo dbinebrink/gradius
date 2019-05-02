@@ -44,6 +44,7 @@ var score_up_3;
 var score_3_switch = false;
 var debugFlag = false;
 var bulletsCollision = true;
+var music_status;
 var Game = {
 
     preload : function() {
@@ -93,13 +94,12 @@ var Game = {
         player_speed = 200;
         stageString = '';
         power_up_count = 1;
-
+        music_status = 'ON';
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         music = game.add.audio('music1');
         music.volume = 0.4;
         music.play();
-
 
         //  Here we set-up our audio sprites
         sfx_fire = game.add.audio('sfx_fire');
@@ -163,7 +163,8 @@ var Game = {
         stageText = game.add.text(70, 10, stageString + stage, { font: '40px Arial', fill: '#fff' });
         // this.generatespeed_up();
         this.createAliens();
-
+        musicString = 'BGM: ';
+        musicText = game.add.text(70,50,musicString + music_status,{ font: '30px Arial', fill: '#fff' });
         //  The score
         scoreString = 'Score: ';
         scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
@@ -958,10 +959,14 @@ var Game = {
 
     turnOnMusic : function(){
         music.play();
+        music_status = 'ON';
+        musicText.text = musicString + music_status;
     },
 
     turnOffMusic : function(){
         music.stop();
+        music_status = 'OFF';
+        musicText.text = musicString + music_status;
     },
 
     turnOnDbgMsg : function(){
