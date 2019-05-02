@@ -44,6 +44,7 @@ var score_up_3;
 var score_3_switch = false;
 var debugFlag = false;
 var bulletsCollision = true;
+var music_status;
 var Game = {
 
     preload : function() {
@@ -52,7 +53,9 @@ var Game = {
         game.load.image('speed_up', 'img/speed_up.png');
         game.load.image('bullet', 'img/bullet.png');
         game.load.image('enemyBullet', 'img/enemy-bullet.png');
-        game.load.spritesheet('invader', 'img/invader32x32x4.png', 32, 32);
+        game.load.spritesheet('invaderBasic', 'img/invader32x32x4.png', 32, 32);
+        game.load.spritesheet('invaderGreen', 'img/invader32x32x4-green.png', 32, 32);
+        game.load.spritesheet('invaderPurple', 'img/invader32x32x4-purple.png', 32, 32);
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         game.load.image('starfield', 'img/starfield.png');
@@ -91,13 +94,12 @@ var Game = {
         player_speed = 200;
         stageString = '';
         power_up_count = 1;
-
+        music_status = 'ON';
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         music = game.add.audio('music1');
         music.volume = 0.4;
         music.play();
-
 
         //  Here we set-up our audio sprites
         sfx_fire = game.add.audio('sfx_fire');
@@ -161,7 +163,8 @@ var Game = {
         stageText = game.add.text(70, 10, stageString + stage, { font: '40px Arial', fill: '#fff' });
         // this.generatespeed_up();
         this.createAliens();
-
+        musicString = 'BGM: ';
+        musicText = game.add.text(70,50,musicString + music_status,{ font: '30px Arial', fill: '#fff' });
         //  The score
         scoreString = 'Score: ';
         scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
@@ -323,16 +326,40 @@ var Game = {
    
 
     createAliens : function() {
+        let alienImage;
+        let alienHealth;
+        let alienSizeMultiple;
+        let specialEnemyPer = Math.random()*50;
+        if(specialEnemyPer < stage/10){
+            alienImage = 'invaderPurple';
+            alienHealth = 3;
+            alienSizeMultiple = 2;
+        }
+        else if(specialEnemyPer < stage/3){
+            alienImage = 'invaderGreen';
+            alienHealth = 2;
+            alienSizeMultiple = 1.5;
+        }
+        else{
+            alienImage = 'invaderBasic';
+            alienHealth = 1;
+            alienSizeMultiple = 1;
+        }
+
         ailencreatetimer = game.time.now + 500 + 1000*Math.random();
         ailencreatecount++;
         var movepoint_x = 930;
         var movepoint_y = Math.random() * 540 + 30;
-        var alien = aliens.create(movepoint_x, movepoint_y, 'invader');
+        var alien = aliens.create(movepoint_x, movepoint_y, alienImage);
         while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
             alien.kill();
             movepoint_y = Math.random() * 540 + 30;
-            alien = aliens.create(movepoint_x, movepoint_y, 'invader');
+            alien = aliens.create(movepoint_x, movepoint_y, alienImage);
         }
+        alien.maxHealth = alienHealth;
+        alien.setHealth(alienHealth);
+        alien.scale.set(alienSizeMultiple);
+
         alien.anchor.setTo(0.5, 0.5);
         alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
         alien.play('fly'); 
@@ -441,9 +468,9 @@ var Game = {
         bullet.kill();
 
         if(Math.random() * 1000 < 20) {
-            this.makeRandomItem(alien.body.x, alien.body.y, -200, (Math.random()*2-1)*200 );
+            this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 );
         }
-        alien.kill();
+        alien.damage(1);
 
         game.add.audio('sfx_enemy_die');
         sfx_enemy_die.volume = 0.6;
@@ -469,7 +496,7 @@ var Game = {
         explosion.play('kaboom', 30, false, true);
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
-        if (aliens.countLiving() === 0) {
+        if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
             aliens.removeAll();
             game.add.audio('stage_clear');
             sfx_stage_clear.volume = 2.0;
@@ -902,12 +929,15 @@ var Game = {
             }, 2000);
         setTimeout(function(){game.paused = false;}, 3000);
     },
+    hideBox1 : function(){
+        this.msgBox1.destroy();
+    },
     real : function(){
         //this.msgBox.destroy();
         textStyle = { fontSize: 19 };
         var msgBox1 = game.add.group();
         var back1 = game.add.sprite(300,200,'settingBack1');
-        var real_exit = game.add.text(325,250,'정말 메인메뉴로 나가시겠습니까?',textStyle);
+        var real_exit = game.add.text(310,250,'Do you want to go main menu?',textStyle);
         var yes = game.add.text(370,310,'yes',textStyle);
         var no = game.add.text(500,310,'no',textStyle);
         msgBox1.add(back1);
@@ -923,16 +953,20 @@ var Game = {
         no.inputEnabled = true;
         yes.inputEnabled = true;
         yes.events.onInputDown.add(this.goMenu,this);
-        no.events.onInputDown.add(this.showSettingMessageBox,this);        
-        //this.msgBox1 = msgBox1;
+        no.events.onInputDown.add(this.hideBox1,this);        
+        this.msgBox1 = msgBox1;
     },
 
     turnOnMusic : function(){
         music.play();
+        music_status = 'ON';
+        musicText.text = musicString + music_status;
     },
 
     turnOffMusic : function(){
         music.stop();
+        music_status = 'OFF';
+        musicText.text = musicString + music_status;
     },
 
     turnOnDbgMsg : function(){
