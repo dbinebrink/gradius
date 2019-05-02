@@ -1,24 +1,12 @@
 var Bullets = {
     bulletTypeList : ['bullet', 'laser', 'rocket'],
-    basicParamList : ["damage", "bulletSpeed", "fireRate", "bulletType", "pierceing", "maxBulletCount", "bulletCollision"],
-    basicMethodList : ["bulletAnimation", "bulletMovement"],
+    basicParamList : [
+        "damage", "bulletSpeed", "fireRate", "bulletType", "piercing", "fireAtOnce",
+        "maxBulletCount", "bulletCollision"],
+    basicMethodList : ["bulletAnimation", "bulletMovement", "bulletInitialVel", "bulletInitialPos"],
     activatePositionList : ["beforeFire", "firing", "afterFire", "always", "hitEnemy"],
 
     info : {
-        // "damage" : 1,
-        // "bulletSpeed" : 5,
-        // "fireRate" : 0.6,
-        // "bulletType" : 'bullet',
-        // "bulletFireSound" : game.add.audio('sfx_fire'),
-        
-        "bulletAnimation" : null,
-        "bulletMovement" : function(x, y){
-            return {
-                "x" : x,
-                "y" : 0
-            }
-        },  
-
         /*
         if collect item, item's ability function is stored in this list
         and activate function when it's position
@@ -30,14 +18,18 @@ var Bullets = {
     },
     
     initalize : function( game ){
+        this.bulletTime = 0;
+
         this.info.bulletType = 'bullet';
         this.info.damage = 1;
-        this.info.bulletSpeed = 5;
         this.info.fireRate = 0.6;
-        this.info.pierceing = 1;
+        this.info.piercing = 1;
         this.info.maxBulletCount = 100;
         this.info.bulletsCollision = true;
-        this.bulletTime = 0;
+        this.info.bulletSpeed = 6;
+        this.info.fireAtOnce = 1;
+        this.info.bulletInitialVel = function(object){ return {x : object.info.bulletSpeed*100, y : 0}; };
+        this.info.bulletInitialPos = function(){ return {x : 20, y : 0}; };
         
         this.info.bulletFireSound = game.add.audio('sfx_fire');
         this.info.bulletFireSound.volume = 0.2;
@@ -49,21 +41,21 @@ var Bullets = {
             this.info.activatePosition = [];
         }
         
-        this.bulletGroup = this.makeBulletGroup();
+        this.bulletGroup = game.add.group();
+        this.bulletGroup.enableBody = true;
+        this.bulletGroup.physicsBodyType = Phaser.Physics.ARCADE;
+        this.setBulletGroup();
     },
     
-    makeBulletGroup : function(){
-        var bulletGroup = game.add.group();
-        bulletGroup.enableBody = true;
-        bulletGroup.physicsBodyType = Phaser.Physics.ARCADE;
-        bulletGroup.createMultiple(this.info.maxBulletCount, this.info.bulletType, 100);
-        bulletGroup.setAll('anchor.x', 0.5);
-        bulletGroup.setAll('anchor.y', 1);
-        bulletGroup.setAll('outOfBoundsKill', true);
-        bulletGroup.setAll('checkWorldBounds', true);
-        if( this.info.pierceing != -1 ) bulletGroup.setAll('health', this.info.pierceing);
-
-        return bulletGroup;
+    setBulletGroup : function(){
+        this.bulletGroup.removeAll(true, true, false);
+        this.bulletGroup.createMultiple(this.info.maxBulletCount, this.info.bulletType, 100);
+        this.bulletGroup.setAll('anchor.x', 0.5);
+        this.bulletGroup.setAll('anchor.y', 1);
+        this.bulletGroup.setAll('outOfBoundsKill', true);
+        this.bulletGroup.setAll('checkWorldBounds', true);
+        Bullets.bulletGroup.forEach((x, y) => {x.piercing = y;}, this, false, this.info.piercing);
+        return this.bulletGroup;
     },
 
     addItem : function(getItem){
@@ -80,53 +72,56 @@ var Bullets = {
                     this.info[key].push(value[i]);
                 } 
             }
-            console.log(this.info[key]);
+            // console.log(this.info[key]);
         }
         
-        this.bulletGroup = game.add.group();
-        this.bulletGroup.enableBody = true;
-        this.bulletGroup.physicsBodyType = Phaser.Physics.ARCADE;
-        this.bulletGroup.createMultiple(100, this.info.bulletType, 100, false);
-        this.bulletGroup.setAll('anchor.x', 0.5);
-        this.bulletGroup.setAll('anchor.y', 1);
-        this.bulletGroup.setAll('outOfBoundsKill', true);
-        this.bulletGroup.setAll('checkWorldBounds', true);
+        this.setBulletGroup();
     },
 
     fire : function(player, currentTime){
         if (currentTime > this.bulletTime) {
-            console.log("relly fire");
-            bullet = this.bulletGroup.getFirstExists(false);
-            
-            if (bullet) {
-                this.info.bulletFireSound.play();
-                bullet.reset(player.x+20, player.y);
-                bullet.anchor.setTo(0, 0.5);
+            for(let i = 0; i < this.info.fireAtOnce; i++){
+                bullet = this.bulletGroup.getFirstExists(false);
                 
-                if(this.info.bulletAnimation != null){
-                    var animationName = this.info.bulletAnimation(bullet);
-                    bullet.play(animationName, 120, false, true);
-                }
-
-                //  And fire it
-                bullet.body.velocity.x = this.info.bulletSpeed*100;
-                bullet.body.velocity.y = 0;
-                var BM = this.info.bulletMovement;
-                bullet.update = function(){
-                    var velocity = BM(this);
+                if (bullet) {
+                    this.info.bulletFireSound.play();
+                    let initPos = this.info.bulletInitialPos(i);
+                    bullet.reset(
+                        player.x + initPos.x,
+                        player.y + initPos.y
+                    );
+                    bullet.anchor.setTo(0, 0.5);
                     
-                    this.body.velocity.x = velocity.x;
-                    this.body.velocity.y = velocity.y;
+                    if(this.info.bulletAnimation != null){
+                        var animationName = this.info.bulletAnimation(bullet);
+                        bullet.play(animationName, 120, false, true);
+                    }
+    
+                    //  And fire it
+                    let initVel = this.info.bulletInitialVel(Bullets);
+
+                    bullet.body.velocity.x = initVel.x
+                    bullet.body.velocity.y = initVel.y;
+                    var BM = this.info.bulletMovement;
+                    bullet.update = function(){
+                        var velocity = BM(this);
+                        
+                        this.body.velocity.x = velocity.x;
+                        this.body.velocity.y = velocity.y;
+                    }
+                    this.bulletTime = currentTime + this.info.fireRate*1000;
                 }
-                this.bulletTime = currentTime + this.info.fireRate*1000;
             }
         }
     },
 
     killBullet : function(bullet){
-        if(this.info.pierceing != -1){
-            bullet.health--;
-            if(bullet.health == 0) bullet.kill();
+        if(bullet.piercing > 0){
+            bullet.piercing--;
+            if(bullet.piercing == 0){
+                bullet.piercing = this.info.piercing;
+                bullet.kill();
+            }
         }
     }
 }

@@ -17,9 +17,14 @@ class item {
     }
     
     static getAbilityList() {
-        return ["damage", "bulletSpeed", "fireRate", "playerSpeed", "evasion", "pierceing",
-        "bulletType", "bulletMovement", "beforeFire", "firing", "afterFire", "bulletCollision",
-        "hitEnemy", "always", "using", "playerImage", "bulletAnimation", "bulletFireSound"];
+        return [
+            "damage", "bulletSpeed", "fireRate", "playerSpeed", "fireAtOnce",
+            "evasion", "piercing", "bulletInitialVel", "bulletInitialPos",
+            "bulletType", "bulletMovement", "beforeFire",
+            "firing", "afterFire", "bulletCollision",
+            "hitEnemy", "always", "using", "playerImage",
+            "bulletAnimation", "bulletFireSound"
+        ];
     }
 
     addAbility(type, value) {
@@ -36,41 +41,65 @@ var laser_item = new item("laser", "uncommon");
 laser_item.addAbility("damage", x => x+3);
 laser_item.addAbility("fireRate", x => x*3);
 laser_item.addAbility("bulletType", x => "laser");
-laser_item.addAbility("pierceing", x => -1);
-laser_item.addAbility("bulletMovement", (object) => {
+laser_item.addAbility("piercing", x => 0);
+laser_item.addAbility("bulletMovement", (obj) => {
     return {
-        x : player.body.velocity.x,
-        y : player.body.velocity.y
+        "x" : player.body.velocity.x,
+        "y" : player.body.velocity.y
     }
 });
-laser_item.addAbility("bulletAnimation", object => {
-    object.animations.add('shootBeam', [0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4]);
+laser_item.addAbility("bulletAnimation", obj => {
+    obj.animations.add('shootBeam', [0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4]);
     return 'shootBeam';
 });
 
+// make pierce item
 var pierce_item = new item("pierce", "common");
-pierce_item.addAbility("pierceing", x => x+1);
+pierce_item.addAbility("piercing", x => {
+    if(x > 0) return x+1;
+    else return x;
+});
 
-var tracking_item = new item("tracking", "common");
+// make bullet tracking item
+var tracking_item = new item("tracking", "uncommon");
 // tracking_item.addAbility("bulletSpeed", x => x)
-tracking_item.addAbility("bulletMovement", (object) => {
-    let enemy = aliens.getClosestTo({x:object.x - aliens.x,y:object.y-30});
+tracking_item.addAbility("bulletMovement", (obj) => {
+    let enemy = aliens.getClosestTo({x:obj.x - aliens.x,y:obj.y-30});
     // console.log(this.Bullets.info.bulletSpeed);
     let trackingPerformance = 0.03;
-    let x = object.body.velocity.x+(enemy.body.x-object.x)*trackingPerformance;
-    let y = object.body.velocity.y+(enemy.body.y-object.y)*trackingPerformance;
+    let x = obj.body.velocity.x+(enemy.body.x-obj.x)*trackingPerformance;
+    let y = obj.body.velocity.y+(enemy.body.y-obj.y)*trackingPerformance;
 
     let currentBulletSpeed = Math.sqrt( Math.pow(x,2)+Math.pow(y,2) );
-    let expectedBulletSpeed = this.Bullets.info.bulletSpeed*100;
+    let expectedBulletSpeed = Bullets.info.bulletSpeed*100;
     if ( currentBulletSpeed > expectedBulletSpeed ){
         let reduceAmount = expectedBulletSpeed/currentBulletSpeed;
         x = x*reduceAmount;
         y = y*reduceAmount;
     }
+
+    if(x == 0){
+        if(y > 0) obj.rotation = Math.PI/2;
+        else obj.rotation = -Math.PI/2;
+    }
+    else obj.rotation = Math.atan(y/x);
+
     return {
-        x : x, 
-        y : y
+        "x" : x, 
+        "y" : y
     }
 });
-// var missile_item = new item("missile", "uncommon");
+
+// make double bullet fire item
+var addBullet_item = new item("addBullet", "common");
+addBullet_item.addAbility("fireAtOnce", x => x+1);
+addBullet_item.addAbility("bulletInitialPos", (sequence) => {
+    // console.log(Bullets.info);
+    return{
+        "x" : 20,
+        "y" : (sequence - (Bullets.info.fireAtOnce-1)/2)*20
+    };
+});
+
+var Shotgun_item = new item("Shotgun", "uncommon");
 
