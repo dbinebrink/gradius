@@ -809,7 +809,7 @@ var Game = {
     },
     startGame : function() {
         //this.Game.destroy();
-        this.msgBox.destroy();
+        //this.msgBox.destroy();
         game.paused = false;
         music.stop();
         game.state.start('Game');

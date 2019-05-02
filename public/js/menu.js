@@ -15,10 +15,10 @@ var mainMenu = {
 
     create : function() {
     	var image = game.add.image(0,0,'Wall_paper');
-      var image1 = game.add.image(30,0,'gradius');
+      var image1 = game.add.image(30,20,'gradius');
         game.stage.background = image;
-        game.add.button(game.world.centerX-110,270,'startButton', this.startGame, this);
-        game.add.button(game.world.centerX-110,360,'controls', this.ViewControls, this);
+        game.add.button(game.world.centerX-220,280,'startButton', this.startGame, this);
+        game.add.button(game.world.centerX+20,280,'controls', this.ViewControls, this);
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         music = game.add.audio('start_sound');
         music.play();
