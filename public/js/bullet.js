@@ -3,7 +3,7 @@ var Bullets = {
     basicParamList : [
         "damage", "bulletSpeed", "fireRate", "bulletType", "piercing", "fireAtOnce",
         "maxBulletCount", "bulletCollision", 'outOfBoundsKill', 'checkWorldBounds'],
-    basicMethodList : ["bulletAnimation", "bulletMovement", "bulletInitialVel", "bulletInitialPos"],
+    basicMethodList : ["bulletAnimation"],
     activatePositionList : ["beforeFire", "firing", "afterFire", "always", "hitEnemy"],
 
     info : {
