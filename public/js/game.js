@@ -910,7 +910,7 @@ var Game = {
         textStyle = { fontSize: 19 };
         var msgBox1 = game.add.group();
         var back1 = game.add.sprite(300,200,'settingBack1');
-        var real_exit = game.add.text(325,250,'정말 메인메뉴로 나가시겠습니까?',textStyle);
+        var real_exit = game.add.text(310,250,'Do you want to go main menu?',textStyle);
         var yes = game.add.text(370,310,'yes',textStyle);
         var no = game.add.text(500,310,'no',textStyle);
         msgBox1.add(back1);
