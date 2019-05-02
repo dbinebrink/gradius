@@ -495,7 +495,7 @@ var Game = {
         explosion.play('kaboom', 30, false, true);
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
-        if (aliens.countLiving() === 0) {
+        if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
             aliens.removeAll();
             game.add.audio('stage_clear');
             sfx_stage_clear.volume = 2.0;
@@ -928,12 +928,15 @@ var Game = {
             }, 2000);
         setTimeout(function(){game.paused = false;}, 3000);
     },
+    hideBox1 : function(){
+        this.msgBox1.destroy();
+    },
     real : function(){
         //this.msgBox.destroy();
         textStyle = { fontSize: 19 };
         var msgBox1 = game.add.group();
         var back1 = game.add.sprite(300,200,'settingBack1');
-        var real_exit = game.add.text(325,250,'정말 메인메뉴로 나가시겠습니까?',textStyle);
+        var real_exit = game.add.text(310,250,'Do you want to go main menu?',textStyle);
         var yes = game.add.text(370,310,'yes',textStyle);
         var no = game.add.text(500,310,'no',textStyle);
         msgBox1.add(back1);
@@ -949,8 +952,8 @@ var Game = {
         no.inputEnabled = true;
         yes.inputEnabled = true;
         yes.events.onInputDown.add(this.goMenu,this);
-        no.events.onInputDown.add(this.showSettingMessageBox,this);        
-        //this.msgBox1 = msgBox1;
+        no.events.onInputDown.add(this.hideBox1,this);        
+        this.msgBox1 = msgBox1;
     },
 
     turnOnMusic : function(){
