@@ -303,6 +303,8 @@ var Game = {
                 this.enemyFires();
             }
 
+            
+
             //  Run collision
             game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
             if (bulletsCollision){
@@ -772,22 +774,20 @@ var Game = {
             this.msgBox.destroy();
         }
 
-        var textStyle = { fontSize: 19 };
-
         var msgBox = game.add.group();
         var back = game.add.sprite(0,0,'settingBack');
         var mainMenu = game.add.text(0, 0, 'MAIN MENU');
         var restartButton1 = game.add.text(0, 0, 'RESTART');
         var resumeButton = game.add.text(0, 0, 'RESUME');
-        var musicOnButton = game.add.text(0,0, 'ON', textStyle);
-        var musicOffButton = game.add.text(0,0,'OFF', textStyle);
-        var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic', textStyle);
-        var dbgMsgText = game.add.text(0, 0, "Debug Message", textStyle);
-        var dbgMsgOnButton = game.add.text(0,0, 'ON', textStyle);
-        var dbgMsgOffButton = game.add.text(0,0,'OFF', textStyle);
-        var bulletCollitionText = game.add.text(0, 0, 'Bullets Collision', textStyle);
-        var bulletCollisionOnButton = game.add.text(0,0, 'ON', textStyle);
-        var bulletCollisionOffButton = game.add.text(0,0, 'OFF', textStyle);
+        var musicOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
+        var musicOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
+        var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic', { fontSize: 19 });
+        var dbgMsgText = game.add.text(0, 0, "Debug Message", { fontSize: 19 });
+        var dbgMsgOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
+        var dbgMsgOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
+        var bulletCollitionText = game.add.text(0, 0, 'Bullets Collision', { fontSize: 19 });
+        var bulletCollisionOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
+        var bulletCollisionOffButton = game.add.text(0,0, 'OFF', { fontSize: 19 });
 
 
         msgBox.add(back);
@@ -887,11 +887,6 @@ var Game = {
         bulletCollisionOffButton.events.onInputDown.add(this.turnOffBulletsCollision,this);
 
         this.msgBox = msgBox;
-
-        
-
-
-
     },
 
     goMenu : function() {
@@ -934,12 +929,11 @@ var Game = {
     },
     real : function(){
         //this.msgBox.destroy();
-        textStyle = { fontSize: 19 };
         var msgBox1 = game.add.group();
         var back1 = game.add.sprite(300,200,'settingBack1');
-        var real_exit = game.add.text(310,250,'Do you want to go main menu?',textStyle);
-        var yes = game.add.text(370,310,'yes',textStyle);
-        var no = game.add.text(500,310,'no',textStyle);
+        var real_exit = game.add.text(310,250,'Do you want to go main menu?',{ fontSize: 19 });
+        var yes = game.add.text(370,310,'yes',{ fontSize: 19 });
+        var no = game.add.text(500,310,'no',{ fontSize: 19 });
         msgBox1.add(back1);
         msgBox1.add(real_exit);
         msgBox1.add(yes);
@@ -991,63 +985,42 @@ var Game = {
     
     debugCollisionMessage : function(object1, object2){
         
+        var object1Color, object2Color;
+
         if (object1.key.localeCompare("bullet") == 0){
             if (object2.key.localeCompare("invader") == 0){
-                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
-                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
-                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
-                        "color:blue",
-                        "color:black",
-                        "color:red",
-                        "color:black");
+                object1Color = "color:blue";
+                object2Color = "color:red";
             }
             else if (object2.key.localeCompare("enemyBullet") == 0){
-                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
-                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
-                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
-                        "color:blue",
-                        "color:black",
-                        "color:purple",
-                        "color:black");
+                object1Color = "color:blue";
+                object2Color = "color:purple";
             }
             else{
-                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
-                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
-                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
-                        "color:blue",
-                        "color:black",
-                        "color:green",
-                        "color:black");
+                object1Color = "color:blue";
+                object2Color = "color:green";
             }
         }
         else if (object1.key.localeCompare("ship") == 0){
             if (object2.key.localeCompare("invader") == 0){
-                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
-                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
-                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
-                        "background:blue; color:white",
-                        "color:black",
-                        "color:red",
-                        "color:black");
+                object1Color = "background:blue; color:white";
+                object2Color = "color:red";
             }
             else if (object2.key.localeCompare("enemyBullet") == 0){
-                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
-                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
-                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
-                        "background:blue; color:white",
-                        "color:black",
-                        "color:purple",
-                        "color:black");
+                object1Color = "background:blue; color:white";
+                object2Color = "color:purple";
             }
             else{
-                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
-                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
-                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
-                        "background:blue; color:white",
-                        "color:black",
-                        "color:green",
-                        "color:black");
+                object1Color = "background:blue; color:white";
+                object2Color = "color:green";
             }
         }
+        console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        object1Color,
+                        "color:black",
+                        object2Color,
+                        "color:black");
     }    
 }
