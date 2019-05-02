@@ -15,6 +15,8 @@ var live_count;
 var max_live = 3;
 var enemyBullet;
 var firingTimer = 0;
+var ailencreatetimer;
+var ailencreatecount = 0;
 var livingEnemies = [];
 var music;
 var sfx_fire;
@@ -271,6 +273,9 @@ var Game = {
                 player.frame = 2;
             }
 
+            if(game.time.now > ailencreatetimer && ailencreatecount < 10*stage)
+                this.createAliens();
+
             //  Firing?
             if (fireButton.isDown) {
                 // this.fireBullet();
@@ -318,67 +323,66 @@ var Game = {
     },
 
     createAliens : function() {
-
-        
-
-        for (var i = 0; i < 3 * stage; i++) {
-            var movepoint_x = Math.random() * 600 + 300;
-            var movepoint_y = Math.random() * 540 + 30;
-            var alien = aliens.create(movepoint_x, movepoint_y, 'invader');
-            while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
-                alien.kill();
-                movepoint_x = Math.random() * 600 + 300;
-                movepoint_y = Math.random() * 540 + 30;
-                alien = aliens.create(movepoint_x, movepoint_y, 'invader');
-            }
-            alien.anchor.setTo(0.5, 0.5);
-            alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-            alien.play('fly'); 
-            alien.body.moves = false;
-            alien.body.setSize(24,32,0,0);
-
-            var movestyle = Phaser.Easing;
-            var style = Math.random();
-            if (style < 0.2)
-                movestyle = movestyle.Cubic;
-            else if (style < 0.4)
-                movestyle = movestyle.Back;
-            else if (style < 0.6)
-                movestyle = movestyle.Circular;
-            else if (style < 0.8)
-                movestyle = movestyle.Linear;
-            style = Math.random();
-            if (style < 0.33)
-                movestyle = movestyle.In;
-            else if (style < 0.66)
-                movestyle = movestyle.InOut;
-            else
-                movestyle = movestyle.Out;
-            
-            if(movepoint_x < 600)
-                movepoint_x = 700 + Math.random()*200;
-            else
-                movepoint_x = 300 + Math.random()*200;
-            if(movepoint_y < 300)
-                movepoint_y = 350 + Math.random()*190;
-            else
-                movepoint_y = 30 + Math.random()*190;
-
-            var difficulty = stage;
-            if (difficulty > 20)
-                difficulty = 20;
-
-            var tween = game.add.tween(alien).to( { x: movepoint_x }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
-            var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
+        ailencreatetimer = game.time.now + 500 + 1000*Math.random();
+        ailencreatecount++;
+        var movepoint_x = 930;
+        var movepoint_y = Math.random() * 540 + 30;
+        var alien = aliens.create(movepoint_x, movepoint_y, 'invader');
+        while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
+            alien.kill();
+            movepoint_y = Math.random() * 540 + 30;
+            alien = aliens.create(movepoint_x, movepoint_y, 'invader');
         }
+        alien.anchor.setTo(0.5, 0.5);
+        alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
+        alien.play('fly'); 
+        alien.body.moves = false;
+        alien.body.setSize(24,32,0,0);
+
+        var movestyle = Phaser.Easing;
+        var style = Math.random();
+        if (style < 0.2)
+            movestyle = movestyle.Cubic;
+        else if (style < 0.4)
+            movestyle = movestyle.Back;
+        else if (style < 0.6)
+            movestyle = movestyle.Circular;
+        else if (style < 0.8)
+            movestyle = movestyle.Linear;
+        style = Math.random();
+        if (style < 0.33)
+            movestyle = movestyle.In;
+        else if (style < 0.66)
+            movestyle = movestyle.InOut;
+        else
+            movestyle = movestyle.Out;
+        
+        if(movepoint_x < 600)
+            movepoint_x = 700 + Math.random()*200;
+        else
+            movepoint_x = 300 + Math.random()*200;
+        if(movepoint_y < 300)
+            movepoint_y = 600 - Math.random()*220;
+        else
+            movepoint_y = Math.random()*220;
+
+        var difficulty = stage;
+        if (difficulty > 20)
+            difficulty = 20;
+
+        //game.physics.arcade.moveToObject(enemyBullet,{x : alien.body.x, y : -100},100 + 20 * countstage);
+        
+        var tween = game.add.tween(alien).to( { x: -30}, 10000, movestyle, true, 0, 20000, false);
+        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
+        
 
         //  Alien movements
 
             
-            //var tween = game.add.tween(aliens).to( { y: 500 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 0, true);
+        // var tween = game.add.tween(aliens).to( { y: 500 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 0, true);
 
 
-        //  When the tween loops it calls descend
+        // When the tween loops it calls descend
         tween.onLoop.add(this.descend, this);
 
     },
@@ -398,36 +402,6 @@ var Game = {
         // game.debug.spriteInfo(player);
         // game.debug.body(aliens.getFirstAlive());
     },
-
-    // fireBullet : function() {
-    //     game.add.audio('sfx_fire');
-    //     sfx_fire.volume = 0.2;
-
-    //     //  To avoid them being allowed to fire too fast we set a time limit
-    //     if (game.time.now > bulletTime) {
-
-    //         //  Grab the first bullet we can from the pool
-    //         for(var n = power_up_count; n > 0; n--){
-    //             bullet = bullets.getFirstExists(false);
-                
-    //             if (bullet) {
-    //                 sfx_fire.play();
-    //                 bullet.reset(player.x+30, player.y);
-    //                 bullet.anchor.setTo(0, 0.5);
-    //                 bullet.update = function(){
-    //                     this.body.velocity.x = player.body.velocity.x;
-    //                     this.body.velocity.y = player.body.velocity.y;
-    //                 };
-    //                 bullet.animations.add('shootBeam', [0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4]);
-    //                 bullet.play('shootBeam', 120, false, true);
-    //                 //  And fire it
-    //                 bullet.body.velocity.x = 0;
-    //                 bullet.body.velocity.y = 0;
-    //                 bulletTime = game.time.now + 1800;
-    //             }
-    //         }
-    //     }
-    // },
 
     collisionHandler : function(bullet, alien) {
 
@@ -558,7 +532,7 @@ var Game = {
             this.finishGame();
         }
 
-        if (aliens.countLiving() === 0) {
+        if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
             game.add.audio('stage_clear');
             sfx_stage_clear.volume = 2.0;
             sfx_stage_clear.play();
@@ -589,7 +563,7 @@ var Game = {
         }
     },
 
-     getPower_up: function(player, power_up){
+    getPower_up: function(player, power_up) {
         if(debugFlag){
             this.debugCollisionMessage(player, power_up);
         }
@@ -732,6 +706,7 @@ var Game = {
         resumeButton.x = msgBox.width / 2 - resumeButton.width / 2;
         resumeButton.y = msgBox.height - resumeButton.height*2.5;
         resumeButton.inputEnabled = true;
+        setTimeout("hideBox()", 3000);
         resumeButton.events.onInputDown.add(this.hideBox,this);
 
         backgroundMusicText.wordWrapWidth = back * 0.8;
@@ -802,14 +777,15 @@ var Game = {
     },
     startGame : function() {
         //this.Game.destroy();
-        this.msgBox.destroy();
+        //this.msgBox.destroy();
         game.paused = false;
         music.stop();
         game.state.start('Game');
     },
     hideBox : function(){
         this.msgBox.destroy();
-        game.paused = false;
+        var resumetimer = game.time.now + 3000;
+        setTimeout(function(){  game.paused = false;}, 3000);
     },
 
     turnOnMusic : function(){

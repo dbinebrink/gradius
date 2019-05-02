@@ -101,5 +101,8 @@ addBullet_item.addAbility("bulletInitialPos", (sequence) => {
     };
 });
 
-var Shotgun_item = new item("Shotgun", "uncommon");
+
+var fireRateUp_item = new item("fireRateUp", "common");
+fireRateUp_item.addAbility("fireRate", x => x-0.1);
+// var Shotgun_item = new item("Shotgun", "uncommon");
 
