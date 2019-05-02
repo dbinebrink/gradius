@@ -901,6 +901,11 @@ var Game = {
                 setTimeout(function(){resumetimer.destroy();}, 999);            
             }, 2000);
         setTimeout(function(){game.paused = false;}, 3000);
+        var resumetimer = game.time.now + 100;
+        setTimeout(function(){  game.paused = false;}, 100);
+    },
+    hideBox1 : function(){
+        this.msgBox1.destroy();
     },
     real : function(){
         //this.msgBox.destroy();
@@ -923,8 +928,8 @@ var Game = {
         no.inputEnabled = true;
         yes.inputEnabled = true;
         yes.events.onInputDown.add(this.goMenu,this);
-        no.events.onInputDown.add(this.showSettingMessageBox,this);        
-        //this.msgBox1 = msgBox1;
+        no.events.onInputDown.add(this.hideBox1,this);        
+        this.msgBox1 = msgBox1;
     },
 
     turnOnMusic : function(){
