@@ -690,20 +690,22 @@ var Game = {
             this.msgBox.destroy();
         }
 
+        var textStyle = { fontSize: 19 };
+
         var msgBox = game.add.group();
         var back = game.add.sprite(0,0,'settingBack');
         var mainMenu = game.add.text(0, 0, 'MAIN MENU');
         var restartButton1 = game.add.text(0, 0, 'RESTART');
         var resumeButton = game.add.text(0, 0, 'RESUME');
-        var musicOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
-        var musicOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
-        var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic', { fontSize: 19 });
-        var dbgMsgText = game.add.text(0, 0, "Debug Message", { fontSize: 19 });
-        var dbgMsgOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
-        var dbgMsgOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
-        var bulletCollitionText = game.add.text(0, 0, 'Bullets Collision', { fontSize: 19 });
-        var bulletCollisionOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
-        var bulletCollisionOffButton = game.add.text(0,0, 'OFF', { fontSize: 19 });
+        var musicOnButton = game.add.text(0,0, 'ON', textStyle);
+        var musicOffButton = game.add.text(0,0,'OFF', textStyle);
+        var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic', textStyle);
+        var dbgMsgText = game.add.text(0, 0, "Debug Message", textStyle);
+        var dbgMsgOnButton = game.add.text(0,0, 'ON', textStyle);
+        var dbgMsgOffButton = game.add.text(0,0,'OFF', textStyle);
+        var bulletCollitionText = game.add.text(0, 0, 'Bullets Collision', textStyle);
+        var bulletCollisionOnButton = game.add.text(0,0, 'ON', textStyle);
+        var bulletCollisionOffButton = game.add.text(0,0, 'OFF', textStyle);
 
         msgBox.add(back);
         msgBox.add(mainMenu);
@@ -741,6 +743,7 @@ var Game = {
         resumeButton.x = msgBox.width / 2 - resumeButton.width / 2;
         resumeButton.y = msgBox.height - resumeButton.height*2.5;
         resumeButton.inputEnabled = true;
+        setTimeout("hideBox()", 3000);
         resumeButton.events.onInputDown.add(this.hideBox,this);
 
         backgroundMusicText.wordWrapWidth = back * 0.8;
@@ -818,7 +821,8 @@ var Game = {
     },
     hideBox : function(){
         this.msgBox.destroy();
-        game.paused = false;
+        var resumetimer = game.time.now + 3000;
+        setTimeout(function(){  game.paused = false;}, 3000);
     },
 
     turnOnMusic : function(){
@@ -851,42 +855,63 @@ var Game = {
     
     debugCollisionMessage : function(object1, object2){
         
-        var object1Color, object2Color;
-
         if (object1.key.localeCompare("bullet") == 0){
             if (object2.key.localeCompare("invader") == 0){
-                object1Color = "color:blue";
-                object2Color = "color:red";
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "color:blue",
+                        "color:black",
+                        "color:red",
+                        "color:black");
             }
             else if (object2.key.localeCompare("enemyBullet") == 0){
-                object1Color = "color:blue";
-                object2Color = "color:purple";
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "color:blue",
+                        "color:black",
+                        "color:purple",
+                        "color:black");
             }
             else{
-                object1Color = "color:blue";
-                object2Color = "color:green";
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "color:blue",
+                        "color:black",
+                        "color:green",
+                        "color:black");
             }
         }
         else if (object1.key.localeCompare("ship") == 0){
             if (object2.key.localeCompare("invader") == 0){
-                object1Color = "background:blue; color:white";
-                object2Color = "color:red";
-            }
-            else if (object2.key.localeCompare("enemyBullet") == 0){
-                object1Color = "background:blue; color:white";
-                object2Color = "color:purple";
-            }
-            else{
-                object1Color = "background:blue; color:white";
-                object2Color = "color:green";
-            }
-        }
-        console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
                         "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
                         "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
-                        object1Color,
+                        "background:blue; color:white",
                         "color:black",
-                        object2Color,
+                        "color:red",
                         "color:black");
+            }
+            else if (object2.key.localeCompare("enemyBullet") == 0){
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "background:blue; color:white",
+                        "color:black",
+                        "color:purple",
+                        "color:black");
+            }
+            else{
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "background:blue; color:white",
+                        "color:black",
+                        "color:green",
+                        "color:black");
+            }
+        }
     }    
 }
