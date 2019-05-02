@@ -16,6 +16,8 @@ var live_count;
 var max_live = 3;
 var enemyBullet;
 var firingTimer = 0;
+var ailencreatetimer;
+var ailencreatecount = 0;
 var livingEnemies = [];
 var music;
 var sfx_fire;
@@ -273,6 +275,9 @@ var Game = {
                 player.frame = 2;
             }
 
+            if(game.time.now > ailencreatetimer && ailencreatecount < 10*stage)
+                this.createAliens();
+
             //  Firing?
             if (fireButton.isDown) {
                 this.fireBullet();
@@ -303,59 +308,58 @@ var Game = {
     },
 
     createAliens : function() {
-
-        
-
-        for (var i = 0; i < 3 * stage; i++) {
-            var movepoint_x = Math.random() * 600 + 300;
-            var movepoint_y = Math.random() * 540 + 30;
-            var alien = aliens.create(movepoint_x, movepoint_y, 'invader');
-            while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
-                alien.kill();
-                movepoint_x = Math.random() * 600 + 300;
-                movepoint_y = Math.random() * 540 + 30;
-                alien = aliens.create(movepoint_x, movepoint_y, 'invader');
-            }
-            alien.anchor.setTo(0.5, 0.5);
-            alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-            alien.play('fly'); 
-            alien.body.moves = false;
-            alien.body.setSize(24,32,0,0);
-
-            var movestyle = Phaser.Easing;
-            var style = Math.random();
-            if (style < 0.2)
-                movestyle = movestyle.Cubic;
-            else if (style < 0.4)
-                movestyle = movestyle.Back;
-            else if (style < 0.6)
-                movestyle = movestyle.Circular;
-            else if (style < 0.8)
-                movestyle = movestyle.Linear;
-            style = Math.random();
-            if (style < 0.33)
-                movestyle = movestyle.In;
-            else if (style < 0.66)
-                movestyle = movestyle.InOut;
-            else
-                movestyle = movestyle.Out;
-            
-            if(movepoint_x < 600)
-                movepoint_x = 700 + Math.random()*200;
-            else
-                movepoint_x = 300 + Math.random()*200;
-            if(movepoint_y < 300)
-                movepoint_y = 350 + Math.random()*190;
-            else
-                movepoint_y = 30 + Math.random()*190;
-
-            var difficulty = stage;
-            if (difficulty > 20)
-                difficulty = 20;
-
-            var tween = game.add.tween(alien).to( { x: movepoint_x }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
-            var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
+        ailencreatetimer = game.time.now + 500 + 1000*Math.random();
+        ailencreatecount++;
+        var movepoint_x = 930;
+        var movepoint_y = Math.random() * 540 + 30;
+        var alien = aliens.create(movepoint_x, movepoint_y, 'invader');
+        while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
+            alien.kill();
+            movepoint_y = Math.random() * 540 + 30;
+            alien = aliens.create(movepoint_x, movepoint_y, 'invader');
         }
+        alien.anchor.setTo(0.5, 0.5);
+        alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
+        alien.play('fly'); 
+        alien.body.moves = false;
+        alien.body.setSize(24,32,0,0);
+
+        var movestyle = Phaser.Easing;
+        var style = Math.random();
+        if (style < 0.2)
+            movestyle = movestyle.Cubic;
+        else if (style < 0.4)
+            movestyle = movestyle.Back;
+        else if (style < 0.6)
+            movestyle = movestyle.Circular;
+        else if (style < 0.8)
+            movestyle = movestyle.Linear;
+        style = Math.random();
+        if (style < 0.33)
+            movestyle = movestyle.In;
+        else if (style < 0.66)
+            movestyle = movestyle.InOut;
+        else
+            movestyle = movestyle.Out;
+        
+        if(movepoint_x < 600)
+            movepoint_x = 700 + Math.random()*200;
+        else
+            movepoint_x = 300 + Math.random()*200;
+        if(movepoint_y < 300)
+            movepoint_y = 600 - Math.random()*220;
+        else
+            movepoint_y = Math.random()*220;
+
+        var difficulty = stage;
+        if (difficulty > 20)
+            difficulty = 20;
+
+        //game.physics.arcade.moveToObject(enemyBullet,{x : alien.body.x, y : -100},100 + 20 * countstage);
+        
+        var tween = game.add.tween(alien).to( { x: -30}, 10000, movestyle, true, 0, 20000, false);
+        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
+        
 
         //  Alien movements
 
@@ -560,7 +564,7 @@ var Game = {
             this.finishGame();
         }
 
-        if (aliens.countLiving() === 0) {
+        if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
             game.add.audio('stage_clear');
             sfx_stage_clear.volume = 2.0;
             sfx_stage_clear.play();
@@ -591,7 +595,7 @@ var Game = {
         }
     },
 
-     getPower_up: function(player, power_up){
+    getPower_up: function(player, power_up) {
         if(debugFlag){
             this.debugCollisionMessage(player, power_up);
         }
@@ -686,20 +690,22 @@ var Game = {
             this.msgBox.destroy();
         }
 
+        var textStyle = { fontSize: 19 };
+
         var msgBox = game.add.group();
         var back = game.add.sprite(0,0,'settingBack');
         var mainMenu = game.add.text(0, 0, 'MAIN MENU');
         var restartButton1 = game.add.text(0, 0, 'RESTART');
         var resumeButton = game.add.text(0, 0, 'RESUME');
-        var musicOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
-        var musicOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
-        var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic', { fontSize: 19 });
-        var dbgMsgText = game.add.text(0, 0, "Debug Message", { fontSize: 19 });
-        var dbgMsgOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
-        var dbgMsgOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
-        var bulletCollitionText = game.add.text(0, 0, 'Bullets Collision', { fontSize: 19 });
-        var bulletCollisionOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
-        var bulletCollisionOffButton = game.add.text(0,0, 'OFF', { fontSize: 19 });
+        var musicOnButton = game.add.text(0,0, 'ON', textStyle);
+        var musicOffButton = game.add.text(0,0,'OFF', textStyle);
+        var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic', textStyle);
+        var dbgMsgText = game.add.text(0, 0, "Debug Message", textStyle);
+        var dbgMsgOnButton = game.add.text(0,0, 'ON', textStyle);
+        var dbgMsgOffButton = game.add.text(0,0,'OFF', textStyle);
+        var bulletCollitionText = game.add.text(0, 0, 'Bullets Collision', textStyle);
+        var bulletCollisionOnButton = game.add.text(0,0, 'ON', textStyle);
+        var bulletCollisionOffButton = game.add.text(0,0, 'OFF', textStyle);
 
         msgBox.add(back);
         msgBox.add(mainMenu);
@@ -737,6 +743,7 @@ var Game = {
         resumeButton.x = msgBox.width / 2 - resumeButton.width / 2;
         resumeButton.y = msgBox.height - resumeButton.height*2.5;
         resumeButton.inputEnabled = true;
+        setTimeout("hideBox()", 3000);
         resumeButton.events.onInputDown.add(this.hideBox,this);
 
         backgroundMusicText.wordWrapWidth = back * 0.8;
@@ -814,7 +821,8 @@ var Game = {
     },
     hideBox : function(){
         this.msgBox.destroy();
-        game.paused = false;
+        var resumetimer = game.time.now + 3000;
+        setTimeout(function(){  game.paused = false;}, 3000);
     },
 
     turnOnMusic : function(){
@@ -847,42 +855,63 @@ var Game = {
     
     debugCollisionMessage : function(object1, object2){
         
-        var object1Color, object2Color;
-
         if (object1.key.localeCompare("bullet") == 0){
             if (object2.key.localeCompare("invader") == 0){
-                object1Color = "color:blue";
-                object2Color = "color:red";
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "color:blue",
+                        "color:black",
+                        "color:red",
+                        "color:black");
             }
             else if (object2.key.localeCompare("enemyBullet") == 0){
-                object1Color = "color:blue";
-                object2Color = "color:purple";
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "color:blue",
+                        "color:black",
+                        "color:purple",
+                        "color:black");
             }
             else{
-                object1Color = "color:blue";
-                object2Color = "color:green";
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "color:blue",
+                        "color:black",
+                        "color:green",
+                        "color:black");
             }
         }
         else if (object1.key.localeCompare("ship") == 0){
             if (object2.key.localeCompare("invader") == 0){
-                object1Color = "background:blue; color:white";
-                object2Color = "color:red";
-            }
-            else if (object2.key.localeCompare("enemyBullet") == 0){
-                object1Color = "background:blue; color:white";
-                object2Color = "color:purple";
-            }
-            else{
-                object1Color = "background:blue; color:white";
-                object2Color = "color:green";
-            }
-        }
-        console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
                         "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
                         "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
-                        object1Color,
+                        "background:blue; color:white",
                         "color:black",
-                        object2Color,
+                        "color:red",
                         "color:black");
+            }
+            else if (object2.key.localeCompare("enemyBullet") == 0){
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "background:blue; color:white",
+                        "color:black",
+                        "color:purple",
+                        "color:black");
+            }
+            else{
+                console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+                        "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
+                        "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
+                        "background:blue; color:white",
+                        "color:black",
+                        "color:green",
+                        "color:black");
+            }
+        }
     }    
 }
