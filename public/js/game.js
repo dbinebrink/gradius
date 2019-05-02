@@ -45,6 +45,7 @@ var score_3_switch = false;
 var debugFlag = false;
 var bulletsCollision = true;
 var music_status;
+var bulletsCollision_status;
 var Game = {
 
     preload : function() {
@@ -95,6 +96,7 @@ var Game = {
         stageString = '';
         power_up_count = 1;
         music_status = 'ON';
+        bulletsCollision_status = 'ON';
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         music = game.add.audio('music1');
@@ -168,6 +170,9 @@ var Game = {
         //  The score
         scoreString = 'Score: ';
         scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
+
+        bulletsCollisionString = 'Bul Col: ';
+        bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
 
         //  Lives
         lives = game.add.group();
@@ -976,11 +981,15 @@ var Game = {
     turnOnBulletsCollision : function(){
         bulletsCollision = true;
         console.log("bulletsCollision is now on");
+        bulletsCollision_status = 'ON';
+        bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
     },
     
     turnOffBulletsCollision : function(){
         bulletsCollision = false;
         console.log("bulletsCollision is now off");
+        bulletsCollision_status = 'OFF';
+        bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
     },
     
     debugCollisionMessage : function(object1, object2){
