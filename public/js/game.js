@@ -379,10 +379,10 @@ var Game = {
         //  Alien movements
 
             
-            //var tween = game.add.tween(aliens).to( { y: 500 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 0, true);
+        // var tween = game.add.tween(aliens).to( { y: 500 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 0, true);
 
 
-        //  When the tween loops it calls descend
+        // When the tween loops it calls descend
         tween.onLoop.add(this.descend, this);
 
     },
@@ -402,36 +402,6 @@ var Game = {
         // game.debug.spriteInfo(player);
         // game.debug.body(aliens.getFirstAlive());
     },
-
-    // fireBullet : function() {
-    //     game.add.audio('sfx_fire');
-    //     sfx_fire.volume = 0.2;
-
-    //     //  To avoid them being allowed to fire too fast we set a time limit
-    //     if (game.time.now > bulletTime) {
-
-    //         //  Grab the first bullet we can from the pool
-    //         for(var n = power_up_count; n > 0; n--){
-    //             bullet = bullets.getFirstExists(false);
-                
-    //             if (bullet) {
-    //                 sfx_fire.play();
-    //                 bullet.reset(player.x+30, player.y);
-    //                 bullet.anchor.setTo(0, 0.5);
-    //                 bullet.update = function(){
-    //                     this.body.velocity.x = player.body.velocity.x;
-    //                     this.body.velocity.y = player.body.velocity.y;
-    //                 };
-    //                 bullet.animations.add('shootBeam', [0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4]);
-    //                 bullet.play('shootBeam', 120, false, true);
-    //                 //  And fire it
-    //                 bullet.body.velocity.x = 0;
-    //                 bullet.body.velocity.y = 0;
-    //                 bulletTime = game.time.now + 1800;
-    //             }
-    //         }
-    //     }
-    // },
 
     collisionHandler : function(bullet, alien) {
 
