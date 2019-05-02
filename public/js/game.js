@@ -73,6 +73,7 @@ var Game = {
         // load the setting icon
         game.load.image('settingButton', 'img/settingButton.png');
         game.load.image('settingBack', 'img/settingBackground.png');
+        game.load.image('settingBack1', 'img/settingBackground1.png');
 
     },
 
@@ -212,6 +213,18 @@ var Game = {
         cursors = game.input.keyboard.createCursorKeys();
         fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
+        var me = this;
+
+        me.startTime = new Date();
+        me.totalTime = 120;
+        me.timeElapsed = 0;
+
+        me.createTimer();
+
+        me.gameTimer = game.time.events.loop(1000, function(){
+            me.updateTimer();
+        });
+
     },
 
     update : function() {
@@ -306,6 +319,8 @@ var Game = {
             game.physics.arcade.overlap(player, score_up_3, this.getScore_up_3, null, this);
         }
     },
+
+   
 
     createAliens : function() {
         ailencreatetimer = game.time.now + 500 + 1000*Math.random();
@@ -501,6 +516,46 @@ var Game = {
             item.body.velocity.y = y_vel;
         }
         return item;
+    },
+
+    createTimer : function() {
+
+        var me = this;
+
+        me.timeLabel = me.game.add.text(600, 15, "00:00", {font: "50px Arial", fill: "#fff"}); 
+        me.timeLabel.anchor.setTo(0.5, 0);
+        me.timeLabel.align = 'center';
+
+    },
+
+    updateTimer: function(){
+
+        var me = this;
+
+        var currentTime = new Date();
+        var timeDifference = me.startTime.getTime() - currentTime.getTime();
+
+        //Time elapsed in seconds
+        me.timeElapsed = Math.abs(timeDifference / 1000);
+
+        //Time remaining in seconds
+
+        //Convert seconds into minutes and seconds
+        var minutes = Math.floor(me.timeElapsed / 60);
+        var seconds = Math.floor(me.timeElapsed) - (60 * minutes);
+
+        //Display minutes, add a 0 to the start if less than 10
+        var result = (minutes < 10) ? "0" + minutes : minutes; 
+
+        //Display seconds, add a 0 to the start if less than 10
+        result += (seconds < 10) ? ":0" + seconds : ":" + seconds; 
+
+        if(seconds % 10 == 0) {
+            score += 100;
+        }
+
+        me.timeLabel.text = result;
+
     },
 
     changeItem : function(bullet, object){
@@ -707,6 +762,7 @@ var Game = {
         var bulletCollisionOnButton = game.add.text(0,0, 'ON', textStyle);
         var bulletCollisionOffButton = game.add.text(0,0, 'OFF', textStyle);
 
+
         msgBox.add(back);
         msgBox.add(mainMenu);
         msgBox.add(restartButton1);
@@ -729,7 +785,7 @@ var Game = {
         mainMenu.x = msgBox.width / 2 - mainMenu.width / 2;
         mainMenu.y = msgBox.height - mainMenu.height*5;
         mainMenu.inputEnabled = true;
-        mainMenu.events.onInputDown.add(this.goMenu,this);
+        mainMenu.events.onInputDown.add(this.real,this);
         
         restartButton1.wordWrapWidth = back * 0.8;
         restartButton1.addColor("#ffffff", 0);
@@ -804,6 +860,11 @@ var Game = {
         bulletCollisionOffButton.events.onInputDown.add(this.turnOffBulletsCollision,this);
 
         this.msgBox = msgBox;
+
+        
+
+
+
     },
 
     goMenu : function() {
@@ -821,8 +882,49 @@ var Game = {
     },
     hideBox : function(){
         this.msgBox.destroy();
-        var resumetimer = game.time.now + 3000;
-        setTimeout(function(){  game.paused = false;}, 3000);
+        setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 3, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);            
+            }, 0);
+        setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 2, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);            
+            }, 1000);
+        setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 1, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);            
+            }, 2000);
+        setTimeout(function(){game.paused = false;}, 3000);
+    },
+    real : function(){
+        //this.msgBox.destroy();
+        textStyle = { fontSize: 19 };
+        var msgBox1 = game.add.group();
+        var back1 = game.add.sprite(300,200,'settingBack1');
+        var real_exit = game.add.text(325,250,'정말 메인메뉴로 나가시겠습니까?',textStyle);
+        var yes = game.add.text(370,310,'yes',textStyle);
+        var no = game.add.text(500,310,'no',textStyle);
+        msgBox1.add(back1);
+        msgBox1.add(real_exit);
+        msgBox1.add(yes);
+        msgBox1.add(no);
+        real_exit.wordWrapWidth = back1;
+        real_exit.addColor("#ffffff", 0);
+        yes.wordWrapWidth = back1;
+        yes.addColor("#ffffff", 0);
+        no.wordWrapWidth = back1;
+        no.addColor("#ffffff", 0);
+        no.inputEnabled = true;
+        yes.inputEnabled = true;
+        yes.events.onInputDown.add(this.goMenu,this);
+        no.events.onInputDown.add(this.showSettingMessageBox,this);        
+        //this.msgBox1 = msgBox1;
     },
 
     turnOnMusic : function(){
