@@ -15,7 +15,7 @@ var mainMenu = {
 
     create : function() {
     	var image = game.add.image(0,0,'Wall_paper');
-      var image1 = game.add.image(30,20,'gradius');
+        var image1 = game.add.image(30,20,'gradius');
         game.stage.background = image;
         game.add.button(game.world.centerX-220,280,'startButton', this.startGame, this);
         game.add.button(game.world.centerX+20,280,'controls', this.ViewControls, this);
@@ -38,7 +38,7 @@ var mainMenu = {
     },
 
     ViewControls : function() {
-       game.add.button(220,360,'controlkey', this.ViewControls, this);
-       game.add.button(600,360,'backButton', this.create, this);
+       game.add.button(0,360,'controlkey', this.ViewControls, this);
+       game.add.button(805,360,'backButton', this.create, this);
     },
 }
