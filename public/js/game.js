@@ -469,7 +469,7 @@ var Game = {
         explosion.play('kaboom', 30, false, true);
         /*setTimeout(function() { explosion.kill(); }, 750);*/
 
-        if (aliens.countLiving() === 0) {
+        if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
             aliens.removeAll();
             game.add.audio('stage_clear');
             sfx_stage_clear.volume = 2.0;
