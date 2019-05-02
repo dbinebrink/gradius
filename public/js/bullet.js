@@ -2,7 +2,7 @@ var Bullets = {
     bulletTypeList : ['bullet', 'laser', 'rocket'],
     basicParamList : [
         "damage", "bulletSpeed", "fireRate", "bulletType", "piercing", "fireAtOnce",
-        "maxBulletCount", "bulletCollision"],
+        "maxBulletCount", "bulletCollision", 'outOfBoundsKill', 'checkWorldBounds'],
     basicMethodList : ["bulletAnimation", "bulletMovement", "bulletInitialVel", "bulletInitialPos"],
     activatePositionList : ["beforeFire", "firing", "afterFire", "always", "hitEnemy"],
 
@@ -19,17 +19,24 @@ var Bullets = {
     
     initalize : function( game ){
         this.bulletTime = 0;
+        this.currentShotCount = 0;
 
         this.info.bulletType = 'bullet';
         this.info.damage = 1;
         this.info.fireRate = 0.6;
         this.info.piercing = 1;
         this.info.maxBulletCount = 100;
-        this.info.bulletsCollision = true;
         this.info.bulletSpeed = 6;
         this.info.fireAtOnce = 1;
-        this.info.bulletInitialVel = function(object){ return {x : object.info.bulletSpeed*100, y : 0}; };
-        this.info.bulletInitialPos = function(){ return {x : 20, y : 0}; };
+        this.info.bulletsCollision = true;
+        this.info.outOfBoundsKill = true;
+        this.info.checkWorldBounds = true;
+        this.info.initValue = {
+            position : {x : 20, y : 0},
+            velocity : {x : this.info.bulletSpeed*100, y : 0}
+        }
+        // this.info.bulletInitialVel = function(object){ return {x : object.info.bulletSpeed*100, y : 0}; };
+        // this.info.bulletInitialPos = function(){ return {x : 20, y : 0}; };
         
         this.info.bulletFireSound = game.add.audio('sfx_fire');
         this.info.bulletFireSound.volume = 0.2;
@@ -38,7 +45,7 @@ var Bullets = {
         this.info.bulletMovement = function(object){return {x : object.body.velocity.x, y : 0}};
         
         for([index, activatePosition] of Object.entries(this.activatePositionList)){
-            this.info.activatePosition = [];
+            this.info[activatePosition] = [];
         }
         
         this.bulletGroup = game.add.group();
@@ -52,8 +59,8 @@ var Bullets = {
         this.bulletGroup.createMultiple(this.info.maxBulletCount, this.info.bulletType, 100);
         this.bulletGroup.setAll('anchor.x', 0.5);
         this.bulletGroup.setAll('anchor.y', 1);
-        this.bulletGroup.setAll('outOfBoundsKill', true);
-        this.bulletGroup.setAll('checkWorldBounds', true);
+        this.bulletGroup.setAll('outOfBoundsKill', this.info.outOfBoundsKill);
+        this.bulletGroup.setAll('checkWorldBounds', this.info.checkWorldBounds);
         Bullets.bulletGroup.forEach((x, y) => {x.piercing = y;}, this, false, this.info.piercing);
         return this.bulletGroup;
     },
@@ -80,15 +87,17 @@ var Bullets = {
 
     fire : function(player, currentTime){
         if (currentTime > this.bulletTime) {
-            for(let i = 0; i < this.info.fireAtOnce; i++){
+            for(this.currentShotCount = 0; this.currentShotCount < this.info.fireAtOnce; this.currentShotCount++){
                 bullet = this.bulletGroup.getFirstExists(false);
+                for( functionPriority in this.info.beforeFire ){
+                    this.info.beforeFire[functionPriority](this, bullet);
+                }
                 
                 if (bullet) {
                     this.info.bulletFireSound.play();
-                    let initPos = this.info.bulletInitialPos(i);
                     bullet.reset(
-                        player.x + initPos.x,
-                        player.y + initPos.y
+                        player.x + this.info.initValue.position.x,
+                        player.y + this.info.initValue.position.y
                     );
                     bullet.anchor.setTo(0, 0.5);
                     
@@ -98,16 +107,14 @@ var Bullets = {
                     }
     
                     //  And fire it
-                    let initVel = this.info.bulletInitialVel(Bullets);
+                    bullet.body.velocity.x = this.info.initValue.velocity.x;
+                    bullet.body.velocity.y = this.info.initValue.velocity.y;
 
-                    bullet.body.velocity.x = initVel.x
-                    bullet.body.velocity.y = initVel.y;
                     var BM = this.info.bulletMovement;
                     bullet.update = function(){
-                        var velocity = BM(this);
-                        
-                        this.body.velocity.x = velocity.x;
-                        this.body.velocity.y = velocity.y;
+                        for( functionPriority in Bullets.info.firing ){
+                            Bullets.info.firing[functionPriority](Bullets, this);
+                        }
                     }
                     this.bulletTime = currentTime + this.info.fireRate*1000;
                 }

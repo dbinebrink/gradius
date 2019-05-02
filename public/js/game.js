@@ -1,6 +1,5 @@
 var player;
 var aliens;
-var bulletTime = 0;
 var invincibleTime = 0;
 var cursors;
 var fireButton;
@@ -17,6 +16,7 @@ var enemyBullet;
 var firingTimer = 0;
 var ailencreatetimer;
 var ailencreatecount = 0;
+var alienHealth = 1;
 var livingEnemies = [];
 var music;
 var sfx_fire;
@@ -88,6 +88,7 @@ var Game = {
         player_speed = 200;
         stageString = '';
         power_up_count = 1;
+        alienHealth = 1;
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -333,6 +334,8 @@ var Game = {
             movepoint_y = Math.random() * 540 + 30;
             alien = aliens.create(movepoint_x, movepoint_y, 'invader');
         }
+        if(stage%5 == 0) alienHealth += 2;
+        alien.setHealth(alienHealth);
         alien.anchor.setTo(0.5, 0.5);
         alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
         alien.play('fly'); 
@@ -414,7 +417,8 @@ var Game = {
         if(Math.random() * 1000 < 20) {
             this.makeRandomItem(alien.body.x, alien.body.y, -200, (Math.random()*2-1)*200 );
         }
-        alien.kill();
+        // alien.kill();
+        alien.damage(Bullets.info.damage);
 
         game.add.audio('sfx_enemy_die');
         sfx_enemy_die.volume = 0.6;
