@@ -32,7 +32,7 @@ var Bullets = {
     initalize : function( game ){
         this.info.bulletType = 'bullet';
         this.info.damage = 1;
-        this.info.bulletSpeed = 5;
+        this.info.bulletSpeed = 6;
         this.info.fireRate = 0.6;
         this.info.pierceing = 1;
         this.info.maxBulletCount = 100;
@@ -61,7 +61,9 @@ var Bullets = {
         bulletGroup.setAll('anchor.y', 1);
         bulletGroup.setAll('outOfBoundsKill', true);
         bulletGroup.setAll('checkWorldBounds', true);
-        if( this.info.pierceing != -1 ) bulletGroup.setAll('health', this.info.pierceing);
+        if( this.info.pierceing != -1 ){
+            bulletGroup.setAll('health', this.info.pierceing);
+        }
 
         return bulletGroup;
     },
@@ -83,14 +85,7 @@ var Bullets = {
             console.log(this.info[key]);
         }
         
-        this.bulletGroup = game.add.group();
-        this.bulletGroup.enableBody = true;
-        this.bulletGroup.physicsBodyType = Phaser.Physics.ARCADE;
-        this.bulletGroup.createMultiple(100, this.info.bulletType, 100, false);
-        this.bulletGroup.setAll('anchor.x', 0.5);
-        this.bulletGroup.setAll('anchor.y', 1);
-        this.bulletGroup.setAll('outOfBoundsKill', true);
-        this.bulletGroup.setAll('checkWorldBounds', true);
+        this.bulletGroup = this.makeBulletGroup();
     },
 
     fire : function(player, currentTime){
@@ -126,7 +121,9 @@ var Bullets = {
     killBullet : function(bullet){
         if(this.info.pierceing != -1){
             bullet.health--;
-            if(bullet.health == 0) bullet.kill();
+            if(bullet.health == 0){
+                bullet.kill();
+            }
         }
     }
 }

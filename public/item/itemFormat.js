@@ -67,10 +67,18 @@ tracking_item.addAbility("bulletMovement", (object) => {
         x = x*reduceAmount;
         y = y*reduceAmount;
     }
+
+    if(x == 0){
+        if(y > 0) object.rotation = Math.PI/2;
+        else object.rotation = -Math.PI/2;
+    }
+    else object.rotation = Math.atan(y/x);
+
     return {
         x : x, 
         y : y
     }
 });
+
 // var missile_item = new item("missile", "uncommon");
 
