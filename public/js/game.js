@@ -901,11 +901,6 @@ var Game = {
                 setTimeout(function(){resumetimer.destroy();}, 999);            
             }, 2000);
         setTimeout(function(){game.paused = false;}, 3000);
-        var resumetimer = game.time.now + 100;
-        setTimeout(function(){  game.paused = false;}, 100);
-    },
-    hideBox1 : function(){
-        this.msgBox1.destroy();
     },
     hideBox1 : function(){
         this.msgBox1.destroy();
