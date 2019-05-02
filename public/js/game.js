@@ -52,7 +52,9 @@ var Game = {
         game.load.image('speed_up', 'img/speed_up.png');
         game.load.image('bullet', 'img/bullet.png');
         game.load.image('enemyBullet', 'img/enemy-bullet.png');
-        game.load.spritesheet('invader', 'img/invader32x32x4.png', 32, 32);
+        game.load.spritesheet('invaderBasic', 'img/invader32x32x4.png', 32, 32);
+        game.load.spritesheet('invaderGreen', 'img/invader32x32x4-green.png', 32, 32);
+        game.load.spritesheet('invaderPurple', 'img/invader32x32x4-purple.png', 32, 32);
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         game.load.image('starfield', 'img/starfield.png');
@@ -323,16 +325,40 @@ var Game = {
    
 
     createAliens : function() {
+        let alienImage;
+        let alienHealth;
+        let alienSizeMultiple;
+        let specialEnemyPer = Math.random()*50;
+        if(specialEnemyPer < stage/10){
+            alienImage = 'invaderPurple';
+            alienHealth = 3;
+            alienSizeMultiple = 2;
+        }
+        else if(specialEnemyPer < stage/3){
+            alienImage = 'invaderGreen';
+            alienHealth = 2;
+            alienSizeMultiple = 1.5;
+        }
+        else{
+            alienImage = 'invaderBasic';
+            alienHealth = 1;
+            alienSizeMultiple = 1;
+        }
+
         ailencreatetimer = game.time.now + 500 + 1000*Math.random();
         ailencreatecount++;
         var movepoint_x = 930;
         var movepoint_y = Math.random() * 540 + 30;
-        var alien = aliens.create(movepoint_x, movepoint_y, 'invader');
+        var alien = aliens.create(movepoint_x, movepoint_y, alienImage);
         while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
             alien.kill();
             movepoint_y = Math.random() * 540 + 30;
-            alien = aliens.create(movepoint_x, movepoint_y, 'invader');
+            alien = aliens.create(movepoint_x, movepoint_y, alienImage);
         }
+        alien.maxHealth = alienHealth;
+        alien.setHealth(alienHealth);
+        alien.scale.set(alienSizeMultiple);
+
         alien.anchor.setTo(0.5, 0.5);
         alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
         alien.play('fly'); 
@@ -441,9 +467,9 @@ var Game = {
         bullet.kill();
 
         if(Math.random() * 1000 < 20) {
-            this.makeRandomItem(alien.body.x, alien.body.y, -200, (Math.random()*2-1)*200 );
+            this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 );
         }
-        alien.kill();
+        alien.damage(1);
 
         game.add.audio('sfx_enemy_die');
         sfx_enemy_die.volume = 0.6;
