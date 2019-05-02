@@ -882,8 +882,25 @@ var Game = {
     },
     hideBox : function(){
         this.msgBox.destroy();
-        var resumetimer = game.time.now + 3000;
-        setTimeout(function(){  game.paused = false;}, 3000);
+        setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 3, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);            
+            }, 0);
+        setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 2, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);            
+            }, 1000);
+        setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 1, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);            
+            }, 2000);
+        setTimeout(function(){game.paused = false;}, 3000);
     },
     real : function(){
         //this.msgBox.destroy();
