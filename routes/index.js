@@ -1,9 +1,7 @@
-var express = require('express');
-var router = express.Router();
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index');
+const express = require("express");
+const app = express();
+const port = process.env.PORT;
+app.get("/", (req, res) => {
+res.send({ hello: "world" });
 });
-
-module.exports = router;
+app.listen(PORT);
