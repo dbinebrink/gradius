@@ -442,7 +442,6 @@ var Game = {
         if(y_vel != 0){
             item.body.velocity.y = y_vel;
         }
-        game.physics.enable(item, Phaser.Physics.ARCADE);
         item.body.collideWorldBounds = true;
         item.body.bounce.set(1);
         game.time.events.add(Phaser.Timer.SECOND * 10, erase, this);
