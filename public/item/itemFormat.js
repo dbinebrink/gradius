@@ -23,7 +23,7 @@ class item {
             "playerMaxHealth", "playerEvasion", "playerSpeed",
             "firing", "afterFire", "bulletCollision",
             "hitEnemy", "always", "using", "playerImage", "playerAnimation",
-            "bulletAnimation", "bulletFireSound", "colideEnemy"
+            "bulletAnimation", "bulletFireSound", "colideEnemy", "playerShield"
         ];
     }
 
@@ -98,6 +98,8 @@ addBullet_item.addAbility("beforeFire", (bulletObj, currentBullet) => {
 var fireRateUp_item = new item("fireRateUp", "common");
 fireRateUp_item.addAbility("fireRate", x => x-0.1);
 
+var playerSpeedUp_item = new item("playerSpeedUp", "common");
+playerSpeedUp_item.addAbility("playerSpeed", x => x+10);
 
 // var Shotgun_item = new item("Shotgun", "uncommon");
 
