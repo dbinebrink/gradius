@@ -28,7 +28,7 @@ var Player = {
         game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
 
         this.sprite = game.add.sprite(150, 300, this.info.playerImage);
-        game.physics.enable(sprite, Phaser.Physics.ARCADE);
+        game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.collideWorldBounds = true;
         this.setPlayerSprite();
         this.sprite.setHealth(this.info.playerMaxHealth);
@@ -42,9 +42,17 @@ var Player = {
     },
 
     damage : function(getDamage) {
-        this.sprite.damage(getDamage);
         live = this.healthGroup.getChildAt(this.info.playerMaxHealth-this.sprite.health);
         live.alpha = 0;
+        this.sprite.damage(getDamage);
+    },
+
+    heal : function(getHeal){
+        if(this.sprite.maxHealth > this.sprite.health){
+            this.sprite.heal(getHeal);
+            live = this.healthGroup.getChildAt(this.info.playerMaxHealth-this.sprite.health);
+            live.alpha = 0.4;
+        }
     },
 
     move : function(cursors) {

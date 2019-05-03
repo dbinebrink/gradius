@@ -1,4 +1,3 @@
-var player;
 var aliens;
 var invincibleTime = 0;
 var cursors;
@@ -9,9 +8,6 @@ var countstage = 1;
 var score = 0;
 var scoreString = '';
 var scoreText;
-var lives;
-var live_count;
-var max_live = 3;
 var enemyBullet;
 var firingTimer = 0;
 var ailencreatetimer;
@@ -29,12 +25,10 @@ var stageString = '';
 var stageText;
 var sfx_stage_clear;
 var speedup;
-var player_speed;
 var power_up_count = 1;
 var power_up;
 var settings;
 var speed_up;
-var player_speed;
 var power_up_count = 1;
 var power_up;
 var score_up_2;
@@ -85,7 +79,6 @@ var Game = {
         livingEnemies = [];
         countstage = 1;
         stage = 1;
-        player_speed = 200;
         stageString = '';
         power_up_count = 1;
         alienHealth = 1;
@@ -116,27 +109,11 @@ var Game = {
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
 
         //  The starship
-        player = game.add.sprite(150, 300, 'ship');
-        player.anchor.setTo(0.5, 0.5);
-        game.physics.enable(player, Phaser.Physics.ARCADE);
-        player.body.setSize(64,32,0,16);
-
-        //  Our two animations, moving up and down.
-        player.animations.add('up', [3, 4], 2, false);
-        player.animations.add('down', [0, 1], 2, false);
+        Player.initalize(game);
 
         //  Our bullet group
         // console.log(Bullets);
         Bullets.initalize(game);
-
-        // bullets = game.add.group();
-        // bullets.enableBody = true;
-        // bullets.physicsBodyType = Phaser.Physics.ARCADE;
-        // bullets.createMultiple(2, 'laser', [0,1,2,3,4], false);
-        // bullets.setAll('anchor.x', 0.5);
-        // bullets.setAll('anchor.y', 1);
-        // bullets.setAll('outOfBoundsKill', true);
-        // bullets.setAll('checkWorldBounds', true);
 
         // The enemy's bullets
         enemyBullets = game.add.group();
@@ -166,17 +143,6 @@ var Game = {
         //  The score
         scoreString = 'Score: ';
         scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
-
-        //  Lives
-        lives = game.add.group();
-        for (var i = 2; i >= 0; i--) {
-            var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
-            ship.anchor.setTo(0.5, 0.5);
-            ship.angle = 0;
-            ship.alpha = 0.4;
-        }
-        live_count = 3
-        game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
 
         // hearts
         heart = game.add.group();
@@ -227,52 +193,8 @@ var Game = {
             music.play();
         }
 
-        if (player.alive) {
-            //  Reset the player, then check for movement keys
-            player.body.velocity.setTo(0, 0);
-
-            if(cursors.left.isDown && (40 < player.x) && cursors.up.isDown && (40 < player.y)){
-                player.body.velocity.x = -player_speed * Math.sqrt(2) / 2;
-                player.body.velocity.y = -player_speed * Math.sqrt(2) / 2;
-                player.animations.play('up');
-            }
-
-            else if(cursors.left.isDown && (40 < player.x) && cursors.down.isDown && (player.y < 560)){
-                player.body.velocity.x = -player_speed  * Math.sqrt(2) / 2;
-                player.body.velocity.y = player_speed  * Math.sqrt(2) / 2;
-                player.animations.play('down');
-            }
-            else if(cursors.right.isDown && (player.x < 860) && cursors.up.isDown && (40 < player.y)){
-                player.body.velocity.x = player_speed * Math.sqrt(2) / 2;
-                player.body.velocity.y = -player_speed * Math.sqrt(2) / 2;
-                player.animations.play('up');
-            }
-            else if(cursors.right.isDown && (player.x < 860) && cursors.down.isDown && (player.y) < 560){
-                player.body.velocity.x = player_speed  * Math.sqrt(2) / 2;
-                player.body.velocity.y = player_speed  * Math.sqrt(2) / 2;
-                player.animations.play('down');
-            }
-
-            else if (cursors.left.isDown && (40 < player.x)) {
-                player.body.velocity.x = -player_speed;
-            }
-            else if (cursors.right.isDown && (player.x < 860)) {
-                player.body.velocity.x = player_speed;
-            }
-
-            // keyboard up/down
-            else if (cursors.up.isDown && (40 < player.y)) {
-                player.body.velocity.y = -player_speed;
-                player.animations.play('up');
-            }
-            else if (cursors.down.isDown && (player.y < 560)) {
-                player.body.velocity.y = player_speed;
-                player.animations.play('down');
-            }
-            else {  // stand still
-                player.animations.stop();
-                player.frame = 2;
-            }
+        if (Player.sprite.alive) {
+            Player.move(cursors);
 
             if(game.time.now > ailencreatetimer && ailencreatecount < 10*stage)
                 this.createAliens();
@@ -280,7 +202,7 @@ var Game = {
             //  Firing?
             if (fireButton.isDown) {
                 // this.fireBullet();
-                Bullets.fire(player, game.time.now);
+                Bullets.fire(Player.sprite, game.time.now);
             }
 
             if (game.time.now > firingTimer) {
@@ -292,18 +214,18 @@ var Game = {
             if (Bullets.info.bulletsCollision){
                 game.physics.arcade.overlap(Bullets.bulletGroup, enemyBullets, this.playerBreakEnemyBullet, null, this);
             }
-            game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
-            game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
+            game.physics.arcade.overlap(Player.sprite, aliens, this.enemyHitsPlayer, null, this);
+            game.physics.arcade.overlap(Player.sprite, enemyBullets, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(Bullets.bulletGroup, heart, this.changeItem, null, this);
             game.physics.arcade.overlap(Bullets.bulletGroup, speed_up, this.changeItem, null, this);
             game.physics.arcade.overlap(Bullets.bulletGroup, power_up, this.changeItem, null, this);
             game.physics.arcade.overlap(Bullets.bulletGroup, score_up_2, this.changeItem, null, this);
             game.physics.arcade.overlap(Bullets.bulletGroup, score_up_3, this.changeItem, null, this);
-            game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
-            game.physics.arcade.overlap(player, power_up, this.getPower_up, null, this);
-            game.physics.arcade.overlap(player, speed_up, this.getspeed_up, null, this);
-            game.physics.arcade.overlap(player, score_up_2, this.getScore_up_2, null, this);
-            game.physics.arcade.overlap(player, score_up_3, this.getScore_up_3, null, this);
+            game.physics.arcade.overlap(Player.sprite, heart, this.getHeart, null, this);
+            game.physics.arcade.overlap(Player.sprite, power_up, this.getPower_up, null, this);
+            game.physics.arcade.overlap(Player.sprite, speed_up, this.getspeed_up, null, this);
+            game.physics.arcade.overlap(Player.sprite, score_up_2, this.getScore_up_2, null, this);
+            game.physics.arcade.overlap(Player.sprite, score_up_3, this.getScore_up_3, null, this);
 
             
             if (aliens.countLiving() === 0) {
@@ -329,7 +251,7 @@ var Game = {
         var movepoint_x = 930;
         var movepoint_y = Math.random() * 540 + 30;
         var alien = aliens.create(movepoint_x, movepoint_y, 'invader');
-        while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
+        while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, Player.sprite)){
             alien.kill();
             movepoint_y = Math.random() * 540 + 30;
             alien = aliens.create(movepoint_x, movepoint_y, 'invader');
@@ -414,7 +336,7 @@ var Game = {
         //  When a bullet hits an alien we kill them both
         Bullets.killBullet(bullet);
 
-        if(Math.random() * 1000 < 20) {
+        if(Math.random() * 1000 < 2000) {
             this.makeRandomItem(alien.body.x, alien.body.y, -200, (Math.random()*2-1)*200 );
         }
         // alien.kill();
@@ -426,16 +348,16 @@ var Game = {
 
         //  Increase the score
         if (score_2_switch === true && score_3_switch === false) {
-            score += 40*live_count;
+            score += 40*Player.sprite.health;
         }
         else if (score_2_switch === false && score_3_switch == true) {
-            score += 60*live_count;
+            score += 60*Player.sprite.health;
         }
         else if (score_2_switch === true && score_3_switch == true) {
-            score += 120*live_count;
+            score += 120*Player.sprite.health;
         }
         else {
-        score += 20*live_count;
+        score += 20*Player.sprite.health;
         }
         scoreText.text = scoreString + score;
         //  And create an explosion :)
@@ -512,30 +434,24 @@ var Game = {
         game.add.audio('sfx_player_hit');
         sfx_player_hit.volume = 0.6;
         sfx_player_hit.play();
+        Player.damage(1);
+
         object.kill();
-
-        live = lives.getChildAt(max_live-live_count);
-        live.alpha = 0;
-        live_count--;
-
-        // reset player's power & speed
-        player_speed = 200;
-        power_up_count = 1;
-
-        player.invincibleTime = game.time.now + 1000;
-        // blink player
-        game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
 
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
-
-        if (live_count < 1) {
+        
+        if (!Player.sprite.alive) {
             countstage = 1;
             this.finishGame();
         }
 
+        player.invincibleTime = game.time.now + 1000;
+        // blink player
+        game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
+        
         if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
             game.add.audio('stage_clear');
             sfx_stage_clear.volume = 2.0;
@@ -559,12 +475,7 @@ var Game = {
             this.debugCollisionMessage(player, heart);
         }
         heart.kill();
-      
-        if (live_count < 3){
-            live_count++;
-            live = lives.getChildAt(max_live-live_count);
-            live.alpha = 0.4;
-        }
+        Player.heal(1);
     },
 
     getPower_up: function(player, power_up) {
@@ -577,9 +488,6 @@ var Game = {
     },
 
     finishGame : function() {
-        
-        player.kill();
-
         music.stop();
 
         game.time.events.add(Phaser.Timer.SECOND, function() {
@@ -611,7 +519,7 @@ var Game = {
             enemyBullet.reset(shooter.body.x, shooter.body.y);
 
             if(countstage >= 7) countstage -=1;
-            game.physics.arcade.moveToObject(enemyBullet,player,100 + 20 * countstage);
+            game.physics.arcade.moveToObject(enemyBullet,Player.sprite,100 + 20 * countstage);
             firingTimer = game.time.now + 2000 / countstage;
         }
     },
@@ -621,10 +529,6 @@ var Game = {
             this.debugCollisionMessage(player, score_up_2);
         }
         score_up_2.kill();
-        //if(player_speed <340){
-            //player_speed += 20;
-        //}
-        //score += 40*lives.countLiving();
         score_2_switch = true;
     },
 
@@ -633,10 +537,6 @@ var Game = {
             this.debugCollisionMessage(player, score_up_3);
         }
         score_up_3.kill();
-        //if(player_speed <340){
-            //player_speed += 20;
-        //}
-        //score += 60*lives.countLiving();
         score_3_switch = true;
     },
 
@@ -645,9 +545,9 @@ var Game = {
             this.debugCollisionMessage(player, speed_up);
         }
         speed_up.kill();
-        if(player_speed <340){
-            player_speed += 20;
-        }
+        // if(player_speed <340){
+        //     player_speed += 20;
+        // }
     },
 
     showSettingMessageBox : function(){
