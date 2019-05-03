@@ -251,22 +251,6 @@ var Game = {
             game.physics.arcade.overlap(Player.sprite, speed_up, this.getspeed_up, null, this);
             game.physics.arcade.overlap(Player.sprite, score_up_2, this.getScore_up_2, null, this);
             game.physics.arcade.overlap(Player.sprite, score_up_3, this.getScore_up_3, null, this);
-
-            
-            if (aliens.countLiving() === 0) {
-                game.add.audio('stage_clear');
-                sfx_stage_clear.volume = 2.0;
-                sfx_stage_clear.play();
-
-                this.createAliens();
-                countstage++;
-                stage++;
-                stageText.text = stageString + stage;
-            }
-            // else { // for debugging
-            //     // console.clear();
-            //     console.log(aliens.getClosestTo({"x":player.x - aliens.x,"y":player.y-30}).children[0].text);
-            // }
         }
     },
 
@@ -297,7 +281,7 @@ var Game = {
         ailencreatecount++;
         var movepoint_x = 930;
         var movepoint_y = Math.random() * 540 + 30;
-        var alien = aliens.create(movepoint_x, movepoint_y, 'invader');
+        var alien = aliens.create(movepoint_x, movepoint_y, alienImage);
         while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, Player.sprite)){
             alien.kill();
             movepoint_y = Math.random() * 540 + 30;
@@ -412,11 +396,6 @@ var Game = {
         explosion.reset(alien.body.x, alien.body.y);
         explosion.play('kaboom', 30, false, true);
         /*setTimeout(function() { explosion.kill(); }, 750);*/
-<<<<<<< HEAD:public/js/game.js
-    },
-
-    makeRandomItem : function(x, y, x_vel = 0, y_vel = 0){
-=======
 
         if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
             aliens.removeAll();
@@ -437,9 +416,6 @@ var Game = {
     },
 
     makeRandomItem : function(x, y, x_vel = 0, y_vel = 0){
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        console.log(x,y,x_vel,y_vel);
->>>>>>> master:webserver/js/game.js
         var random = Math.random();
         var item;
         if(random < 0.22){
