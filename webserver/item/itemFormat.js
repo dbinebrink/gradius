@@ -28,7 +28,7 @@ class item {
         else if(appliedObj == "Player") {
             return [
                 "maxHealth", "evasion", "speed", "image", "animation",
-                "always", "colideEnemy", "moving", "invincible"
+                "always", "colideEnemy", "moving", "invincibleTime"
             ];
         }
     }
@@ -113,9 +113,12 @@ playerSpeedUp_item.addAbility("speed", "Player", x => x+10);
 
 var superArmer_item = new item("superArmer", "common");
 
-superArmer_item.addAbility("invincibleTime", "Player", x => game.time.now + 15000);
+superArmer_item.addAbility("invincibleTime", "Player", x => {
+        console.log(game.time.now);
+        return game.time.now + 15000;
+    });
 
-
+ 
 
 
 
