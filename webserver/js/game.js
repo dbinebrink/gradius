@@ -1,5 +1,4 @@
 var aliens;
-var invincibleTime = 0;
 var cursors;
 var fireButton;
 var explosions;
@@ -9,7 +8,7 @@ var score = 0;
 var scoreString = '';
 var scoreText;
 var enemyBullet;
-var firingTimer = 0;
+var firingir = 0;
 var ailencreatetimer;
 var ailencreatecount = 0;
 var alienHealth = 1;
@@ -79,7 +78,6 @@ var Game = {
 
         // reset
         bulletTime = 0;
-        invincibleTime = 0;
         score = 0;
         scoreString = '';
         firingTimer = 0;
@@ -525,12 +523,14 @@ var Game = {
         explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
         explosion.play('kaboom', 30, false, true);
     },
-
+ 
     enemyHitsPlayer : function(player, object) {
         if(debugFlag){
             this.debugCollisionMessage(player, object);
         }
-        if ((game.time.now < player.invincibleTime) || !aliens.countLiving()) return;
+        console.log(Player.info.invincibleTime + " " + game.time.now);
+        if ((game.time.now < Player.info.invincibleTime) || !aliens.countLiving()) return;
+        console.log(1);
         game.add.audio('sfx_player_hit');
         sfx_player_hit.volume = 0.6;
         sfx_player_hit.play();
@@ -548,7 +548,7 @@ var Game = {
             this.finishGame();
         }
 
-        player.invincibleTime = game.time.now + 1000;
+        Player.info.invincibleTime = game.time.now + 1000;
         // blink player
         game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
         
