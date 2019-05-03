@@ -50,8 +50,8 @@ laser_item.addAbility("fireRate", "Bullets", x => x*3);
 laser_item.addAbility("type", "Bullets", x => "laser");
 laser_item.addAbility("piercing", "Bullets", x => 0);
 laser_item.addAbility("firing", "Bullets", (bulletObj, currentBullet) => {
-    currentBullet.body.velocity.x = Player.sprite.body.velocity.x;
-    currentBullet.body.velocity.y = Player.sprite.body.velocity.y;
+    currentBullet.body.x = Player.sprite.body.x + bulletObj.info.initValue.position.x;
+    currentBullet.body.y = Player.sprite.body.y;
 });
 laser_item.addAbility("animation", "Bullets", obj => {
     obj.animations.add('shootBeam', [0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4]);
