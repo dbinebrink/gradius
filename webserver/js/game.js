@@ -45,7 +45,7 @@ var Game = {
         // load all sprites
         game.load.image('speed_up', 'img/speed_up.png');
         game.load.image('bullet', 'img/bullet.png');
-        game.load.spritesheet('laser', 'bullet_img/blue_beam_ani.png', 900, 30);
+        game.load.spritesheet('laser', 'img/blue_beam_ani.png', 900, 30);
         game.load.image('enemyBullet', 'img/enemy-bullet.png');
         game.load.spritesheet('invaderBasic', 'img/invader32x32x4.png', 32, 32);
         game.load.spritesheet('invaderGreen', 'img/invader32x32x4-green.png', 32, 32);
