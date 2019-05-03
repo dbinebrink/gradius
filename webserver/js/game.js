@@ -125,6 +125,8 @@ var Game = {
         player = game.add.sprite(150, 300, 'ship');
         player.anchor.setTo(0.5, 0.5);
         game.physics.enable(player, Phaser.Physics.ARCADE);
+        player.body.collideWorldBounds = true;
+        player.body.bounce.set(0);
         player.body.setSize(64,32,0,16);
 
         //  Our two animations, moving up and down.
@@ -252,42 +254,42 @@ var Game = {
         if (player.alive) {
             //  Reset the player, then check for movement keys
             player.body.velocity.setTo(0, 0);
-
-            if(cursors.left.isDown && (40 < player.x) && cursors.up.isDown && (40 < player.y)){
+            
+            if(cursors.left.isDown && cursors.up.isDown){
                 player.body.velocity.x = -player_speed * Math.sqrt(2) / 2;
                 player.body.velocity.y = -player_speed * Math.sqrt(2) / 2;
                 player.animations.play('up');
             }
 
-            else if(cursors.left.isDown && (40 < player.x) && cursors.down.isDown && (player.y < 560)){
+            else if(cursors.left.isDown && cursors.down.isDown){
                 player.body.velocity.x = -player_speed  * Math.sqrt(2) / 2;
                 player.body.velocity.y = player_speed  * Math.sqrt(2) / 2;
                 player.animations.play('down');
             }
-            else if(cursors.right.isDown && (player.x < 860) && cursors.up.isDown && (40 < player.y)){
+            else if(cursors.right.isDown && cursors.up.isDown){
                 player.body.velocity.x = player_speed * Math.sqrt(2) / 2;
                 player.body.velocity.y = -player_speed * Math.sqrt(2) / 2;
                 player.animations.play('up');
             }
-            else if(cursors.right.isDown && (player.x < 860) && cursors.down.isDown && (player.y) < 560){
+            else if(cursors.right.isDown && cursors.down.isDown){
                 player.body.velocity.x = player_speed  * Math.sqrt(2) / 2;
                 player.body.velocity.y = player_speed  * Math.sqrt(2) / 2;
                 player.animations.play('down');
             }
 
-            else if (cursors.left.isDown && (40 < player.x)) {
+            else if (cursors.left.isDown) {
                 player.body.velocity.x = -player_speed;
             }
-            else if (cursors.right.isDown && (player.x < 860)) {
+            else if (cursors.right.isDown) {
                 player.body.velocity.x = player_speed;
             }
 
             // keyboard up/down
-            else if (cursors.up.isDown && (40 < player.y)) {
+            else if (cursors.up.isDown) {
                 player.body.velocity.y = -player_speed;
                 player.animations.play('up');
             }
-            else if (cursors.down.isDown && (player.y < 560)) {
+            else if (cursors.down.isDown) {
                 player.body.velocity.y = player_speed;
                 player.animations.play('down');
             }
@@ -550,7 +552,6 @@ var Game = {
         if(y_vel != 0){
             item.body.velocity.y = y_vel;
         }
-        game.physics.enable(item, Phaser.Physics.ARCADE);
         item.body.collideWorldBounds = true;
         item.body.bounce.set(1);
         game.time.events.add(Phaser.Timer.SECOND * 10, erase, this);
