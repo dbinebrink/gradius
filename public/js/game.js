@@ -45,6 +45,7 @@ var score_3_switch = false;
 var debugFlag = false;
 var bulletsCollision = true;
 var music_status;
+var bulletsCollision_status;
 var Game = {
 
     preload : function() {
@@ -95,6 +96,7 @@ var Game = {
         stageString = '';
         power_up_count = 1;
         music_status = 'ON';
+        bulletsCollision_status = 'ON';
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         music = game.add.audio('music1');
@@ -168,6 +170,9 @@ var Game = {
         //  The score
         scoreString = 'Score: ';
         scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
+
+        bulletsCollisionString = 'Bul Col: ';
+        bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
 
         //  Lives
         lives = game.add.group();
@@ -579,8 +584,15 @@ var Game = {
         //Display seconds, add a 0 to the start if less than 10
         result += (seconds < 10) ? ":0" + seconds : ":" + seconds; 
 
-        if(seconds % 10 == 0) {
+        if(seconds != 0 && seconds % 10 == 0) {
             score += 100;
+            scoreText.text = scoreString + score;
+            setTimeout(function()
+            {
+                var bonustext = game.add.text(game.world.centerX, game.world.centerY, "Bonus 100points", { font: '40px Arial', fill: '#ffffff' });
+                bonustext.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){bonustext.destroy();}, 999);            
+            }, 0);
         }
 
         me.timeLabel.text = result;
@@ -976,11 +988,15 @@ var Game = {
     turnOnBulletsCollision : function(){
         bulletsCollision = true;
         console.log("bulletsCollision is now on");
+        bulletsCollision_status = 'ON';
+        bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
     },
     
     turnOffBulletsCollision : function(){
         bulletsCollision = false;
         console.log("bulletsCollision is now off");
+        bulletsCollision_status = 'OFF';
+        bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
     },
     
     debugCollisionMessage : function(object1, object2){
