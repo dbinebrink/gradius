@@ -108,6 +108,8 @@ addBullet_item.addAbility("beforeFire", "Bullets", (bulletObj, currentBullet) =>
 var fireRateUp_item = new item("fireRateUp", "common");
 
 fireRateUp_item.addAbility("fireRate", "Bullets", x => x-0.1);
+var playerSpeedUp_item = new item("playerSpeedUp", "common");
+playerSpeedUp_item.addAbility("playerSpeed", x => x+10);
 
 
 // var Shotgun_item = new item("Shotgun", "uncommon");
