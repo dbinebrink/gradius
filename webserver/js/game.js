@@ -528,9 +528,9 @@ var Game = {
         if(debugFlag){
             this.debugCollisionMessage(player, object);
         }
-        console.log(Player.info.invincibleTime + " " + game.time.now);
+        // console.log(Player.info.invincibleTime + " " + game.time.now);
         if ((game.time.now < Player.info.invincibleTime) || !aliens.countLiving()) return;
-        console.log(1);
+        // console.log(1);
         game.add.audio('sfx_player_hit');
         sfx_player_hit.volume = 0.6;
         sfx_player_hit.play();

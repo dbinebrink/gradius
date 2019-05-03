@@ -2,7 +2,7 @@
     "itemAbilityTags" : {
         "Player" : {
             "changeParameter" : [
-                "maxHealth", "evasion", "speed", "image"
+                "maxHealth", "evasion", "speed", "image", "invincibleTime"
             ],
             "changeFunction" : [
                 "animation"
@@ -188,5 +188,27 @@
                 }
             }
         },
+        
+        {
+            "name" : "superArmor",
+            "rarity" : "common",
+            "isActive" : false,
+
+            "abilities" : {
+                "Player" : {
+                    "changeParameter" : {
+                        "invincibleTime" : "x => game.time.now + 15000"
+                    },
+                    "changeFunction" : {},
+                    "addFunction" : {}
+                },
+                
+                "Bullets" : {
+                    "changeParameter" : {},
+                    "changeFunction" : {},
+                    "addFunction" : {}
+                }
+            }
+        }
     ]
 }
