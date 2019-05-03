@@ -17,10 +17,13 @@ var Player = {
             obj.animations.add('up', [3, 4], 2, false);
             obj.animations.add('down', [0, 1], 2, false);
         }
-
         this.sprite = game.add.sprite(150, 300, this.info.playerImage);
-        this.sprite.anchor.setTo(0.5, 0.5);
         game.physics.enable(sprite, Phaser.Physics.ARCADE);
+        this.setPlayerSprite();
+    },
+    
+    setPlayerSprite : function(){
+        this.sprite.anchor.setTo(0.5, 0.5);
         this.sprite.body.setSize(64,32,0,16);
         this.info.playerAnimation(this.sprite);
     },
