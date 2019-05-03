@@ -18,11 +18,12 @@ class item {
     
     static getAbilityList() {
         return [
-            "damage", "bulletSpeed", "fireRate", "playerSpeed", "fireAtOnce",
-            "evasion", "piercing", "bulletType", "beforeFire",
+            "damage", "bulletSpeed", "fireRate", "fireAtOnce",
+            "piercing", "bulletType", "beforeFire",
+            "playerMaxHealth", "playerEvasion", "playerSpeed",
             "firing", "afterFire", "bulletCollision",
-            "hitEnemy", "always", "using", "playerImage",
-            "bulletAnimation", "bulletFireSound"
+            "hitEnemy", "always", "using", "playerImage", "playerAnimation",
+            "bulletAnimation", "bulletFireSound", "colideEnemy"
         ];
     }
 
@@ -62,7 +63,7 @@ var tracking_item = new item("tracking", "uncommon");
 tracking_item.addAbility("firing", (bulletObj, currentBullet) => {
     let enemy = aliens.getClosestTo({x:currentBullet.x - aliens.x,y:currentBullet.y-30});
     // console.log(this.Bullets.info.bulletSpeed);
-    let trackingPerformance = 10;
+    let trackingPerformance = 0.03;
     let x = currentBullet.body.velocity.x+(enemy.body.x-currentBullet.x)*trackingPerformance;
     let y = currentBullet.body.velocity.y+(enemy.body.y-currentBullet.y)*trackingPerformance;
 
