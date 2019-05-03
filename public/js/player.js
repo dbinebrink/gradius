@@ -43,6 +43,7 @@ var Player = {
     },
 
     addItem : function(getItem){
+        console.log(getItem)
         let itemAbilites = getItem.abilities.Player;
         for( [key, value] of Object.entries(itemAbilites) ) {
             console.log(key, value[0]);
@@ -59,7 +60,7 @@ var Player = {
             }
         }
 
-        this.setBulletGroup();
+        this.setPlayerSprite();
     },
 
     damage : function(getDamage) {

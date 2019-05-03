@@ -109,7 +109,7 @@ var fireRateUp_item = new item("fireRateUp", "common");
 
 fireRateUp_item.addAbility("fireRate", "Bullets", x => x-0.1);
 var playerSpeedUp_item = new item("speedUp", "common");
-playerSpeedUp_item.addAbility("speed", x => x+10);
+playerSpeedUp_item.addAbility("speed", "Player", x => x+10);
 
 
 // var Shotgun_item = new item("Shotgun", "uncommon");
