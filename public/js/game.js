@@ -211,7 +211,7 @@ var Game = {
 
             //  Run collision
             game.physics.arcade.overlap(Bullets.bulletGroup, aliens, this.collisionHandler, null, this);
-            if (Bullets.info.bulletsCollision){
+            if (Bullets.info.collideEnemyBullet){
                 game.physics.arcade.overlap(Bullets.bulletGroup, enemyBullets, this.playerBreakEnemyBullet, null, this);
             }
             game.physics.arcade.overlap(Player.sprite, aliens, this.enemyHitsPlayer, null, this);
@@ -711,12 +711,12 @@ var Game = {
     },
 
     turnOnBulletsCollision : function(){
-        Bullets.info.bulletsCollision = true;
+        Bullets.info.collideEnemyBullet = true;
         console.log("bulletsCollision is now on");
     },
     
     turnOffBulletsCollision : function(){
-        Bullets.info.bulletsCollision = false;
+        Bullets.info.collideEnemyBullet = false;
         console.log("bulletsCollision is now off");
     },
     
