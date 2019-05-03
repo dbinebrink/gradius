@@ -34,6 +34,7 @@ var player_speed;
 var power_up_count = 1;
 var power_up;
 var settings;
+var settingButton;
 var speed_up;
 var player_speed;
 var power_up_count = 1;
@@ -159,8 +160,10 @@ var Game = {
         aliens.physicsBodyType = Phaser.Physics.ARCADE;
 
         // The setting button
-        game.add.button(30,20, 'settingButton', this.showSettingMessageBox, this);
+        settingButton = game.add.button(30,20, 'settingButton', this.showSettingMessageBox, this);
         settings = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+        settingButton.inputEnabled = true;
+        settings.inputEnabled = true;
 
         // The stage
         stageString = 'Stage: ';
@@ -908,6 +911,8 @@ var Game = {
         bulletCollisionOffButton.events.onInputDown.add(this.turnOffBulletsCollision,this);
 
         this.msgBox = msgBox;
+        settingButton.inputEnabled = true;
+        settings.inputEnabled = true;
     },
 
     goMenu : function() {
@@ -944,6 +949,8 @@ var Game = {
                 setTimeout(function(){resumetimer.destroy();}, 999);            
             }, 2000);
         setTimeout(function(){game.paused = false;}, 3000);
+        settingButton.inputEnabled = false;
+        settings.inputEnabled = false;
     },
     hideBox1 : function(){
         this.msgBox1.destroy();
