@@ -1,5 +1,5 @@
 var Player = {
-    basicParamList : ["maxHealth", "evasion", "speed", "image"],
+    basicParamList : ["maxHealth", "evasion", "speed", "image", "invincibleTime"],
     basicMethodList : ["animation"],
     activatePositionList : ["always", "colideEnemy", "moving"],
     info : {
@@ -13,6 +13,7 @@ var Player = {
         this.info.speed = 200;
         this.info.maxHealth = 3;
         this.info.evasion = 0; // 0~100까지의 숫자로 풀레이어의 총알 회피 확률을 나타냄
+        this.info.invincibleTime = 0;
         this.info.animation = function(obj){
             obj.animations.add('up', [3, 4], 2, false);
             obj.animations.add('down', [0, 1], 2, false);
@@ -40,6 +41,11 @@ var Player = {
         this.sprite.maxHealth = this.info.maxHealth;
         this.sprite.body.setSize(64,32,0,16);
         this.info.animation(this.sprite);
+        this.sprite.update = () => {
+            for( functionPriority in Player.info.always ){
+                Player.info.always[functionPriority](Player, this);
+            }
+        }
     },
 
     addItem : function(getItem){
@@ -62,7 +68,7 @@ var Player = {
 
         this.setPlayerSprite();
     },
-
+    
     damage : function(getDamage) {
         live = this.healthGroup.getChildAt(this.info.maxHealth-this.sprite.health);
         live.alpha = 0;
