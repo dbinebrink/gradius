@@ -32,7 +32,7 @@ var Bullets = {
         this.info.outOfBoundsKill = true;
         this.info.checkWorldBounds = true;
         this.info.initValue = {
-            position : {x : 20, y : 0},
+            position : {x : 40, y : 0},
             velocity : {x : this.info.speed*100, y : 0}
         }
         

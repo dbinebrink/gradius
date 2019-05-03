@@ -252,9 +252,7 @@ var Game = {
             game.physics.arcade.overlap(Player.sprite, score_up_2, this.getScore_up_2, null, this);
             game.physics.arcade.overlap(Player.sprite, score_up_3, this.getScore_up_3, null, this);
         }
-    },
-
-   
+    },   
 
     createAliens : function() {
         let alienImage;
@@ -287,8 +285,9 @@ var Game = {
             movepoint_y = Math.random() * 540 + 30;
             alien = aliens.create(movepoint_x, movepoint_y, alienImage);
         }
-        if(stage%5 == 0) alienHealth += 2;
-        alien.setHealth(alienHealth);
+        alien.setHealth(alienHealth + 2*Math.round(stage/5));
+        alien.scale.set(alienSizeMultiple);
+
         alien.anchor.setTo(0.5, 0.5);
         alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
         alien.play('fly'); 
