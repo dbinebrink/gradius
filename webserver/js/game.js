@@ -36,12 +36,9 @@ var score_2_switch = false;
 var score_up_3;
 var score_3_switch = false;
 var debugFlag = false;
-<<<<<<< HEAD:public/js/game.js
-=======
 var bulletsCollision = true;
 var music_status;
 var bulletsCollision_status;
->>>>>>> master:webserver/js/game.js
 var Game = {
 
     preload : function() {
@@ -74,11 +71,8 @@ var Game = {
         // load the setting icon
         game.load.image('settingButton', 'img/settingButton.png');
         game.load.image('settingBack', 'img/settingBackground.png');
-<<<<<<< HEAD:public/js/game.js
-=======
         game.load.image('settingBack1', 'img/settingBackground1.png');
 
->>>>>>> master:webserver/js/game.js
     },
 
     create  : function() {
@@ -94,13 +88,10 @@ var Game = {
         stage = 1;
         stageString = '';
         power_up_count = 1;
-<<<<<<< HEAD:public/js/game.js
         alienHealth = 1;
 
-=======
         music_status = 'ON';
         bulletsCollision_status = 'ON';
->>>>>>> master:webserver/js/game.js
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         music = game.add.audio('music1');
@@ -129,7 +120,6 @@ var Game = {
         Player.initalize(game);
 
         //  Our bullet group
-        // console.log(Bullets);
         Bullets.initalize(game);
 
         // The enemy's bullets
@@ -162,23 +152,9 @@ var Game = {
         scoreString = 'Score: ';
         scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
 
-<<<<<<< HEAD:public/js/game.js
-=======
         bulletsCollisionString = 'Bul Col: ';
         bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
 
-        //  Lives
-        lives = game.add.group();
-        for (var i = 2; i >= 0; i--) {
-            var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
-            ship.anchor.setTo(0.5, 0.5);
-            ship.angle = 0;
-            ship.alpha = 0.4;
-        }
-        live_count = 3
-        game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
-
->>>>>>> master:webserver/js/game.js
         // hearts
         heart = game.add.group();
         heart.enableBody = true;
@@ -321,26 +297,14 @@ var Game = {
         ailencreatecount++;
         var movepoint_x = 930;
         var movepoint_y = Math.random() * 540 + 30;
-<<<<<<< HEAD:public/js/game.js
         var alien = aliens.create(movepoint_x, movepoint_y, 'invader');
         while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, Player.sprite)){
-=======
-        var alien = aliens.create(movepoint_x, movepoint_y, alienImage);
-        while(game.physics.arcade.overlap(alien, aliens) || game.physics.arcade.overlap(alien, player)){
->>>>>>> master:webserver/js/game.js
             alien.kill();
             movepoint_y = Math.random() * 540 + 30;
             alien = aliens.create(movepoint_x, movepoint_y, alienImage);
         }
-<<<<<<< HEAD:public/js/game.js
         if(stage%5 == 0) alienHealth += 2;
         alien.setHealth(alienHealth);
-=======
-        alien.maxHealth = alienHealth;
-        alien.setHealth(alienHealth);
-        alien.scale.set(alienSizeMultiple);
-
->>>>>>> master:webserver/js/game.js
         alien.anchor.setTo(0.5, 0.5);
         alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
         alien.play('fly'); 
@@ -419,18 +383,11 @@ var Game = {
         //  When a bullet hits an alien we kill them both
         Bullets.killBullet(bullet);
 
-<<<<<<< HEAD:public/js/game.js
-        if(Math.random() * 1000 < 2000) {
+        if(Math.random() * 1000 < 200) {
             this.makeRandomItem(alien.body.x, alien.body.y, -200, (Math.random()*2-1)*200 );
         }
         // alien.kill();
         alien.damage(Bullets.info.damage);
-=======
-        if(Math.random() * 1000 < 20) {
-            this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 );
-        }
-        alien.damage(1);
->>>>>>> master:webserver/js/game.js
 
         game.add.audio('sfx_enemy_die');
         sfx_enemy_die.volume = 0.6;
