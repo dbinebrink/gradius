@@ -21,8 +21,8 @@ class item {
             return [
                 "damage", "speed", "fireRate", "fireAtOnce", "piercing",
                 "type", "collideEnemyBullet", "image", "animation", "fireSound",
-                'outOfBoundsKill', 'checkWorldBounds', "maxBulletCount",
-                "beforeFire", "firing", "afterFire", "hitEnemy", "always",
+                "outOfBoundsKill", "checkWorldBounds", "maxBulletCount",
+                "beforeFire", "firing", "afterFire", "hitEnemy", "always"
             ];
         }
         else if(appliedObj == "Player") {
@@ -47,22 +47,21 @@ var laser_item = new item("laser", "uncommon");
 
 laser_item.addAbility("damage", "Bullets", "x => x/3");
 laser_item.addAbility("fireRate", "Bullets", "x => x*3");
-laser_item.addAbility("type", "Bullets", "x => 'laser'");
+laser_item.addAbility("image", "Bullets", "x => 'laser'");
 laser_item.addAbility("piercing", "Bullets", "x => 0");
 laser_item.addAbility("firing", "Bullets", "(bulletObj, currentBullet) => {\
     currentBullet.body.x = Player.sprite.body.x + bulletObj.info.initValue.position.x;\
     currentBullet.body.y = Player.sprite.body.y;\
 }");
-
 laser_item.addAbility("animation", "Bullets", "obj => {\
     obj.animations.add('shootBeam', [0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4]);\
     return 'shootBeam';\
 }");
 
 // make pierce item
-var pierce_item = new item("pierce", "common");
+var pierce_item = new item("addPenetration", "common");
 
-pierce_item.addAbility("piercing", "Bullets", "x => {\
+pierce_item.addAbility("penetration", "Bullets", "x => {\
     if(x > 0) return x+1;\
     else return x;\
 }");

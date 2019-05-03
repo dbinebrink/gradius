@@ -1,7 +1,6 @@
 var Bullets = {
-    bulletTypeList : ['bullet', 'laser', 'rocket'],
     basicParamList : [
-        "damage", "speed", "fireRate", "type", "image", "piercing", "fireAtOnce", "fireSound",
+        "damage", "speed", "fireRate", "image", "penetration", "fireAtOnce", "fireSound",
         "maxBulletCount", "collideEnemyBullet", 'outOfBoundsKill', 'checkWorldBounds'],
     basicMethodList : ["animation"],
     activatePositionList : ["beforeFire", "firing", "afterFire", "always", "hitEnemy"],
@@ -21,10 +20,10 @@ var Bullets = {
         this.bulletTime = 0;
         this.currentShotCount = 0;
 
-        this.info.type = 'bullet';
+        this.info.image = 'bullet';
         this.info.damage = 1;
         this.info.fireRate = 0.6;
-        this.info.piercing = 1;
+        this.info.penetration = 1;
         this.info.maxBulletCount = 100;
         this.info.speed = 6;
         this.info.fireAtOnce = 1;
@@ -55,10 +54,10 @@ var Bullets = {
     
     setBulletGroup : function(){
         this.bulletGroup.removeAll(true, true, false);
-        this.bulletGroup.createMultiple(this.info.maxBulletCount, this.info.type, 100);
+        this.bulletGroup.createMultiple(this.info.maxBulletCount, this.info.image, 100);
         this.bulletGroup.setAll('outOfBoundsKill', this.info.outOfBoundsKill);
         this.bulletGroup.setAll('checkWorldBounds', this.info.checkWorldBounds);
-        Bullets.bulletGroup.forEach((x, y) => {x.piercing = y;}, this, false, this.info.piercing);
+        Bullets.bulletGroup.forEach((x, y) => {x.penetration = y;}, this, false, this.info.penetration);
         return this.bulletGroup;
     },
 
@@ -120,10 +119,10 @@ var Bullets = {
     },
 
     killBullet : function(bullet){
-        if(bullet.piercing > 0){
-            bullet.piercing--;
-            if(bullet.piercing == 0){
-                bullet.piercing = this.info.piercing;
+        if(bullet.penetration > 0){
+            bullet.penetration--;
+            if(bullet.penetration == 0){
+                bullet.penetration = this.info.penetration;
                 bullet.kill();
             }
         }
