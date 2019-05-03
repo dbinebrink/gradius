@@ -44,7 +44,7 @@ var Game = {
         // load all sprites
         game.load.image('speed_up', 'img/speed_up.png');
         game.load.image('bullet', 'img/bullet.png');
-        game.load.spritesheet('laser', 'bullet_img/blue_beam_ani.png', 900, 30);
+        game.load.spritesheet('laser', 'img/blue_beam_ani.png', 900, 30);
         game.load.image('enemyBullet', 'img/enemy-bullet.png');
         game.load.spritesheet('invaderBasic', 'img/invader32x32x4.png', 32, 32);
         game.load.spritesheet('invaderGreen', 'img/invader32x32x4-green.png', 32, 32);
@@ -528,9 +528,9 @@ var Game = {
         if(debugFlag){
             this.debugCollisionMessage(player, object);
         }
-        console.log(Player.info.invincibleTime + " " + game.time.now);
+        // console.log(Player.info.invincibleTime + " " + game.time.now);
         if ((game.time.now < Player.info.invincibleTime) || !aliens.countLiving()) return;
-        console.log(1);
+        // console.log(1);
         game.add.audio('sfx_player_hit');
         sfx_player_hit.volume = 0.6;
         sfx_player_hit.play();
