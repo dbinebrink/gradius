@@ -23,6 +23,8 @@ var music;
 var sfx_fire;
 var sfx_enemy_die;
 var heart;
+var shield;
+var isShield = false;
 var last = -1;
 var first = 0;
 var stage = 1;
@@ -62,6 +64,7 @@ var Game = {
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         game.load.image('starfield', 'img/starfield.png');
         game.load.image('heart', 'img/heart.png');
+        game.load.image('shield', 'img/shield.png');
         game.load.image('power_up','img/power_up.png');
         game.load.image('score_up_2', 'img/score_up_2.png');
         game.load.image('score_up_3', 'img/score_up_3.png');
@@ -195,6 +198,11 @@ var Game = {
         heart.enableBody = true;
         heart.physicsBodyType = Phaser.Physics.ARCADE;
 
+        // shield
+        shield = game.add.group();
+        shield.enableBody = true;
+        shield.physicsBodyType = Phaser.Physics.ARCADE
+
         // power_up
         power_up = game.add.group();
         power_up.enableBody = true;
@@ -323,11 +331,13 @@ var Game = {
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(bullets, heart, this.changeItem, null, this);
-            game.physics.arcade.overlap(bullets, speed_up, this.changeItem, null, this);
+            game.physics.arcade.overlap(bullets, shield, this.changeItem, null, this);
             game.physics.arcade.overlap(bullets, power_up, this.changeItem, null, this);
+            game.physics.arcade.overlap(bullets, speed_up, this.changeItem, null, this);
             game.physics.arcade.overlap(bullets, score_up_2, this.changeItem, null, this);
             game.physics.arcade.overlap(bullets, score_up_3, this.changeItem, null, this);
             game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
+            game.physics.arcade.overlap(player, shield, this.getShield, null, this);
             game.physics.arcade.overlap(player, power_up, this.getPower_up, null, this);
             game.physics.arcade.overlap(player, speed_up, this.getspeed_up, null, this);
             game.physics.arcade.overlap(player, score_up_2, this.getScore_up_2, null, this);
@@ -479,8 +489,9 @@ var Game = {
         //  When a bullet hits an alien we kill them both
         bullet.kill();
 
-        if(Math.random() * 1000 < 20) {
+        if(Math.random() * 1000 < 200) {
             this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 );
+            console.log(1);
         }
         alien.damage(1);
 
@@ -529,25 +540,12 @@ var Game = {
     makeRandomItem : function(x, y, x_vel = 0, y_vel = 0){
         game.physics.startSystem(Phaser.Physics.ARCADE);
         console.log(x,y,x_vel,y_vel);
-        var random = Math.random();
-        var item;
-        if(random < 0.22){
-            item = power_up.create(x, y,'power_up');
-        }
-        else if(random < 0.44){
-            item = speed_up.create(x, y, 'speed_up');
+        var option = ['power_up', 'speed_up', 'score_up_2', 'score_up_3', 'heart', 'shield'];
 
-        }
-        else if(random < 0.66){
-            item = score_up_2.create(x, y, 'score_up_2');
+        var random = option[Math.floor(Math.random() * option.length)];
 
-        }
-        else if(random < 0.77){
-            item = score_up_3.create(x, y, 'score_up_3');
-        }
-        else{
-            item = heart.create(x, y, 'heart');
-        }
+        var item = eval(random).create(x,y,random);
+        
         item.anchor.setTo(0.5, 0.5);
         if(x_vel != 0){
             item.body.velocity.x = x_vel;
@@ -639,12 +637,31 @@ var Game = {
         explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
         explosion.play('kaboom', 30, false, true);
     },
-
+    
     enemyHitsPlayer : function(player, object) {
         if(debugFlag){
             this.debugCollisionMessage(player, object);
         }
-        if ((game.time.now < player.invincibleTime) || !aliens.countLiving()) return;
+        console.log(player.invincibleTime, +" "+ game.time.now, "shield: ", isShield);
+        if (isShield) {
+            if ((game.time.now < player.invincibleTime)) {
+                game.add.audio('sfx_enemy_die');
+                sfx_enemy_die.volume = 0.6;
+                sfx_enemy_die.play();
+                object.kill()
+
+                var explosion = explosions.getFirstExists(false);
+                explosion.reset(player.body.x, player.body.y);
+                explosion.play('kaboom', 30, false, true);
+                return;
+            }
+            else {
+                isShield = false;
+            }
+        }
+        else {
+            if ((game.time.now < player.invincibleTime) || !aliens.countLiving()) return;
+        }
         game.add.audio('sfx_player_hit');
         sfx_player_hit.volume = 0.6;
         sfx_player_hit.play();
@@ -701,6 +718,12 @@ var Game = {
             live = lives.getChildAt(max_live-live_count);
             live.alpha = 0.4;
         }
+    },
+
+    getShield : () => {
+        shield.kill();
+        player.invincibleTime = game.time.now + 15000;
+        isShield = true;    
     },
 
     getPower_up: function(player, power_up) {
