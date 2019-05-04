@@ -930,6 +930,8 @@ var Game = {
     },
     hideBox : function(){
         this.msgBox.destroy();
+        settingButton.inputEnabled = false;
+        settings.inputEnabled = false;
         setTimeout(function()
             {
                 var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 3, { font: '124px Arial', fill: '#00f' });
@@ -948,9 +950,11 @@ var Game = {
                 resumetimer.anchor.setTo(0.5, 0.5);
                 setTimeout(function(){resumetimer.destroy();}, 999);            
             }, 2000);
-        setTimeout(function(){game.paused = false;}, 3000);
-        settingButton.inputEnabled = false;
-        settings.inputEnabled = false;
+        setTimeout(function(){
+            game.paused = false;
+            settingButton.inputEnabled = true;
+            settings.inputEnabled = true;
+        }, 3000);
     },
     hideBox1 : function(){
         this.msgBox1.destroy();
