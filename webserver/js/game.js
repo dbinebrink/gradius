@@ -828,6 +828,10 @@ var Game = {
         var bulletCollisionText = game.add.text(0, 0, 'Bullets Collision', { fontSize: 19 });
         var bulletCollisionOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
         var bulletCollisionOffButton = game.add.text(0,0, 'OFF', { fontSize: 19 });
+        var m_vol_text = game.add.text(0, 0, 'Master Volume', { fontsize : 19 });
+        var m_volumeUp = game.add.text(0, 0, '+', {fontsize: 19});
+        var m_volumeDown = game.add.text(0, 0, '-', {fontsize: 19});
+        var m_volume = game.add.text(0, 0, Math.floor(music.volume * 100), { fontsize: 19 });
 
 
         msgBox.add(back);
@@ -843,6 +847,10 @@ var Game = {
         msgBox.add(bulletCollisionText);
         msgBox.add(bulletCollisionOffButton);
         msgBox.add(bulletCollisionOnButton);
+        msgBox.add(m_vol_text);
+        msgBox.add(m_volumeUp);
+        msgBox.add(m_volume);
+        msgBox.add(m_volumeDown);
 
         msgBox.x = game.width / 2 - msgBox.width / 2;
         msgBox.y = game.height / 2 - msgBox.height / 2;
@@ -850,14 +858,14 @@ var Game = {
         mainMenu.wordWrapWidth = back * 0.8;
         mainMenu.addColor("#ffffff", 0);
         mainMenu.x = msgBox.width / 2 - mainMenu.width / 2;
-        mainMenu.y = msgBox.height - mainMenu.height*5;
+        mainMenu.y = msgBox.height - mainMenu.height*3.75;
         mainMenu.inputEnabled = true;
         mainMenu.events.onInputDown.add(this.real,this);
         
         restartButton1.wordWrapWidth = back * 0.8;
         restartButton1.addColor("#ffffff", 0);
         restartButton1.x = msgBox.width / 2 - restartButton1.width / 2;
-        restartButton1.y = msgBox.height - restartButton1.height*7.5;
+        restartButton1.y = msgBox.height - restartButton1.height*5;
         restartButton1.inputEnabled = true;
         restartButton1.events.onInputDown.add(this.startGame,this);
 
@@ -925,6 +933,31 @@ var Game = {
         bulletCollisionOffButton.y = msgBox.y + bulletCollisionText.height + 70;
         bulletCollisionOffButton.inputEnabled = true;
         bulletCollisionOffButton.events.onInputDown.add(this.turnOffBulletsCollision,this);
+
+        m_vol_text.wordWrapWidth = 10;
+        m_vol_text.addColor("#ffffff", 0);
+        m_vol_text.x = msgBox.width / 3 - 40;
+        m_vol_text.y =  restartButton1.y - 90;
+
+        m_volumeUp.wordWrapWidth = back * 0.8;
+        m_volumeUp.addColor("#ffffff", 0);
+        m_volumeUp.x = msgBox.width / 3;
+        m_volumeUp.y = restartButton1.y - 60;
+        m_volumeUp.inputEnabled = true;
+        m_volumeUp.events.onInputDown.add(this.m_VolumeUp, this);
+
+        m_volumeDown.wordWrapWidth = back * 0.8;
+        m_volumeDown.addColor("#ffffff", 0);
+        m_volumeDown.x = msgBox.width / 3 - 60;
+        m_volumeDown.y = restartButton1.y - 60;
+        m_volumeDown.inputEnabled = true;
+        m_volumeDown.events.onInputDown.add(this.m_VolumeDown, this);
+
+        m_volume.wordWrapWidth = back * 0.8;
+        m_volume.addColor("#ffffff", 0);
+        if(music.volume == 1.0) m_volume.x = msgBox.width / 3 - 50;
+        else m_volume.x =  msgBox.width / 3 - 40;
+        m_volume.y = restartButton1.y - 60;
 
         this.msgBox = msgBox;
         settingButton.inputEnabled = true;
@@ -1078,5 +1111,15 @@ var Game = {
                         "color:black",
                         object2Color,
                         "color:black");
-    }    
+    },
+
+    m_VolumeUp : function() {
+        if(music.volume <= 0.9) music.volume += 0.1;
+        this.showSettingMessageBox();
+    },
+
+    m_VolumeDown : function() {
+        if(music.volume >= 0.1) music.volume -= 0.1;
+        this.showSettingMessageBox();
+    }
 }
