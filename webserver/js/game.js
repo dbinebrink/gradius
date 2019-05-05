@@ -49,6 +49,8 @@ var debugFlag = false;
 var bulletsCollision = true;
 var music_status;
 var bulletsCollision_status;
+var seconds = 0;
+var minutes = 0;
 var Game = {
 
     preload : function() {
@@ -573,26 +575,18 @@ var Game = {
     },
 
     updateTimer: function(){
-
         var me = this;
-
-        var currentTime = new Date();
-        var timeDifference = me.startTime.getTime() - currentTime.getTime();
-
-        //Time elapsed in seconds
-        me.timeElapsed = Math.abs(timeDifference / 1000);
-
-        //Time remaining in seconds
-
-        //Convert seconds into minutes and seconds
-        var minutes = Math.floor(me.timeElapsed / 60);
-        var seconds = Math.floor(me.timeElapsed) - (60 * minutes);
-
+        if(seconds + 1 >= 60) {
+            minutes += 1;
+            seconds = 0;
+        } else {
+            seconds += 1;
+        }
         //Display minutes, add a 0 to the start if less than 10
         var result = (minutes < 10) ? "0" + minutes : minutes; 
 
         //Display seconds, add a 0 to the start if less than 10
-        result += (seconds < 10) ? ":0" + seconds : ":" + seconds; 
+        result += (seconds < 10) ? ":0" + seconds : ":" + seconds;
 
         if(seconds != 0 && seconds % 10 == 0) {
             score += 100 * stage;
@@ -606,7 +600,6 @@ var Game = {
         }
 
         me.timeLabel.text = result;
-
     },
 
     changeItem : function(bullet, object){
