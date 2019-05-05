@@ -23,6 +23,8 @@ var music;
 var sfx_fire;
 var sfx_enemy_die;
 var heart;
+var shield;
+var isShield = false;
 var last = -1;
 var first = 0;
 var stage = 1;
@@ -34,6 +36,7 @@ var player_speed;
 var power_up_count = 1;
 var power_up;
 var settings;
+var settingButton;
 var speed_up;
 var player_speed;
 var power_up_count = 1;
@@ -61,6 +64,7 @@ var Game = {
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         game.load.image('starfield', 'img/starfield.png');
         game.load.image('heart', 'img/heart.png');
+        game.load.image('shield', 'img/shield.png');
         game.load.image('power_up','img/power_up.png');
         game.load.image('score_up_2', 'img/score_up_2.png');
         game.load.image('score_up_3', 'img/score_up_3.png');
@@ -159,8 +163,10 @@ var Game = {
         aliens.physicsBodyType = Phaser.Physics.ARCADE;
 
         // The setting button
-        game.add.button(30,20, 'settingButton', this.showSettingMessageBox, this);
+        settingButton = game.add.button(30,20, 'settingButton', this.showSettingMessageBox, this);
         settings = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+        settingButton.inputEnabled = true;
+        settings.inputEnabled = true;
 
         // The stage
         stageString = 'Stage: ';
@@ -179,18 +185,23 @@ var Game = {
         //  Lives
         lives = game.add.group();
         for (var i = 2; i >= 0; i--) {
-            var ship = lives.create(game.world.width - 150 + (60 * i), 60, 'ship');
+            var ship = lives.create(game.world.width - 150 + (60 * i), 50, 'ship');
             ship.anchor.setTo(0.5, 0.5);
             ship.angle = 0;
             ship.alpha = 0.4;
         }
         live_count = 3
-        game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
+        //game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
 
         // hearts
         heart = game.add.group();
         heart.enableBody = true;
         heart.physicsBodyType = Phaser.Physics.ARCADE;
+
+        // shield
+        shield = game.add.group();
+        shield.enableBody = true;
+        shield.physicsBodyType = Phaser.Physics.ARCADE
 
         // power_up
         power_up = game.add.group();
@@ -320,11 +331,13 @@ var Game = {
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(bullets, heart, this.changeItem, null, this);
-            game.physics.arcade.overlap(bullets, speed_up, this.changeItem, null, this);
+            game.physics.arcade.overlap(bullets, shield, this.changeItem, null, this);
             game.physics.arcade.overlap(bullets, power_up, this.changeItem, null, this);
+            game.physics.arcade.overlap(bullets, speed_up, this.changeItem, null, this);
             game.physics.arcade.overlap(bullets, score_up_2, this.changeItem, null, this);
             game.physics.arcade.overlap(bullets, score_up_3, this.changeItem, null, this);
             game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
+            game.physics.arcade.overlap(player, shield, this.getShield, null, this);
             game.physics.arcade.overlap(player, power_up, this.getPower_up, null, this);
             game.physics.arcade.overlap(player, speed_up, this.getspeed_up, null, this);
             game.physics.arcade.overlap(player, score_up_2, this.getScore_up_2, null, this);
@@ -476,8 +489,9 @@ var Game = {
         //  When a bullet hits an alien we kill them both
         bullet.kill();
 
-        if(Math.random() * 1000 < 20) {
+        if(Math.random() * 1000 < 200) {
             this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 );
+            console.log(1);
         }
         alien.damage(1);
 
@@ -526,25 +540,12 @@ var Game = {
     makeRandomItem : function(x, y, x_vel = 0, y_vel = 0){
         game.physics.startSystem(Phaser.Physics.ARCADE);
         console.log(x,y,x_vel,y_vel);
-        var random = Math.random();
-        var item;
-        if(random < 0.22){
-            item = power_up.create(x, y,'power_up');
-        }
-        else if(random < 0.44){
-            item = speed_up.create(x, y, 'speed_up');
+        var option = ['power_up', 'speed_up', 'score_up_2', 'score_up_3', 'heart', 'shield'];
 
-        }
-        else if(random < 0.66){
-            item = score_up_2.create(x, y, 'score_up_2');
+        var random = option[Math.floor(Math.random() * option.length)];
 
-        }
-        else if(random < 0.77){
-            item = score_up_3.create(x, y, 'score_up_3');
-        }
-        else{
-            item = heart.create(x, y, 'heart');
-        }
+        var item = eval(random).create(x,y,random);
+        
         item.anchor.setTo(0.5, 0.5);
         if(x_vel != 0){
             item.body.velocity.x = x_vel;
@@ -565,7 +566,7 @@ var Game = {
 
         var me = this;
 
-        me.timeLabel = me.game.add.text(600, 15, "00:00", {font: "50px Arial", fill: "#fff"}); 
+        me.timeLabel = me.game.add.text(640, 20, "00:00", {font: "50px Arial", fill: "#fff"}); 
         me.timeLabel.anchor.setTo(0.5, 0);
         me.timeLabel.align = 'center';
 
@@ -598,7 +599,7 @@ var Game = {
             scoreText.text = scoreString + score;
             setTimeout(function()
             {
-                var bonustext = game.add.text(game.world.centerX, game.world.centerY, "Bonus"+100 * stage+"points", { font: '40px Arial', fill: '#ffffff' });
+                var bonustext = game.add.text(scoreText.width+280, 40, "+"+100 * stage,{ font: '25px Arial', fill: '#ffffff' });
                 bonustext.anchor.setTo(0.5, 0.5);
                 setTimeout(function(){bonustext.destroy();}, 999);            
             }, 0);
@@ -636,12 +637,31 @@ var Game = {
         explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
         explosion.play('kaboom', 30, false, true);
     },
-
+    
     enemyHitsPlayer : function(player, object) {
         if(debugFlag){
             this.debugCollisionMessage(player, object);
         }
-        if ((game.time.now < player.invincibleTime) || !aliens.countLiving()) return;
+        console.log(player.invincibleTime, +" "+ game.time.now, "shield: ", isShield);
+        if (isShield) {
+            if ((game.time.now < player.invincibleTime)) {
+                game.add.audio('sfx_enemy_die');
+                sfx_enemy_die.volume = 0.6;
+                sfx_enemy_die.play();
+                object.kill()
+
+                var explosion = explosions.getFirstExists(false);
+                explosion.reset(player.body.x, player.body.y);
+                explosion.play('kaboom', 30, false, true);
+                return;
+            }
+            else {
+                isShield = false;
+            }
+        }
+        else {
+            if ((game.time.now < player.invincibleTime) || !aliens.countLiving()) return;
+        }
         game.add.audio('sfx_player_hit');
         sfx_player_hit.volume = 0.6;
         sfx_player_hit.play();
@@ -698,6 +718,12 @@ var Game = {
             live = lives.getChildAt(max_live-live_count);
             live.alpha = 0.4;
         }
+    },
+
+    getShield : () => {
+        shield.kill();
+        player.invincibleTime = game.time.now + 15000;
+        isShield = true;    
     },
 
     getPower_up: function(player, power_up) {
@@ -806,7 +832,7 @@ var Game = {
         var dbgMsgText = game.add.text(0, 0, "Debug Message", { fontSize: 19 });
         var dbgMsgOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
         var dbgMsgOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
-        var bulletCollitionText = game.add.text(0, 0, 'Bullets Collision', { fontSize: 19 });
+        var bulletCollisionText = game.add.text(0, 0, 'Bullets Collision', { fontSize: 19 });
         var bulletCollisionOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
         var bulletCollisionOffButton = game.add.text(0,0, 'OFF', { fontSize: 19 });
 
@@ -821,7 +847,7 @@ var Game = {
         msgBox.add(dbgMsgText);
         msgBox.add(dbgMsgOnButton);
         msgBox.add(dbgMsgOffButton);
-        msgBox.add(bulletCollitionText);
+        msgBox.add(bulletCollisionText);
         msgBox.add(bulletCollisionOffButton);
         msgBox.add(bulletCollisionOnButton);
 
@@ -888,26 +914,28 @@ var Game = {
         dbgMsgOffButton.inputEnabled = true;
         dbgMsgOffButton.events.onInputDown.add(this.turnOffDbgMsg,this);
 
-        bulletCollitionText.wordWrapWidth = back * 0.8;
-        bulletCollitionText.x = msgBox.width / 2 - bulletCollitionText.width / 2;
-        bulletCollitionText.y = msgBox.y + 70;
-        bulletCollitionText.addColor("#ffffff", 0);
+        bulletCollisionText.wordWrapWidth = back * 0.8;
+        bulletCollisionText.x = msgBox.width / 2 - bulletCollisionText.width / 2;
+        bulletCollisionText.y = msgBox.y + 70;
+        bulletCollisionText.addColor("#ffffff", 0);
 
         bulletCollisionOnButton.wordWrapWidth = back * 0.8;
         bulletCollisionOnButton.addColor("#ffffff", 0);
         bulletCollisionOnButton.x = msgBox.width / 2 - bulletCollisionOnButton.width - 10;
-        bulletCollisionOnButton.y = msgBox.y + bulletCollitionText.height + 70;
+        bulletCollisionOnButton.y = msgBox.y + bulletCollisionText.height + 70;
         bulletCollisionOnButton.inputEnabled = true;
         bulletCollisionOnButton.events.onInputDown.add(this.turnOnBulletsCollision,this);
 
         bulletCollisionOffButton.wordWrapWidth = back * 0.8;
         bulletCollisionOffButton.addColor("#ffffff", 0);
         bulletCollisionOffButton.x = msgBox.width / 2 + 10;
-        bulletCollisionOffButton.y = msgBox.y + bulletCollitionText.height + 70;
+        bulletCollisionOffButton.y = msgBox.y + bulletCollisionText.height + 70;
         bulletCollisionOffButton.inputEnabled = true;
         bulletCollisionOffButton.events.onInputDown.add(this.turnOffBulletsCollision,this);
 
         this.msgBox = msgBox;
+        settingButton.inputEnabled = true;
+        settings.inputEnabled = true;
     },
 
     goMenu : function() {
@@ -925,6 +953,8 @@ var Game = {
     },
     hideBox : function(){
         this.msgBox.destroy();
+        settingButton.inputEnabled = false;
+        settings.inputEnabled = false;
         setTimeout(function()
             {
                 var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 3, { font: '124px Arial', fill: '#00f' });
@@ -943,7 +973,11 @@ var Game = {
                 resumetimer.anchor.setTo(0.5, 0.5);
                 setTimeout(function(){resumetimer.destroy();}, 999);            
             }, 2000);
-        setTimeout(function(){game.paused = false;}, 3000);
+        setTimeout(function(){
+            game.paused = false;
+            settingButton.inputEnabled = true;
+            settings.inputEnabled = true;
+        }, 3000);
     },
     hideBox1 : function(){
         this.msgBox1.destroy();
