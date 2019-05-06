@@ -424,7 +424,7 @@ var Game = {
         else
             movepoint_x = 300 + Math.random()*200;
         if(movepoint_y < 300)
-            movevepointpoint_y = 600 - Math.random()*220;
+            movepoint_y = 600 - Math.random()*220;
         else
             movepoint_y = Math.random()*220;
 
