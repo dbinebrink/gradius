@@ -22,6 +22,7 @@ var livingEnemies = [];
 var music;
 var sfx_fire;
 var sfx_enemy_die;
+var sfx_get_item;
 var heart;
 var shield;
 var isShield = false;
@@ -80,6 +81,7 @@ var Game = {
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
+        game.load.audio('sfx_get_item' , 'audio/get_item.mp3');
         // load the setting icon
         game.load.image('settingButton', 'img/settingButton.png');
         game.load.image('settingBack', 'img/settingBackground.png');
@@ -125,6 +127,10 @@ var Game = {
         sfx_enemy_die = game.add.audio('sfx_enemy_die');
         sfx_enemy_die.volume = 0.5;
         sfx_enemy_die.allowMultiple = true;
+
+        sfx_get_item = game.add.audio('sfx_get_item');
+        sfx_get_item.volume = 0.5;
+        sfx_get_item.allowMultiple = true;
 
         //  The scrolling starfield background
         starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
@@ -711,12 +717,14 @@ var Game = {
     },
 
     getShield : () => {
+        sfx_get_item.play();
         shield.kill();
         player.invincibleTime = game.time.now + 15000;
         isShield = true;    
     },
 
     getPower_up: function(player, power_up) {
+        sfx_get_item.play();
         if(debugFlag){
             this.debugCollisionMessage(player, power_up);
         }
@@ -771,6 +779,7 @@ var Game = {
     },
   
     getScore_up_2 : function(player, score_up_2){
+        sfx_get_item.play();
         if(debugFlag){
             this.debugCollisionMessage(player, score_up_2);
         }
@@ -783,6 +792,7 @@ var Game = {
     },
 
     getScore_up_3 : function(player, score_up_3){
+        sfx_get_item.play();
         if(debugFlag){
             this.debugCollisionMessage(player, score_up_3);
         }
@@ -795,6 +805,7 @@ var Game = {
     },
 
     getspeed_up : function(player, speed_up){
+        sfx_get_item.play();
         if(debugFlag){
             this.debugCollisionMessage(player, speed_up);
         }
