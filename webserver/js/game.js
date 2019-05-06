@@ -424,7 +424,7 @@ var Game = {
         else
             movepoint_x = 300 + Math.random()*200;
         if(movepoint_y < 300)
-            movepoint_y = 600 - Math.random()*220;
+            movevepointpoint_y = 600 - Math.random()*220;
         else
             movepoint_y = Math.random()*220;
 
@@ -1174,6 +1174,7 @@ var Game = {
             sfx_enemy_die.volume += 0.1;
             sfx_stage_clear.volume += 0.1;
             sfx_player_hit.volume += 0.1;
+            sfx_get_item.volume += 0.1;
         }
         this.showSettingMessageBox();
     },
@@ -1184,6 +1185,7 @@ var Game = {
             sfx_enemy_die.volume -= 0.1;
             sfx_stage_clear.volume -= 0.1;
             sfx_player_hit.volume -= 0.1;
+            sfx_get_item.volume -= 0.1;
         }
         this.showSettingMessageBox();
     }
