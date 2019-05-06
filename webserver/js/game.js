@@ -1174,6 +1174,7 @@ var Game = {
             sfx_enemy_die.volume += 0.1;
             sfx_stage_clear.volume += 0.1;
             sfx_player_hit.volume += 0.1;
+            sfx_get_item.volume += 0.1;
         }
         this.showSettingMessageBox();
     },
@@ -1184,6 +1185,7 @@ var Game = {
             sfx_enemy_die.volume -= 0.1;
             sfx_stage_clear.volume -= 0.1;
             sfx_player_hit.volume -= 0.1;
+            sfx_get_item.volume -= 0.1;
         }
         this.showSettingMessageBox();
     }
