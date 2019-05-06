@@ -1051,9 +1051,12 @@ var Game = {
     },
     hideBox1 : function(){
         this.msgBox1.destroy();
+        this.showSettingMessageBox();
     },
     real : function(){
-        //this.msgBox.destroy();
+        this.msgBox.destroy();
+        settingButton.inputEnabled = false;
+        settings.inputEnabled = false;
         var msgBox1 = game.add.group();
         var back1 = game.add.sprite(300,200,'settingBack1');
         var real_exit = game.add.text(310,250,'Do you want to go main menu?',{ fontSize: 19 });
