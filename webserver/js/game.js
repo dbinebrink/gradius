@@ -271,6 +271,7 @@ var Game = {
         if (settings.isDown){
             music.stop();
             this.showSettingMessageBox();
+            // this.state.start('pauseMenu');
             music.play();
         }
 
@@ -502,7 +503,6 @@ var Game = {
 
         if(Math.random() * 1000 < 200) {
             this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 );
-            console.log(1);
         }
         alien.damage(1);
 
@@ -548,7 +548,9 @@ var Game = {
 
     makeRandomItem : function(x, y, x_vel = 0, y_vel = 0){
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        console.log(x,y,x_vel,y_vel);
+        if (debugFlag){
+            console.log("Item created at X:"+ x +", Y:"+ y +" velosity = ( X:"+x_vel+", Y:"+y_vel+")");
+        }
         var option = ['power_up', 'speed_up', 'score_up_2', 'score_up_3', 'heart', 'shield'];
 
         var random = option[Math.floor(Math.random() * option.length)];
@@ -641,7 +643,6 @@ var Game = {
         if(debugFlag){
             this.debugCollisionMessage(player, object);
         }
-        console.log(player.invincibleTime, +" "+ game.time.now, "shield: ", isShield);
         if (isShield) {
             if ((game.time.now < player.invincibleTime)) {
                 game.add.audio('sfx_enemy_die');
@@ -1145,13 +1146,16 @@ var Game = {
                 object2Color = "color:green";
             }
         }
-        console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+        console.log("Collision occured between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
                         "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
                         "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
                         object1Color,
                         "color:black",
                         object2Color,
                         "color:black");
+        if (isShield && (object2.key.localeCompare("invader") == 0 || object2.key.localeCompare("enemyBullet") == 0)) {
+            console.log("Shield block: shield will be down in "+ Math.round((player.invincibleTime - game.time.now)/1000) + "s");                
+        }    
     },
 
     m_VolumeUp : function() {
