@@ -8,112 +8,141 @@ class UndefinedTypeError {
     toString() { return this.name + ': "' + this.message + '"'; }
 }
 
+itemAbilityTags = {
+    "Player" : {
+        "changeParameter" : [
+            "maxHealth", "evasion", "speed", "image", "invincibleTime"
+        ],
+        "changeFunction" : [
+            "animation"
+        ],
+        "addFunction" : [
+            "always", "colideEnemy", "moving"
+        ]
+    },
+    
+    "Bullets" : {
+        "changeParameter" : [
+            "damage", "speed", "fireRate", "fireAtOnce",
+            "penetration", "image", "fireSound",
+            "outOfBoundsKill", "collideEnemyBullet",
+            "checkWorldBounds", "maxBulletCount"
+        ],
+        "changeFunction" : [
+            "animation"
+        ],
+        "addFunction" : [
+            "beforeFire", "firing", "afterFire", "hitEnemy", "always"
+        ]
+    }
+}
+
 class item {
     constructor(name, rarity, isActive = false) {
         this.name = name;
         this.rarity = rarity;
         this.isActive = isActive;
-        this.abilities = {"Bullets" : {}, "Player" : {}};
-    }
-    
-    static getAbilityList(appliedObj) {
-        if(appliedObj == "Bullets") {
-            return [
-                "damage", "speed", "fireRate", "fireAtOnce", "piercing",
-                "type", "collideEnemyBullet", "image", "animation", "fireSound",
-                "outOfBoundsKill", "checkWorldBounds", "maxBulletCount",
-                "beforeFire", "firing", "afterFire", "hitEnemy", "always"
-            ];
-        }
-        else if(appliedObj == "Player") {
-            return [
-                "maxHealth", "evasion", "speed", "image", "animation",
-                "always", "colideEnemy", "moving", "invincibleTime"
-            ];
-        }
+        this.abilities = {
+            "Bullets" : {
+                "changeParameter" : {},
+                "changeFunction" : {},
+                "addFunction" : {}
+            },
+            "Player" : {
+                "changeParameter" : {},
+                "changeFunction" : {},
+                "addFunction" : {}
+            }
+        };
     }
 
-    addAbility(type, appliedObj, value) {
-        if(!item.getAbilityList(appliedObj).includes(type)) throw new UndefinedTypeError("undefined ability type!");
-        if(!this.abilities[appliedObj][type]) this.abilities[appliedObj][type] = [];
-        this.abilities[appliedObj][type].push(eval(value));
+    addAbility(appliedObj, type, tag, value, priority = 1) {
+        if(!itemAbilityTags[appliedObj][type].includes(tag)) throw new UndefinedTypeError("undefined ability type!");
+
+        if(type == "addFunction"){
+            if(!this.abilities[appliedObj][type][tag]) this.abilities[appliedObj][type][tag] = []
+            this.abilities[appliedObj][type][tag].push({
+                "priority" : priority,
+                "function" : value
+            });
+        }
+        else{
+            this.abilities[appliedObj][type][tag] = value;
+        }
     }
 }
 
 // 웹브라우저 콘솔에서 게임을 실행시킨 후 Bullets.addItem(laser_item);
 // 를 입력하면 공격이 레이저로 바뀝니다.
 // make laser item
-var laser_item = new item("laser", "uncommon");
+let laser_item = new item("laser", "uncommon");
 
-laser_item.addAbility("damage", "Bullets", "x => x/3");
-laser_item.addAbility("fireRate", "Bullets", "x => x*3");
-laser_item.addAbility("image", "Bullets", "x => 'laser'");
-laser_item.addAbility("piercing", "Bullets", "x => 0");
-laser_item.addAbility("firing", "Bullets", "(bulletObj, currentBullet) => {\
-    currentBullet.body.x = Player.sprite.body.x + bulletObj.info.initValue.position.x;\
-    currentBullet.body.y = Player.sprite.body.y;\
-}");
-laser_item.addAbility("animation", "Bullets", "obj => {\
-    obj.animations.add('shootBeam', [0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4]);\
-    return 'shootBeam';\
-}");
+laser_item.addAbility("Bullets", "changeParameter", "damage", x => x/3);
+laser_item.addAbility("Bullets", "changeParameter", "fireRate", x => x*3);
+laser_item.addAbility("Bullets", "changeParameter", "image", x => 'laser');
+laser_item.addAbility("Bullets", "changeParameter", "penetration", x => 0);
+laser_item.addAbility("Bullets", "changeFunction", "animation", obj => {
+    obj.animations.add('shootBeam', [0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4]);
+    return 'shootBeam';
+});
+laser_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBullet) => {
+    currentBullet.body.x = Player.sprite.body.x + bulletObj.info.initValue.position.x;
+    currentBullet.body.y = Player.sprite.body.y;
+});
 
 // make pierce item
-var pierce_item = new item("addPenetration", "common");
+let pierce_item = new item("addPenetration", "common");
 
-pierce_item.addAbility("penetration", "Bullets", "x => {\
-    if(x > 0) return x+1;\
-    else return x;\
-}");
+pierce_item.addAbility("Bullets", "changeParameter", "penetration", x => {
+    if(x > 0) return x+1;
+    else return x;
+});
 
 // make double bullet fire item
-var addBullet_item = new item("addBullet", "common");
+let addBullet_item = new item("addBullet", "common");
 
-addBullet_item.addAbility("fireAtOnce", "Bullets", "x => x+1");
-addBullet_item.addAbility("beforeFire", "Bullets", "(bulletObj, currentBullet) => {\
-    bulletObj.info.initValue.position.x = 20;\
-    bulletObj.info.initValue.position.y = (bulletObj.currentShotCount - (bulletObj.info.fireAtOnce-1)/2)*20;\
-}");
+addBullet_item.addAbility("Bullets", "changeParameter", "fireAtOnce", x => x+1);
+addBullet_item.addAbility("Bullets", "addFunction", "beforeFire", (bulletObj, currentBullet) => {
+    bulletObj.info.initValue.position.x = 20;
+    bulletObj.info.initValue.position.y = (bulletObj.currentShotCount - (bulletObj.info.fireAtOnce-1)/2)*20;
+});
 
 // make bullet tracking item
-var tracking_item = new item("tracking", "uncommon");
+let tracking_item = new item("tracking", "uncommon");
 
-tracking_item.addAbility("firing", "Bullets", "(bulletObj, currentBullet) => {\
-    let enemy = aliens.getClosestTo({x:currentBullet.x - aliens.x,y:currentBullet.y-30});\
-    let trackingPerformance = 0.03;\
-    let x = currentBullet.body.velocity.x+(enemy.body.x-currentBullet.x)*trackingPerformance;\
-    let y = currentBullet.body.velocity.y+(enemy.body.y-currentBullet.y)*trackingPerformance;\
-    let currentBulletSpeed = Math.sqrt( Math.pow(x,2)+Math.pow(y,2) );\
-    let expectedBulletSpeed = bulletObj.info.bulletSpeed*100;\
-    if( currentBulletSpeed > expectedBulletSpeed ){\
-        let reduceAmount = expectedBulletSpeed/currentBulletSpeed;\
-        x = x*reduceAmount;\
-        y = y*reduceAmount;\
-    }\
-    if(x == 0){\
-        if(y > 0) currentBullet.rotation = Math.PI/2;\
-        else currentBullet.rotation = -Math.PI/2;\
-    }\
-    else currentBullet.rotation = Math.atan(y/x);\
-    currentBullet.body.velocity.x = x;\
-    currentBullet.body.velocity.y = y;\
-}");
+tracking_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBullet) => {
+    let enemy = aliens.getClosestTo({x:currentBullet.x - aliens.x,y:currentBullet.y-30});
+    let trackingPerformance = 0.03;
+    let x = currentBullet.body.velocity.x+(enemy.body.x-currentBullet.x)*trackingPerformance;
+    let y = currentBullet.body.velocity.y+(enemy.body.y-currentBullet.y)*trackingPerformance;
 
+    let currentBulletSpeed = Math.sqrt( Math.pow(x,2)+Math.pow(y,2) );
+    let expectedBulletSpeed = bulletObj.info.bulletSpeed*100;
 
-var fireRateUp_item = new item("fireRateUp", "common");
-fireRateUp_item.addAbility("fireRate", "Bullets", "x => x-0.1");
+    if( currentBulletSpeed > expectedBulletSpeed ){
+        let reduceAmount = expectedBulletSpeed/currentBulletSpeed;
+        x = x*reduceAmount;
+        y = y*reduceAmount;
+    }
 
-var playerSpeedUp_item = new item("speedUp", "common");
-playerSpeedUp_item.addAbility("speed", "Player", "x => x+10");
+    if(x == 0){
+        if(y > 0) currentBullet.rotation = Math.PI/2;
+        else currentBullet.rotation = -Math.PI/2;
+    }
+    else currentBullet.rotation = Math.atan(y/x);
 
-var superArmer_item = new item("superArmor", "common");
-superArmer_item.addAbility("invincibleTime", "Player", "x => {\
-        console.log(game.time.now);\
-        return game.time.now + 15000;\
-    }");
-
- 
+    currentBullet.body.velocity.x = x;
+    currentBullet.body.velocity.y = y;
+}, 2);
 
 
+let fireRateUp_item = new item("fireRateUp", "common");
+fireRateUp_item.addAbility("Bullets", "changeParameter", "fireRate", x => x-0.1);
+
+let playerSpeedUp_item = new item("speedUp", "common");
+playerSpeedUp_item.addAbility("Player", "changeParameter", "speed", x => x+10);
+
+let superArmer_item = new item("superArmor", "common");
+superArmer_item.addAbility("Player", "changeParameter", "invincibleTime", x => game.time.now + 15000);
 
 // var Shotgun_item = new item("Shotgun", "uncommon");
