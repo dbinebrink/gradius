@@ -700,6 +700,7 @@ var Game = {
     },
 
     getHeart: function(player, heart) {
+        sfx_get_item.play();
         if(debugFlag){
             this.debugCollisionMessage(player, heart);
         }
