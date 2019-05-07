@@ -22,6 +22,9 @@ var livingEnemies = [];
 var music;
 var sfx_fire;
 var sfx_enemy_die;
+var sfx_get_item;
+var sfx_stage_clear;
+var sfx_player_hit;
 var heart;
 var shield;
 var isShield = false;
@@ -30,7 +33,6 @@ var first = 0;
 var stage = 1;
 var stageString = '';
 var stageText;
-var sfx_stage_clear;
 var speedup;
 var player_speed;
 var power_up_count = 1;
@@ -80,6 +82,7 @@ var Game = {
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
+        game.load.audio('sfx_get_item' , 'audio/get_item.mp3');
         // load the setting icon
         game.load.image('settingButton', 'img/settingButton.png');
         game.load.image('settingBack', 'img/settingBackground.png');
@@ -105,26 +108,30 @@ var Game = {
         bulletsCollision_status = 'ON';
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        music = game.add.audio('music1');
+        if (!music) music = game.add.audio('music1');
         music.volume = 0.5;
         music.play();
 
         //  Here we set-up our audio sprites
-        sfx_fire = game.add.audio('sfx_fire');
+        if (!sfx_fire) sfx_fire = game.add.audio('sfx_fire');
         sfx_fire.volume = 0.5;
         sfx_fire.allowMultiple = false;
 
-        sfx_stage_clear = game.add.audio('sfx_stage_clear');
+        if (!sfx_stage_clear) sfx_stage_clear = game.add.audio('sfx_stage_clear');
         sfx_stage_clear.volume = 0.5;
         sfx_stage_clear.allowMultiple = true;
 
-        sfx_player_hit = game.add.audio('sfx_player_hit');
+        if (!sfx_player_hit) sfx_player_hit = game.add.audio('sfx_player_hit');
         sfx_player_hit.volume = 0.5;
         sfx_player_hit.allowMultiple = true;
 
-        sfx_enemy_die = game.add.audio('sfx_enemy_die');
+        if (!sfx_enemy_die) sfx_enemy_die = game.add.audio('sfx_enemy_die');
         sfx_enemy_die.volume = 0.5;
         sfx_enemy_die.allowMultiple = true;
+
+        if (!sfx_get_item) sfx_get_item = game.add.audio('sfx_get_item');
+        sfx_get_item.volume = 0.5;
+        sfx_get_item.allowMultiple = true;
 
         //  The scrolling starfield background
         starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
@@ -265,6 +272,7 @@ var Game = {
         if (settings.isDown){
             music.stop();
             this.showSettingMessageBox();
+            // this.state.start('pauseMenu');
             music.play();
         }
 
@@ -459,8 +467,6 @@ var Game = {
     },
 
     fireBullet : function() {
-        game.add.audio('sfx_fire');
-
         //  To avoid them being allowed to fire too fast we set a time limit
         if (game.time.now > bulletTime) {
 
@@ -496,11 +502,9 @@ var Game = {
 
         if(Math.random() * 1000 < 200) {
             this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 );
-            console.log(1);
         }
         alien.damage(1);
 
-        game.add.audio('sfx_enemy_die');
         sfx_enemy_die.play();
 
         //  Increase the score
@@ -525,7 +529,6 @@ var Game = {
 
         if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
             aliens.removeAll();
-            game.add.audio('stage_clear');
             sfx_stage_clear.play();
 
             this.createAliens();
@@ -542,7 +545,9 @@ var Game = {
 
     makeRandomItem : function(x, y, x_vel = 0, y_vel = 0){
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        console.log(x,y,x_vel,y_vel);
+        if (debugFlag){
+            console.log("Item created at X:"+ x +", Y:"+ y +" velosity = ( X:"+x_vel+", Y:"+y_vel+")");
+        }
         var option = ['power_up', 'speed_up', 'score_up_2', 'score_up_3', 'heart', 'shield'];
 
         var random = option[Math.floor(Math.random() * option.length)];
@@ -623,7 +628,6 @@ var Game = {
         bullet.kill();
         enemyBullet.kill();
 
-        game.add.audio('sfx_enemy_die');
         sfx_enemy_die.play();
 
         var explosion = explosions.getFirstExists(false);
@@ -635,10 +639,8 @@ var Game = {
         if(debugFlag){
             this.debugCollisionMessage(player, object);
         }
-        console.log(player.invincibleTime, +" "+ game.time.now, "shield: ", isShield);
         if (isShield) {
             if ((game.time.now < player.invincibleTime)) {
-                game.add.audio('sfx_enemy_die');
                 sfx_enemy_die.play();
                 object.kill()
 
@@ -654,7 +656,6 @@ var Game = {
         else {
             if ((game.time.now < player.invincibleTime) || !aliens.countLiving()) return;
         }
-        game.add.audio('sfx_player_hit');
         sfx_player_hit.play();
         object.kill();
 
@@ -677,11 +678,12 @@ var Game = {
 
         if (live_count < 1) {
             countstage = 1;
+            seconds = 0;
+            minutes = 0;
             this.finishGame();
         }
 
         if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
-            game.add.audio('stage_clear');
             sfx_stage_clear.play();
             this.createAliens();
             countstage++;
@@ -711,12 +713,14 @@ var Game = {
     },
 
     getShield : () => {
+        sfx_get_item.play();
         shield.kill();
         player.invincibleTime = game.time.now + 15000;
         isShield = true;    
     },
 
     getPower_up: function(player, power_up) {
+        sfx_get_item.play();
         if(debugFlag){
             this.debugCollisionMessage(player, power_up);
         }
@@ -771,6 +775,7 @@ var Game = {
     },
   
     getScore_up_2 : function(player, score_up_2){
+        sfx_get_item.play();
         if(debugFlag){
             this.debugCollisionMessage(player, score_up_2);
         }
@@ -783,6 +788,7 @@ var Game = {
     },
 
     getScore_up_3 : function(player, score_up_3){
+        sfx_get_item.play();
         if(debugFlag){
             this.debugCollisionMessage(player, score_up_3);
         }
@@ -795,6 +801,7 @@ var Game = {
     },
 
     getspeed_up : function(player, speed_up){
+        sfx_get_item.play();
         if(debugFlag){
             this.debugCollisionMessage(player, speed_up);
         }
@@ -1039,9 +1046,12 @@ var Game = {
     },
     hideBox1 : function(){
         this.msgBox1.destroy();
+        this.showSettingMessageBox();
     },
     real : function(){
-        //this.msgBox.destroy();
+        this.msgBox.destroy();
+        settingButton.inputEnabled = false;
+        settings.inputEnabled = false;
         var msgBox1 = game.add.group();
         var back1 = game.add.sprite(300,200,'settingBack1');
         var real_exit = game.add.text(310,250,'Do you want to go main menu?',{ fontSize: 19 });
@@ -1062,8 +1072,6 @@ var Game = {
         yes.events.onInputDown.add(this.goMenu,this);
         no.events.onInputDown.add(this.hideBox1,this);        
         this.msgBox1 = msgBox1;
-        minutes = 0;
-        seconds = 0;
     },
 
     turnOnMusic : function(){
@@ -1134,13 +1142,16 @@ var Game = {
                 object2Color = "color:green";
             }
         }
-        console.log("Collision occuered between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
+        console.log("Collision occured between %c"+object1.key+"( X:"+object1.centerX+", Y:"+object1.centerY+" )\n"+
                         "%c and %c"+object2.key+"( X:"+object2.centerX+", Y:"+object2.centerY+" )\n"+
                         "%c at ( X: "+(object1.centerX+object2.centerX)/2+"Y: "+(object1.centerY+object2.centerY)/2+" )",
                         object1Color,
                         "color:black",
                         object2Color,
                         "color:black");
+        if (isShield && (object2.key.localeCompare("invader") == 0 || object2.key.localeCompare("enemyBullet") == 0)) {
+            console.log("Shield block: shield will be down in "+ Math.round((player.invincibleTime - game.time.now)/1000) + "s");                
+        }    
     },
 
     m_VolumeUp : function() {
@@ -1159,6 +1170,7 @@ var Game = {
             sfx_enemy_die.volume += 0.1;
             sfx_stage_clear.volume += 0.1;
             sfx_player_hit.volume += 0.1;
+            sfx_get_item.volume += 0.1;
         }
         this.showSettingMessageBox();
     },
@@ -1169,6 +1181,7 @@ var Game = {
             sfx_enemy_die.volume -= 0.1;
             sfx_stage_clear.volume -= 0.1;
             sfx_player_hit.volume -= 0.1;
+            sfx_get_item.volume -= 0.1;
         }
         this.showSettingMessageBox();
     }
