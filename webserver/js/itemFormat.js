@@ -11,7 +11,7 @@ class UndefinedTypeError {
 itemAbilityTags = {
     "Player" : {
         "changeParameter" : [
-            "maxHealth", "evasion", "speed", "image", "invincibleTime"
+            "maxHealth", "evasion", "speed", "image", "invincibleTime", "healthUp"
         ],
         "changeFunction" : [
             "animation"
@@ -37,6 +37,11 @@ itemAbilityTags = {
     }
 }
 
+itemList = [];
+dropTable = {common:[], uncommon:[]};
+uncommonDropTime = 0;
+
+
 class item {
     constructor(name, rarity, isActive = false) {
         this.name = name;
@@ -54,9 +59,16 @@ class item {
                 "addFunction" : {}
             }
         };
+
+        this.addToItemList();
     }
 
-    addAbility(appliedObj, type, tag, value, priority = 1) {
+    addToItemList(){
+        dropTable[this.rarity].push(itemList.length);
+        itemList.push(this);
+    }
+
+    addAbility(appliedObj, type, tag, value, priority = 5) {
         if(!itemAbilityTags[appliedObj][type].includes(tag)) throw new UndefinedTypeError("undefined ability type!");
 
         if(type == "addFunction"){
@@ -75,7 +87,7 @@ class item {
 // 웹브라우저 콘솔에서 게임을 실행시킨 후 Bullets.addItem(laser_item);
 // 를 입력하면 공격이 레이저로 바뀝니다.
 // make laser item
-let laser_item = new item("laser", "uncommon");
+let laser_item = new item("laser-bullet", "uncommon");
 
 laser_item.addAbility("Bullets", "changeParameter", "damage", x => x/3);
 laser_item.addAbility("Bullets", "changeParameter", "fireRate", x => x*3);
@@ -143,6 +155,12 @@ let playerSpeedUp_item = new item("speedUp", "common");
 playerSpeedUp_item.addAbility("Player", "changeParameter", "speed", x => x+10);
 
 let superArmer_item = new item("superArmor", "common");
-superArmer_item.addAbility("Player", "changeParameter", "invincibleTime", x => game.time.now + 15000);
+superArmer_item.addAbility("Player", "changeParameter", "invincibleTime", x => game.time.now + 5000);
+
+let damageUP_item = new item("damageUp", "common");
+damageUP_item.addAbility("Bullets", "changeParameter", "damage", x => x+1);
+
+let Heart_item = new item("heart", "common");
+Heart_item.addAbility("Player", "changeParameter", "healthUp", x => Player.heal(1));
 
 // var Shotgun_item = new item("Shotgun", "uncommon");

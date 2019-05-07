@@ -7,8 +7,8 @@ var countstage = 1;
 var score = 0;
 var scoreString = '';
 var scoreText;
-var enemyBullet;
-var firingir = 0;
+var enemyBullets;
+var itemGroup;
 var ailencreatetimer;
 var ailencreatecount = 0;
 var alienHealth = 1;
@@ -16,24 +16,11 @@ var livingEnemies = [];
 var music;
 var sfx_fire;
 var sfx_enemy_die;
-var heart;
-var last = -1;
-var first = 0;
+var sfx_stage_clear;
 var stage = 1;
 var stageString = '';
 var stageText;
-var sfx_stage_clear;
-var speedup;
-var power_up_count = 1;
-var power_up;
 var settings;
-var speed_up;
-var power_up_count = 1;
-var power_up;
-var score_up_2;
-var score_2_switch = false;
-var score_up_3;
-var score_3_switch = false;
 var debugFlag = false;
 var bulletsCollision = true;
 var music_status;
@@ -42,7 +29,6 @@ var Game = {
 
     preload : function() {
         // load all sprites
-        game.load.image('speed_up', 'img/speed_up.png');
         game.load.image('bullet', 'img/bullet.png');
         game.load.spritesheet('laser', 'img/blue_beam_ani.png', 900, 30);
         game.load.image('enemyBullet', 'img/enemy-bullet.png');
@@ -53,9 +39,8 @@ var Game = {
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         game.load.image('starfield', 'img/starfield.png');
         game.load.image('heart', 'img/heart.png');
-        game.load.image('power_up','img/power_up.png');
-        game.load.image('score_up_2', 'img/score_up_2.png');
-        game.load.image('score_up_3', 'img/score_up_3.png');
+        game.load.image('damageUp','img/power_up.png');
+        game.load.image('speedUp', 'img/speed_up.png');
         game.load.image('lower_mountain', 'img/lower_mountain.png');
         game.load.image('upper_mountain', 'img/upper_mountain.png');
         game.load.image('debug_message', 'img/debugMessage.png');
@@ -85,7 +70,6 @@ var Game = {
         countstage = 1;
         stage = 1;
         stageString = '';
-        power_up_count = 1;
         alienHealth = 1;
 
         music_status = 'ON';
@@ -113,12 +97,17 @@ var Game = {
         starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
         upper_mountain = game.add.tileSprite(0, 0, 900, 30, 'upper_mountain');
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
-
+        
         //  The starship
         Player.initalize(game);
-
+        
         //  Our bullet group
         Bullets.initalize(game);
+
+        // itemGroup
+        itemGroup = game.add.group();
+        itemGroup.enableBody = true;
+        itemGroup.physicsBodyType = Phaser.Physics.ARCADE;
 
         // The enemy's bullets
         enemyBullets = game.add.group();
@@ -153,30 +142,6 @@ var Game = {
         bulletsCollisionString = 'Bul Col: ';
         bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
 
-        // hearts
-        heart = game.add.group();
-        heart.enableBody = true;
-        heart.physicsBodyType = Phaser.Physics.ARCADE;
-
-        // power_up
-        power_up = game.add.group();
-        power_up.enableBody = true;
-        power_up.physicsBodyType = Phaser.Physics.ARCADE;
-
-        //speed_up
-        speed_up = game.add.group();
-        speed_up.enableBody = true;
-        speed_up.physicsBodyType = Phaser.Physics.ARCADE;
-
-        // score_up_2
-        score_up_2 = game.add.group();
-        score_up_2.enableBody = true;
-        score_up_2.physicsBodyType = Phaser.Physics.ARCADE;
-
-        // score_up_3
-        score_up_3 = game.add.group();
-        score_up_3.enableBody = true;
-        score_up_3.physicsBodyType = Phaser.Physics.ARCADE;
 
         //  An explosion pool
         explosions = game.add.group();
@@ -215,16 +180,14 @@ var Game = {
         }
 
         if (Player.sprite.alive) {
-            Player.move(cursors);
-
             if(game.time.now > ailencreatetimer && ailencreatecount < 10*stage)
                 this.createAliens();
 
             //  Firing?
-            if (fireButton.isDown) {
-                // this.fireBullet();
-                Bullets.fire(Player.sprite, game.time.now);
-            }
+            // if (fireButton.isDown) {
+            //     // this.fireBullet();
+            //     Bullets.fire(Player.sprite, game.time.now);
+            // }
 
             if (game.time.now > firingTimer) {
                 this.enemyFires();
@@ -239,16 +202,7 @@ var Game = {
             }
             game.physics.arcade.overlap(Player.sprite, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(Player.sprite, enemyBullets, this.enemyHitsPlayer, null, this);
-            game.physics.arcade.overlap(Bullets.bulletGroup, heart, this.changeItem, null, this);
-            game.physics.arcade.overlap(Bullets.bulletGroup, speed_up, this.changeItem, null, this);
-            game.physics.arcade.overlap(Bullets.bulletGroup, power_up, this.changeItem, null, this);
-            game.physics.arcade.overlap(Bullets.bulletGroup, score_up_2, this.changeItem, null, this);
-            game.physics.arcade.overlap(Bullets.bulletGroup, score_up_3, this.changeItem, null, this);
-            game.physics.arcade.overlap(Player.sprite, heart, this.getHeart, null, this);
-            game.physics.arcade.overlap(Player.sprite, power_up, this.getPower_up, null, this);
-            game.physics.arcade.overlap(Player.sprite, speed_up, this.getspeed_up, null, this);
-            game.physics.arcade.overlap(Player.sprite, score_up_2, this.getScore_up_2, null, this);
-            game.physics.arcade.overlap(Player.sprite, score_up_3, this.getScore_up_3, null, this);
+            game.physics.arcade.overlap(Player.sprite, itemGroup, this.getItem, null, this);
         }
     },   
 
@@ -257,14 +211,14 @@ var Game = {
         let alienHealth;
         let alienSizeMultiple;
         let specialEnemyPer = Math.random()*50;
-        if(specialEnemyPer < stage/10){
+        if(specialEnemyPer < stage/15+0.5){
             alienImage = 'invaderPurple';
             alienHealth = 3;
             alienSizeMultiple = 2;
         }
-        else if(specialEnemyPer < stage/3){
+        else if(specialEnemyPer < stage/3+5){
             alienImage = 'invaderGreen';
-            alienHealth = 2;
+            alienHealth = 2.5;
             alienSizeMultiple = 1.5;
         }
         else{
@@ -283,7 +237,8 @@ var Game = {
             movepoint_y = Math.random() * 540 + 30;
             alien = aliens.create(movepoint_x, movepoint_y, alienImage);
         }
-        alien.setHealth(alienHealth + 2*Math.round(stage/5));
+        alien.maxHealth = (1 + 2*Math.round(stage/5))*alienHealth;
+        alien.setHealth(alien.maxHealth);
         alien.scale.set(alienSizeMultiple);
 
         alien.anchor.setTo(0.5, 0.5);
@@ -364,37 +319,27 @@ var Game = {
         //  When a bullet hits an alien we kill them both
         Bullets.killBullet(bullet);
 
-        if(Math.random() * 1000 < 200) {
-            this.makeRandomItem(alien.body.x, alien.body.y, -200, (Math.random()*2-1)*200 );
-        }
         // alien.kill();
         alien.damage(Bullets.info.damage);
+        if(!alien.alive) {
+            this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, alien.key);
+        }
 
         game.add.audio('sfx_enemy_die');
         sfx_enemy_die.volume = 0.6;
         sfx_enemy_die.play();
 
         //  Increase the score
-        if (score_2_switch === true && score_3_switch === false) {
-            score += 40*Player.sprite.health;
-        }
-        else if (score_2_switch === false && score_3_switch == true) {
-            score += 60*Player.sprite.health;
-        }
-        else if (score_2_switch === true && score_3_switch == true) {
-            score += 120*Player.sprite.health;
-        }
-        else {
-        score += 20*Player.sprite.health;
-        }
+        score += 40*Player.sprite.health;
         scoreText.text = scoreString + score;
+
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
         explosion.reset(alien.body.x, alien.body.y);
         explosion.play('kaboom', 30, false, true);
-        /*setTimeout(function() { explosion.kill(); }, 750);*/
 
         if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
+            this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'invaderGreen');
             aliens.removeAll();
             game.add.audio('stage_clear');
             sfx_stage_clear.volume = 2.0;
@@ -412,42 +357,59 @@ var Game = {
         }
     },
 
-    makeRandomItem : function(x, y, x_vel = 0, y_vel = 0){
-        var random = Math.random();
-        var item;
-        if(random < 0.22){
-            item = power_up.create(x, y,'power_up');
+    makeRandomItem : function(x, y, x_vel = 0, y_vel = 0, alienType){
+        var itemIndex;
+        if(alienType == 'invaderPurple' && uncommonDropTime == 0){
+            itemIndex = dropTable.uncommon[Math.floor(Math.random()*dropTable.uncommon.length)];
+            uncommonDropTime += 1;
         }
-        else if(random < 0.44){
-            item = speed_up.create(x, y, 'speed_up');
-
-        }
-        else if(random < 0.66){
-            item = score_up_2.create(x, y, 'score_up_2');
-
-        }
-        else if(random < 0.77){
-            item = score_up_3.create(x, y, 'score_up_3');
+        else if(alienType == 'invaderGreen'){
+            itemIndex = dropTable.common[Math.floor(Math.random()*dropTable.common.length)];
         }
         else{
-            item = heart.create(x, y, 'heart');
+            return;
         }
-        item.anchor.setTo(0.5, 0.5);
-        if(x_vel != 0){
-            item.body.velocity.x = x_vel;
-        }
-        if(y_vel != 0){
-            item.body.velocity.y = y_vel;
-        }
-        item.body.collideWorldBounds = true;
-        item.body.bounce.set(1);
-        game.time.events.add(Phaser.Timer.SECOND * 10, erase, this);
-        function erase() {
-            item.body.collideWorldBounds = false;
-        }
-        return item;
+
+        itemSprite = itemGroup.create(x, y, itemList[itemIndex].name);
+        itemSprite.setHealth(itemIndex);
+        itemSprite.anchor.setTo(0.5, 0.5);
+        itemSprite.body.velocity.x = x_vel;
+        itemSprite.body.velocity.y = y_vel;
+
+        itemSprite.body.collideWorldBounds = true;
+        itemSprite.body.bounce.set(1);
+        game.time.events.add(Phaser.Timer.SECOND * 10, function() {
+            if(itemSprite.alive){
+                itemSprite.body.collideWorldBounds = false;
+            }
+        }, this);
+        var itemText = game.make.text(0, 30, itemList[itemIndex].name, {font: "20px Arial", fill: "#fff"});
+        itemText.anchor.setTo(0.5, 0.5)
+        itemSprite.addChild(itemText);
+
+        return itemSprite;
     },
 
+    getItem : function(player, itemSprite){
+        item = itemList[itemSprite.health];
+        Bullets.addItem(item);
+        Player.addItem(item);
+        itemSprite.destroy();
+    },
+    
+    // changeItem : function(bullet, object){
+    //     if(debugFlag){
+    //         this.debugCollisionMessage(bullet, object);
+    //     }
+    //     var x_vel = object.body.velocity.x;
+    //     var y_vel = object.body.velocity.y;
+    //     var x = object.x;
+    //     var y = object.y;
+    //     object.kill();
+    //     var item = this.makeRandomItem(x, y, x_vel, y_vel);
+    //     Bullets.killBullet(bullet);
+    // },
+    
     createTimer : function() {
 
         var me = this;
@@ -493,19 +455,6 @@ var Game = {
 
         me.timeLabel.text = result;
 
-    },
-
-    changeItem : function(bullet, object){
-        if(debugFlag){
-            this.debugCollisionMessage(bullet, object);
-        }
-        var x_vel = object.body.velocity.x;
-        var y_vel = object.body.velocity.y;
-        var x = object.x;
-        var y = object.y;
-        object.kill();
-        var item = this.makeRandomItem(x, y, x_vel, y_vel);
-        Bullets.killBullet(bullet);
     },
 
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
@@ -570,23 +519,6 @@ var Game = {
         score_3_switch = false;
     },
 
-    getHeart: function(player, heart) {
-        if(debugFlag){
-            this.debugCollisionMessage(player, heart);
-        }
-        heart.kill();
-        Player.heal(1);
-    },
-
-    getPower_up: function(player, power_up) {
-        if(debugFlag){
-            this.debugCollisionMessage(player, power_up);
-        }
-        power_up.kill();
-        power_up_count++;
-        if(power_up_count > 6) power_up_count = 6;
-    },
-
     finishGame : function() {
         music.stop();
 
@@ -622,32 +554,6 @@ var Game = {
             game.physics.arcade.moveToObject(enemyBullet,Player.sprite,100 + 20 * countstage);
             firingTimer = game.time.now + 2000 / countstage;
         }
-    },
-  
-    getScore_up_2 : function(player, score_up_2){
-        if(debugFlag){
-            this.debugCollisionMessage(player, score_up_2);
-        }
-        score_up_2.kill();
-        score_2_switch = true;
-    },
-
-    getScore_up_3 : function(player, score_up_3){
-        if(debugFlag){
-            this.debugCollisionMessage(player, score_up_3);
-        }
-        score_up_3.kill();
-        score_3_switch = true;
-    },
-
-    getspeed_up : function(player, speed_up){
-        if(debugFlag){
-            this.debugCollisionMessage(player, speed_up);
-        }
-        speed_up.kill();
-        // if(player_speed <340){
-        //     player_speed += 20;
-        // }
     },
 
     showSettingMessageBox : function(){

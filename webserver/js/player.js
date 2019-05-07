@@ -1,11 +1,19 @@
 var Player = {
-    basicParamList : ["maxHealth", "evasion", "speed", "image", "invincibleTime"],
-    basicMethodList : ["animation"],
-    activatePositionList : ["always", "colideEnemy", "moving"],
+    tagList : {
+        changeParameter : [
+            "maxHealth", "evasion", "speed", "image", "invincibleTime", "healthUp"
+        ],
+        changeFunction : [
+            "animation"
+        ],
+        addFunction : [
+            "always", "colideEnemy", "moving"
+        ]
+    },
     info : {
-        always : [],
-        colideEnemy : [],
-        moving : []
+        always : {},
+        colideEnemy : {},
+        moving : {}
     },
 
     initalize : function( game ) {
@@ -17,6 +25,10 @@ var Player = {
         this.info.animation = function(obj){
             obj.animations.add('up', [3, 4], 2, false);
             obj.animations.add('down', [0, 1], 2, false);
+        }
+
+        for([index, addFunction] of Object.entries(this.tagList.addFunction)){
+            this.info[addFunction] = {};
         }
 
         this.healthGroup = game.add.group();
@@ -42,30 +54,38 @@ var Player = {
         this.sprite.body.setSize(64,32,0,16);
         this.info.animation(this.sprite);
         this.sprite.update = () => {
-            for( functionPriority in Player.info.always ){
-                Player.info.always[functionPriority](Player, this);
+            if (Player.sprite.alive) {
+                for( functionPriority in Player.info.always ){
+                    let currentFunctionList = Player.info.always[functionPriority];
+                    for( functionIndex in currentFunctionList )
+                    currentFunctionList[functionIndex](Player, this);
+                }
+
+                Player.move(cursors);
+
+                if (fireButton.isDown) {
+                    Bullets.fire(Player.sprite, game.time.now);
+                }
             }
         }
     },
-
     addItem : function(getItem){
-        console.log(getItem)
         let itemAbilites = getItem.abilities.Player;
-        for( [key, value] of Object.entries(itemAbilites) ) {
-            console.log(key, value[0]);
-            if( this.basicParamList.includes(key) ) {
-                this.info[key] = value[0](this.info[key]);
-            }
-            else if( this.basicMethodList.includes(key) ) {
-                this.info[key] = value[0];
-            }
-            else if( this.activatePositionList.includes(key)) {
-                for(var i=0; i<value.length; i++){
-                    this.info[key].push(value[i]);
-                } 
-            }
+        for( [key, value] of Object.entries(itemAbilites.changeParameter) ){
+            this.info[key] = value(this.info[key]);
         }
-
+        for( [key, value] of Object.entries(itemAbilites.changeFunction) ){
+            this.info[key] = value;
+        }
+        for( [key, value] of Object.entries(itemAbilites.addFunction) ){
+            for(var i=0; i<value.length; i++){
+                if(!this.info[key][value[i].priority]){
+                    this.info[key][value[i].priority] = [];
+                }
+                this.info[key][value[i].priority].push(value[i].function);
+            } 
+        }
+        
         this.setPlayerSprite();
     },
     
@@ -76,6 +96,7 @@ var Player = {
     },
 
     heal : function(getHeal){
+        console.log
         if(this.sprite.maxHealth > this.sprite.health){
             this.sprite.heal(getHeal);
             live = this.healthGroup.getChildAt(this.info.maxHealth-this.sprite.health);

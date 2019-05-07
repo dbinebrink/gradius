@@ -1,19 +1,27 @@
 var Bullets = {
-    basicParamList : [
-        "damage", "speed", "fireRate", "image", "penetration", "fireAtOnce", "fireSound",
-        "maxBulletCount", "collideEnemyBullet", 'outOfBoundsKill', 'checkWorldBounds'],
-    basicMethodList : ["animation"],
-    activatePositionList : ["beforeFire", "firing", "afterFire", "always", "hitEnemy"],
-
+    tagList : {
+        changeParameter : [
+            "damage", "speed", "fireRate", "fireAtOnce",
+            "penetration", "image", "fireSound",
+            "outOfBoundsKill", "collideEnemyBullet",
+            "checkWorldBounds", "maxBulletCount"
+        ],
+        changeFunction : [
+            "animation"
+        ],
+        addFunction : [
+            "beforeFire", "firing", "afterFire", "hitEnemy", "always"
+        ],
+    },
     info : {
         /*
         if collect item, item's ability function is stored in this list
         and activate function when it's position
         */
-        "beforeFire":[],
-        "firing":[],
-        "afterFire":[],
-        "always":[],
+        beforeFire:{},
+        firing:{},
+        afterFire:{},
+        always:{},
     },
     
     initalize : function( game ){
@@ -40,8 +48,8 @@ var Bullets = {
         
         this.info.animation = null;
         
-        for([index, activatePosition] of Object.entries(this.activatePositionList)){
-            this.info[activatePosition] = [];
+        for([index, addFunction] of Object.entries(this.tagList.addFunction)){
+            this.info[addFunction] = {};
         }
         
         this.bulletGroup = game.add.group();
@@ -60,22 +68,23 @@ var Bullets = {
         Bullets.bulletGroup.forEach((x, y) => {x.penetration = y;}, this, false, this.info.penetration);
         return this.bulletGroup;
     },
-
+    //todo : itemFormat.js에 맟춰 수정하기
     addItem : function(getItem){
+        console.log(getItem);
         let itemAbilites = getItem.abilities.Bullets;
-        for( [key, value] of Object.entries(itemAbilites) ) {
-            console.log(key, value[0]);
-            if( this.basicParamList.includes(key) ) {
-                this.info[key] = value[0](this.info[key]);
-            }
-            else if( this.basicMethodList.includes(key) ) {
-                this.info[key] = value[0];
-            }
-            else if( this.activatePositionList.includes(key)) {
-                for(var i=0; i<value.length; i++){
-                    this.info[key].push(value[i]);
-                } 
-            }
+        for( [key, value] of Object.entries(itemAbilites.changeParameter) ){
+            this.info[key] = value(this.info[key]);
+        }
+        for( [key, value] of Object.entries(itemAbilites.changeFunction) ){
+            this.info[key] = value;
+        }
+        for( [key, value] of Object.entries(itemAbilites.addFunction) ){
+            for(var i=0; i<value.length; i++){
+                if(!this.info[key][value[i].priority]){
+                    this.info[key][value[i].priority] = [];
+                }
+                this.info[key][value[i].priority].push(value[i].function);
+            } 
         }
         
         this.setBulletGroup();
@@ -85,8 +94,11 @@ var Bullets = {
         if (currentTime > this.bulletTime) {
             for(this.currentShotCount = 0; this.currentShotCount < this.info.fireAtOnce; this.currentShotCount++){
                 bullet = this.bulletGroup.getFirstExists(false);
-                for( functionPriority in this.info.beforeFire ){
-                    this.info.beforeFire[functionPriority](this, bullet);
+
+                for( functionPriority in Bullets.info.beforeFire ){
+                    let currentFunctionList = Bullets.info.beforeFire[functionPriority];
+                    for( functionIndex in currentFunctionList )
+                    currentFunctionList[functionIndex](this, bullet);
                 }
                 
                 if (bullet) {
@@ -109,7 +121,9 @@ var Bullets = {
                     var BM = this.info.bulletMovement;
                     bullet.update = function(){
                         for( functionPriority in Bullets.info.firing ){
-                            Bullets.info.firing[functionPriority](Bullets, this);
+                            let currentFunctionList = Bullets.info.firing[functionPriority];
+                            for( functionIndex in currentFunctionList )
+                            currentFunctionList[functionIndex](Bullets, this);
                         }
                     }
                     this.bulletTime = currentTime + this.info.fireRate*1000;
