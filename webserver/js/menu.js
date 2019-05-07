@@ -1,10 +1,11 @@
 var easyStart;
 var start_sound;
+var start_music;
 
 var mainMenu = {
 
     preload : function() {
-    	  game.load.image('Wall_paper' , 'img/space.jpg');
+    	game.load.image('Wall_paper' , 'img/space.jpg');
         game.load.image('gradius' , 'img/gradius.png');
         game.load.image('startButton', 'img/startbutton.png');
         game.load.image('controls', 'img/controls.png');
@@ -22,27 +23,29 @@ var mainMenu = {
         game.add.button(game.world.centerX+20,280,'controls', this.ViewControls, this);
         game.add.button(game.world.centerX-85,380,'exit', this.exit, this);
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        music = game.add.audio('start_sound');
-        music.play();
+        if (!start_music) start_music = game.add.audio('start_sound');
+        start_music.play();
     },
 
 
     update : function() {
-        music.pauseOnBlur = false;
+        if (music) music.pauseOnBlur = false;
         if (easyStart.isDown) {
             this.startGame();
         }
     },
 
     startGame : function() {
-        music.stop();
+        if(music) music.stop();
+        start_music.stop();
         this.state.start('Game');
     },
 
-
     ViewControls : function() {
-       game.add.button(0,360,'controlkey', this.ViewControls, this);
-       game.add.button(805,360,'backButton', this.create, this);
+        var image2 = game.add.image(0,360,'controlkey');
+        var image3 = game.add.button(805,360,'backButton');
+        image3.inputEnabled = true;
+        image3.events.onInputDown.add(function(){image2.destroy();image3.destroy();});
     },
 
     exit : function(){
