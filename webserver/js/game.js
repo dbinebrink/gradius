@@ -678,6 +678,8 @@ var Game = {
 
         if (live_count < 1) {
             countstage = 1;
+            seconds = 0;
+            minutes = 0;
             this.finishGame();
         }
 
