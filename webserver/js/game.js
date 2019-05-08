@@ -118,6 +118,8 @@ var Game = {
         player_speed = 200;
         stageString = '';
         power_up_count = 1;
+        seconds = 0;
+        minutes = 0;
         music_status = 'ON';
         bulletsCollision_status = 'ON';
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -727,8 +729,6 @@ var Game = {
 
         if (live_count < 1) {
             countstage = 1;
-            seconds = 0;
-            minutes = 0;
             this.finishGame();
         }
 
@@ -785,10 +785,11 @@ var Game = {
 
         music.stop();
 
-        game.time.events.add(Phaser.Timer.SECOND, function() {
+        game.time.events.add(Phaser.Timer.SECOND , function() {
             enemyBullets.callAll('kill');
             //aliens.removeAll();
             this.state.start('ending');
+
         }, this);
     },
 
