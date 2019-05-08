@@ -56,7 +56,11 @@ var itemchangetime;
 var shiptype = 0;
 var ship1button;
 var ship2button;
+<<<<<<< HEAD
 var backButton
+=======
+var characterSelection;
+>>>>>>> 299b0cda166dd07b80013f38f844563a4383d498
 var items = [];
 var Game = {
 
@@ -161,7 +165,8 @@ var Game = {
         //  The starship
         game.paused = true;
         backButton = game.add.button(game.world.centerX+350,+30,'backButton', this.goMenu1, this);
-        ship1button = game.add.button(game.world.centerX-250, game.world.centerY, 'shipimg', this.character1, this);
+        characterSelection = game.add.text(game.world.centerX-160, game.world.centerY-120, "Select Spaceship", { font: '50px Arial', fill: '#fff' });
+        ship1button = game.add.button(game.world.centerX-100, game.world.centerY, 'shipimg', this.character1, this);
         ship2button = game.add.button(game.world.centerX+100, game.world.centerY, 'ship2img', this.character2, this);
 
     },
