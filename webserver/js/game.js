@@ -53,6 +53,7 @@ var music_status;
 var bulletsCollision_status;
 var seconds = 0;
 var minutes = 0;
+var itemchangetime;
 var Game = {
 
     preload : function() {
@@ -93,6 +94,7 @@ var Game = {
     create  : function() {
 
         // reset
+        itemchangetime = 0;
         bulletTime = 0;
         invincibleTime = 0;
         score = 0;
@@ -344,12 +346,14 @@ var Game = {
             }
             game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
-            game.physics.arcade.overlap(bullets, heart, this.changeItem, null, this);
-            game.physics.arcade.overlap(bullets, shield, this.changeItem, null, this);
-            game.physics.arcade.overlap(bullets, power_up, this.changeItem, null, this);
-            game.physics.arcade.overlap(bullets, speed_up, this.changeItem, null, this);
-            game.physics.arcade.overlap(bullets, score_up_2, this.changeItem, null, this);
-            game.physics.arcade.overlap(bullets, score_up_3, this.changeItem, null, this);
+            if (itemchangetime < game.time.now) {
+                game.physics.arcade.overlap(bullets, heart, this.changeItem, null, this);
+                game.physics.arcade.overlap(bullets, shield, this.changeItem, null, this);
+                game.physics.arcade.overlap(bullets, power_up, this.changeItem, null, this);
+                game.physics.arcade.overlap(bullets, speed_up, this.changeItem, null, this);
+                game.physics.arcade.overlap(bullets, score_up_2, this.changeItem, null, this);
+                game.physics.arcade.overlap(bullets, score_up_3, this.changeItem, null, this);
+            }
             game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
             game.physics.arcade.overlap(player, shield, this.getShield, null, this);
             game.physics.arcade.overlap(player, power_up, this.getPower_up, null, this);
@@ -609,6 +613,7 @@ var Game = {
     },
 
     changeItem : function(bullet, object){
+        itemchangetime = game.time.now + 1000;
         if(debugFlag){
             this.debugCollisionMessage(bullet, object);
         }
