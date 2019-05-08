@@ -36,6 +36,7 @@ var mainMenu = {
     },
 
     startGame : function() {
+        this.emptyItems();
         if(music) music.stop();
         start_music.stop();
         this.state.start('Game');
@@ -50,5 +51,9 @@ var mainMenu = {
 
     exit : function(){
       window.open('about:blank', '_self').close();
-    }
+    },
+
+    emptyItems : function() {
+        items = [];
+    },
 }

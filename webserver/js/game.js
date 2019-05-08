@@ -57,6 +57,7 @@ var itemchangetime;
 var shiptype = 0;
 var ship1button;
 var ship2button;
+var items = [];
 var Game = {
 
     preload : function() {
@@ -551,7 +552,7 @@ var Game = {
         bullet.kill();
 
         if(Math.random() * 1000 < 200) {
-            this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 );
+            items.push(this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 ));
         }
         alien.damage(1);
 
@@ -668,8 +669,40 @@ var Game = {
         var x = object.x;
         var y = object.y;
         object.kill();
-        var item = this.makeRandomItem(x, y, x_vel, y_vel);
+        items.push(this.makeRandomItem(x, y, x_vel, y_vel));
         bullet.kill();
+    },
+
+    //itemMovement control
+    itemMovement : function() {
+        console.log(items);
+        for(var i = 0; i < items.length; i++) {                    
+        
+            if (items[i].alive === false) {
+                items.splice(i,1);
+            }
+
+            if (!items[i] || !items[i].body) {
+                continue;
+            }
+
+            if (items[i].body.y < 0) {
+                items[i].body.velocity.y *= -1;
+            }
+            if (items[i].body.y >= 600 - items[i].body.height) {
+                items[i].body.velocity.y *= -1;
+            }
+            if (items[i].body.x < 0) {
+                items[i].body.velocity.x *= -1;
+            }
+            if (items[i].body.x >= 900 - items[i].body.width) {
+                items[i].body.velocity.x *= -1;
+            }
+        }
+    },
+
+    emptyItems : function() {
+        items = [];
     },
 
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
@@ -1061,6 +1094,7 @@ var Game = {
     startGame : function() {
         //this.Game.destroy();
         //this.msgBox.destroy();
+        this.emptyItems();
         game.paused = false;
         music.stop();
         game.state.start('Game');
