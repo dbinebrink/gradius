@@ -357,7 +357,7 @@ var Game = {
         scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
 
         aliensString = 'Alien: ';
-        alienscount = game.add.text(600,250,aliensString + aliens.countLiving(), { font: '40px Arial', fill: '#fff' });
+        alienscount = game.add.text(750,70,aliensString + aliens.countLiving(), { font: '40px Arial', fill: '#fff' });
 
         bulletsCollisionString = 'Bul Col: ';
         bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
