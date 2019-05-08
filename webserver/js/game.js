@@ -54,27 +54,39 @@ var bulletsCollision_status;
 var seconds = 0;
 var minutes = 0;
 var itemchangetime;
+var shiptype = 0;
+var ship1button;
+var ship2button;
 var Game = {
 
     preload : function() {
 
-        // load all sprites
-        game.load.image('speed_up', 'img/speed_up.png');
-        game.load.image('bullet', 'img/bullet.png');
-        game.load.image('enemyBullet', 'img/enemy-bullet.png');
+        // load all sprites      
         game.load.spritesheet('invaderBasic', 'img/invader32x32x4.png', 32, 32);
         game.load.spritesheet('invaderGreen', 'img/invader32x32x4-green.png', 32, 32);
         game.load.spritesheet('invaderPurple', 'img/invader32x32x4-purple.png', 32, 32);
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
+        game.load.spritesheet('ship2', 'img/ship264x64x5.png', 64, 64, 5);
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
+        //ship img
+        game.load.image('shipimg', 'img/ship.png');
+        game.load.image('ship2img', 'img/ship2.png');
+        //bullet
+        game.load.image('bullet', 'img/bullet.png');
+        game.load.image('bullet2', 'img/bullet2.png');
+        game.load.image('enemyBullet', 'img/enemy-bullet.png');
+        //map
         game.load.image('starfield', 'img/starfield.png');
+        game.load.image('lower_mountain', 'img/lower_mountain.png');
+        game.load.image('upper_mountain', 'img/upper_mountain.png');
+        //item
         game.load.image('heart', 'img/heart.png');
         game.load.image('shield', 'img/shield.png');
+        game.load.image('speed_up', 'img/speed_up.png');
         game.load.image('power_up','img/power_up.png');
         game.load.image('score_up_2', 'img/score_up_2.png');
         game.load.image('score_up_3', 'img/score_up_3.png');
-        game.load.image('lower_mountain', 'img/lower_mountain.png');
-        game.load.image('upper_mountain', 'img/upper_mountain.png');
+        //debug
         game.load.image('debug_message', 'img/debugMessage.png');
 
         // load all sfx and music
@@ -141,7 +153,132 @@ var Game = {
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
 
         //  The starship
-        player = game.add.sprite(150, 300, 'ship');
+        game.paused = true;
+        ship1button = game.add.button(game.world.centerX-100, game.world.centerY, 'shipimg', this.character1, this);
+        ship2button = game.add.button(game.world.centerX+100, game.world.centerY, 'ship2img', this.character2, this);
+    },
+
+    update : function() {
+
+        //  Scroll the background
+        starfield.tilePosition.x -= 3;
+        upper_mountain.tilePosition.x -= 1;
+        lower_mountain.tilePosition.x -= 1;
+
+        // Setting
+        if (settings.isDown){
+            music.stop();
+            this.showSettingMessageBox();
+            // this.state.start('pauseMenu');
+            music.play();
+        }
+
+        if (player.alive) {
+            //  Reset the player, then check for movement keys
+            player.body.velocity.setTo(0, 0);
+            
+            if(cursors.left.isDown && cursors.up.isDown){
+                player.body.velocity.x = -player_speed * Math.sqrt(2) / 2;
+                player.body.velocity.y = -player_speed * Math.sqrt(2) / 2;
+                player.animations.play('up');
+            }
+
+            else if(cursors.left.isDown && cursors.down.isDown){
+                player.body.velocity.x = -player_speed  * Math.sqrt(2) / 2;
+                player.body.velocity.y = player_speed  * Math.sqrt(2) / 2;
+                player.animations.play('down');
+            }
+            else if(cursors.right.isDown && cursors.up.isDown){
+                player.body.velocity.x = player_speed * Math.sqrt(2) / 2;
+                player.body.velocity.y = -player_speed * Math.sqrt(2) / 2;
+                player.animations.play('up');
+            }
+            else if(cursors.right.isDown && cursors.down.isDown){
+                player.body.velocity.x = player_speed  * Math.sqrt(2) / 2;
+                player.body.velocity.y = player_speed  * Math.sqrt(2) / 2;
+                player.animations.play('down');
+            }
+
+            else if (cursors.left.isDown) {
+                player.body.velocity.x = -player_speed;
+            }
+            else if (cursors.right.isDown) {
+                player.body.velocity.x = player_speed;
+            }
+
+            // keyboard up/down
+            else if (cursors.up.isDown) {
+                player.body.velocity.y = -player_speed;
+                player.animations.play('up');
+            }
+            else if (cursors.down.isDown) {
+                player.body.velocity.y = player_speed;
+                player.animations.play('down');
+            }
+            else {  // stand still
+                player.animations.stop();
+                player.frame = 2;
+            }
+
+            if(game.time.now > ailencreatetimer && ailencreatecount < 10*stage)
+                this.createAliens();
+
+            //  Firing?
+            if (fireButton.isDown) {
+                this.fireBullet();
+            }
+
+            if (game.time.now > firingTimer) {
+                this.enemyFires();
+            }
+
+            
+
+            //  Run collision
+            game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
+            if (bulletsCollision){
+                game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
+            }
+            game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
+            game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
+            if (itemchangetime < game.time.now) {
+                game.physics.arcade.overlap(bullets, heart, this.changeItem, null, this);
+                game.physics.arcade.overlap(bullets, shield, this.changeItem, null, this);
+                game.physics.arcade.overlap(bullets, power_up, this.changeItem, null, this);
+                game.physics.arcade.overlap(bullets, speed_up, this.changeItem, null, this);
+                game.physics.arcade.overlap(bullets, score_up_2, this.changeItem, null, this);
+                game.physics.arcade.overlap(bullets, score_up_3, this.changeItem, null, this);
+            }
+            game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
+            game.physics.arcade.overlap(player, shield, this.getShield, null, this);
+            game.physics.arcade.overlap(player, power_up, this.getPower_up, null, this);
+            game.physics.arcade.overlap(player, speed_up, this.getspeed_up, null, this);
+            game.physics.arcade.overlap(player, score_up_2, this.getScore_up_2, null, this);
+            game.physics.arcade.overlap(player, score_up_3, this.getScore_up_3, null, this);
+        }
+    },
+
+    character1 : function() {
+        shiptype = 1
+        ship1button.destroy();
+        ship2button.destroy();
+        this.createContinue();
+        game.paused = false;
+    },
+    
+    character2 : function() {
+        shiptype = 2
+        ship1button.destroy();
+        ship2button.destroy();
+        this.createContinue();
+        game.paused = false;
+    },
+
+    createContinue : function() {
+        if (shiptype === 2)
+            player = game.add.sprite(150, 300, 'ship2');
+        else
+            player = game.add.sprite(150, 300, 'ship');
         player.anchor.setTo(0.5, 0.5);
         game.physics.enable(player, Phaser.Physics.ARCADE);
         player.body.collideWorldBounds = true;
@@ -156,7 +293,10 @@ var Game = {
         bullets = game.add.group();
         bullets.enableBody = true;
         bullets.physicsBodyType = Phaser.Physics.ARCADE;
-        bullets.createMultiple(200, 'bullet', 100, false);
+        if (shiptype === 2)
+            bullets.createMultiple(200, 'bullet2', 100, false);
+        else
+            bullets.createMultiple(200, 'bullet', 100, false);
         bullets.setAll('anchor.x', 0.5);
         bullets.setAll('anchor.y', 1);
         bullets.setAll('outOfBoundsKill', true);
@@ -260,110 +400,7 @@ var Game = {
         me.gameTimer = game.time.events.loop(1000, function(){
             me.updateTimer();
         });
-
     },
-
-    update : function() {
-
-        //  Scroll the background
-        starfield.tilePosition.x -= 3;
-        upper_mountain.tilePosition.x -= 1;
-        lower_mountain.tilePosition.x -= 1;
-
-        // Setting
-        if (settings.isDown){
-            music.stop();
-            this.showSettingMessageBox();
-            // this.state.start('pauseMenu');
-            music.play();
-        }
-
-        if (player.alive) {
-            //  Reset the player, then check for movement keys
-            player.body.velocity.setTo(0, 0);
-            
-            if(cursors.left.isDown && cursors.up.isDown){
-                player.body.velocity.x = -player_speed * Math.sqrt(2) / 2;
-                player.body.velocity.y = -player_speed * Math.sqrt(2) / 2;
-                player.animations.play('up');
-            }
-
-            else if(cursors.left.isDown && cursors.down.isDown){
-                player.body.velocity.x = -player_speed  * Math.sqrt(2) / 2;
-                player.body.velocity.y = player_speed  * Math.sqrt(2) / 2;
-                player.animations.play('down');
-            }
-            else if(cursors.right.isDown && cursors.up.isDown){
-                player.body.velocity.x = player_speed * Math.sqrt(2) / 2;
-                player.body.velocity.y = -player_speed * Math.sqrt(2) / 2;
-                player.animations.play('up');
-            }
-            else if(cursors.right.isDown && cursors.down.isDown){
-                player.body.velocity.x = player_speed  * Math.sqrt(2) / 2;
-                player.body.velocity.y = player_speed  * Math.sqrt(2) / 2;
-                player.animations.play('down');
-            }
-
-            else if (cursors.left.isDown) {
-                player.body.velocity.x = -player_speed;
-            }
-            else if (cursors.right.isDown) {
-                player.body.velocity.x = player_speed;
-            }
-
-            // keyboard up/down
-            else if (cursors.up.isDown) {
-                player.body.velocity.y = -player_speed;
-                player.animations.play('up');
-            }
-            else if (cursors.down.isDown) {
-                player.body.velocity.y = player_speed;
-                player.animations.play('down');
-            }
-            else {  // stand still
-                player.animations.stop();
-                player.frame = 2;
-            }
-
-            if(game.time.now > ailencreatetimer && ailencreatecount < 10*stage)
-                this.createAliens();
-
-            //  Firing?
-            if (fireButton.isDown) {
-                this.fireBullet();
-            }
-
-            if (game.time.now > firingTimer) {
-                this.enemyFires();
-            }
-
-            
-
-            //  Run collision
-            game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
-            if (bulletsCollision){
-                game.physics.arcade.overlap(bullets, enemyBullets, this.playerBreakEnemyBullet, null, this);
-            }
-            game.physics.arcade.overlap(player, aliens, this.enemyHitsPlayer, null, this);
-            game.physics.arcade.overlap(player, enemyBullets, this.enemyHitsPlayer, null, this);
-            if (itemchangetime < game.time.now) {
-                game.physics.arcade.overlap(bullets, heart, this.changeItem, null, this);
-                game.physics.arcade.overlap(bullets, shield, this.changeItem, null, this);
-                game.physics.arcade.overlap(bullets, power_up, this.changeItem, null, this);
-                game.physics.arcade.overlap(bullets, speed_up, this.changeItem, null, this);
-                game.physics.arcade.overlap(bullets, score_up_2, this.changeItem, null, this);
-                game.physics.arcade.overlap(bullets, score_up_3, this.changeItem, null, this);
-            }
-            game.physics.arcade.overlap(player, heart, this.getHeart, null, this);
-            game.physics.arcade.overlap(player, shield, this.getShield, null, this);
-            game.physics.arcade.overlap(player, power_up, this.getPower_up, null, this);
-            game.physics.arcade.overlap(player, speed_up, this.getspeed_up, null, this);
-            game.physics.arcade.overlap(player, score_up_2, this.getScore_up_2, null, this);
-            game.physics.arcade.overlap(player, score_up_3, this.getScore_up_3, null, this);
-        }
-    },
-
-   
 
     createAliens : function() {
         let alienImage;
@@ -1027,23 +1064,23 @@ var Game = {
         settingButton.inputEnabled = false;
         settings.inputEnabled = false;
         setTimeout(function()
-            {
-                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 3, { font: '124px Arial', fill: '#00f' });
-                resumetimer.anchor.setTo(0.5, 0.5);
-                setTimeout(function(){resumetimer.destroy();}, 999);            
-            }, 0);
+        {
+            var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 3, { font: '124px Arial', fill: '#00f' });
+            resumetimer.anchor.setTo(0.5, 0.5);
+            setTimeout(function(){resumetimer.destroy();}, 999);            
+        }, 0);
         setTimeout(function()
-            {
-                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 2, { font: '124px Arial', fill: '#00f' });
-                resumetimer.anchor.setTo(0.5, 0.5);
-                setTimeout(function(){resumetimer.destroy();}, 999);            
-            }, 1000);
+        {
+            var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 2, { font: '124px Arial', fill: '#00f' });
+            resumetimer.anchor.setTo(0.5, 0.5);
+            setTimeout(function(){resumetimer.destroy();}, 999);            
+        }, 1000);
         setTimeout(function()
-            {
-                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 1, { font: '124px Arial', fill: '#00f' });
-                resumetimer.anchor.setTo(0.5, 0.5);
-                setTimeout(function(){resumetimer.destroy();}, 999);            
-            }, 2000);
+        {
+            var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 1, { font: '124px Arial', fill: '#00f' });
+            resumetimer.anchor.setTo(0.5, 0.5);
+            setTimeout(function(){resumetimer.destroy();}, 999);            
+        }, 2000);
         setTimeout(function(){
             game.paused = false;
             settingButton.inputEnabled = true;
