@@ -56,11 +56,8 @@ var itemchangetime;
 var shiptype = 0;
 var ship1button;
 var ship2button;
-<<<<<<< HEAD
 var backButton
-=======
 var characterSelection;
->>>>>>> 299b0cda166dd07b80013f38f844563a4383d498
 var items = [];
 var Game = {
 
