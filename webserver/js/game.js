@@ -65,7 +65,9 @@ var Game = {
         game.load.spritesheet('invaderGreen', 'img/invader32x32x4-green.png', 32, 32);
         game.load.spritesheet('invaderPurple', 'img/invader32x32x4-purple.png', 32, 32);
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
+        game.load.spritesheet('armerShip', 'img/armerShip64x64x5.png', 64, 64, 5);
         game.load.spritesheet('ship2', 'img/ship264x64x5.png', 64, 64, 5);
+        game.load.spritesheet('armerShip2', 'img/armerShip64x64x5.png', 64, 64, 5);
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         //ship img
         game.load.image('shipimg', 'img/ship.png');
@@ -278,10 +280,12 @@ var Game = {
     },
 
     createContinue : function() {
-        if (shiptype === 2)
+        if (shiptype === 2) {
             player = game.add.sprite(150, 300, 'ship2');
-        else
+        }
+        else {
             player = game.add.sprite(150, 300, 'ship');
+        }
         player.anchor.setTo(0.5, 0.5);
         game.physics.enable(player, Phaser.Physics.ARCADE);
         player.body.collideWorldBounds = true;
@@ -764,10 +768,24 @@ var Game = {
     },
 
     getShield : () => {
+        if (shiptype === 2) {
+            player.loadTexture('armerShip2', 0);
+        }
+        else {
+            player.loadTexture('armerShip', 0);
+        }
         sfx_get_item.play();
         shield.kill();
         player.invincibleTime = game.time.now + 15000;
         isShield = true;    
+        setTimeout(() => {
+            if (shiptype === 2) {
+                player.loadTexture('ship2', 0);
+            }
+            else {
+                player.loadTexture('ship', 0);
+            }
+        }, 15000);
     },
 
     getPower_up: function(player, power_up) {
