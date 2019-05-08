@@ -268,6 +268,7 @@ var Game = {
     
     character2 : function() {
         shiptype = 2
+        player_speed = 300;
         ship1button.destroy();
         ship2button.destroy();
         this.createContinue();
@@ -521,12 +522,18 @@ var Game = {
                     if (n%2 === 0) {
                         bullet.reset(player.x + 8, player.y + Math.pow(-1, n) * 7 * n);
                         bullet.body.velocity.x = 800;
-                        bulletTime = game.time.now + 200;
+                        if (shiptype === 2)
+                            bulletTime = game.time.now + 100;
+                        else
+                            bulletTime = game.time.now + 200;
                     }
                     else {
                         bullet.reset(player.x + 8, player.y + Math.pow(-1, n) * 7 * n);
                         bullet.body.velocity.x = 400;
-                        bulletTime = game.time.now + 200;
+                        if (shiptype === 2)
+                            bulletTime = game.time.now + 100;
+                        else
+                            bulletTime = game.time.now + 200;
                     }
                 }
             }
