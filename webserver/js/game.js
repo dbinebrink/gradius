@@ -7,7 +7,6 @@ var cursors;
 var fireButton;
 var explosions;
 var starfield;
-var countstage = 1;
 var score = 0;
 var scoreString = '';
 var scoreText;
@@ -107,6 +106,7 @@ var Game = {
     create  : function() {
 
         // reset
+        ailencreatecount = 0;
         itemchangetime = 0;
         bulletTime = 0;
         invincibleTime = 0;
@@ -586,6 +586,7 @@ var Game = {
             countstage++;
             stage++;
             stageText.text = stageString + stage;
+            console.log(stage, aliens.countLiving(), ailencreatecount);
             
             if(debugFlag){
                 console.log("%c STAGE "+stage, 'background: #222; color: #bada55');
@@ -761,7 +762,6 @@ var Game = {
         explosion.play('kaboom', 30, false, true);
 
         if (live_count < 1) {
-            countstage = 1;
             this.finishGame();
         }
 
@@ -771,6 +771,7 @@ var Game = {
             countstage++;
             stage++;
             stageText.text = stageString + stage;
+            console.log(stage);
 
             if(debugFlag){
                 console.log("%c STAGE "+stage, 'background: #222; color: #bada55');
@@ -907,11 +908,11 @@ var Game = {
         var mainMenu = game.add.text(0, 0, 'MAIN MENU');
         var restartButton1 = game.add.text(0, 0, 'RESTART');
         var resumeButton = game.add.text(0, 0, 'RESUME');
-        var musicOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
+        var musicOnButton = game.add.text(0,0, 'ON', { fontSize: 19});
         var musicOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
         var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic', { fontSize: 19 });
         var dbgMsgText = game.add.text(0, 0, "Debug Message", { fontSize: 19 });
-        var dbgMsgOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
+        var dbgMsgOnButton = game.add.text(0,0, 'ON', { fontSize: 19});
         var dbgMsgOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
         var bulletCollisionText = game.add.text(0, 0, 'Bullets Collision', { fontSize: 19 });
         var bulletCollisionOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
@@ -974,9 +975,9 @@ var Game = {
         resumeButton.events.onInputDown.add(this.hideBox,this);
 
         backgroundMusicText.wordWrapWidth = back * 0.8;
+        backgroundMusicText.addColor("#ffffff", 0);
         backgroundMusicText.x = msgBox.width / 2 - backgroundMusicText.width / 2;
         backgroundMusicText.y = msgBox.y - 40;
-        backgroundMusicText.addColor("#ffffff", 0);
 
         musicOnButton.wordWrapWidth = back * 0.8;
         musicOnButton.addColor("#ffffff", 0);
@@ -993,9 +994,9 @@ var Game = {
         musicOffButton.events.onInputDown.add(this.turnOffMusic,this);
 
         dbgMsgText.wordWrapWidth = back * 0.8;
+        dbgMsgText.addColor("#ffffff", 0);
         dbgMsgText.x = msgBox.width / 2 - dbgMsgText.width / 2;
         dbgMsgText.y = msgBox.y + 15;
-        dbgMsgText.addColor("#ffffff", 0);
 
         dbgMsgOnButton.wordWrapWidth = back * 0.8;
         dbgMsgOnButton.addColor("#ffffff", 0);
