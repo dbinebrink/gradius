@@ -56,6 +56,7 @@ var itemchangetime;
 var shiptype = 0;
 var ship1button;
 var ship2button;
+var characterSelection;
 var items = [];
 var Game = {
 
@@ -159,6 +160,7 @@ var Game = {
 
         //  The starship
         game.paused = true;
+        characterSelection = game.add.text(game.world.centerX-160, game.world.centerY-120, "Select Spaceship", { font: '50px Arial', fill: '#fff' });
         ship1button = game.add.button(game.world.centerX-100, game.world.centerY, 'shipimg', this.character1, this);
         ship2button = game.add.button(game.world.centerX+100, game.world.centerY, 'ship2img', this.character2, this);
     },
