@@ -7,7 +7,6 @@ var cursors;
 var fireButton;
 var explosions;
 var starfield;
-var countstage = 1;
 var score = 0;
 var scoreString = '';
 var scoreText;
@@ -57,6 +56,7 @@ var itemchangetime;
 var shiptype = 0;
 var ship1button;
 var ship2button;
+var items = [];
 var Game = {
 
     preload : function() {
@@ -66,7 +66,9 @@ var Game = {
         game.load.spritesheet('invaderGreen', 'img/invader32x32x4-green.png', 32, 32);
         game.load.spritesheet('invaderPurple', 'img/invader32x32x4-purple.png', 32, 32);
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
+        game.load.spritesheet('armerShip', 'img/armerShip64x64x5.png', 64, 64, 5);
         game.load.spritesheet('ship2', 'img/ship264x64x5.png', 64, 64, 5);
+        game.load.spritesheet('armerShip2', 'img/armerShip64x64x5.png', 64, 64, 5);
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         //ship img
         game.load.image('shipimg', 'img/ship.png');
@@ -106,6 +108,7 @@ var Game = {
     create  : function() {
 
         // reset
+        ailencreatecount = 0;
         itemchangetime = 0;
         bulletTime = 0;
         invincibleTime = 0;
@@ -118,6 +121,8 @@ var Game = {
         player_speed = 200;
         stageString = '';
         power_up_count = 1;
+        seconds = 0;
+        minutes = 0;
         music_status = 'ON';
         bulletsCollision_status = 'ON';
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -276,10 +281,12 @@ var Game = {
     },
 
     createContinue : function() {
-        if (shiptype === 2)
+        if (shiptype === 2) {
             player = game.add.sprite(150, 300, 'ship2');
-        else
+        }
+        else {
             player = game.add.sprite(150, 300, 'ship');
+        }
         player.anchor.setTo(0.5, 0.5);
         game.physics.enable(player, Phaser.Physics.ARCADE);
         player.body.collideWorldBounds = true;
@@ -549,7 +556,7 @@ var Game = {
         bullet.kill();
 
         if(Math.random() * 1000 < 200) {
-            this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 );
+            items.push(this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 ));
         }
         alien.damage(1);
 
@@ -583,6 +590,7 @@ var Game = {
             countstage++;
             stage++;
             stageText.text = stageString + stage;
+            console.log(stage, aliens.countLiving(), ailencreatecount);
             
             if(debugFlag){
                 console.log("%c STAGE "+stage, 'background: #222; color: #bada55');
@@ -666,8 +674,40 @@ var Game = {
         var x = object.x;
         var y = object.y;
         object.kill();
-        var item = this.makeRandomItem(x, y, x_vel, y_vel);
+        items.push(this.makeRandomItem(x, y, x_vel, y_vel));
         bullet.kill();
+    },
+
+    //itemMovement control
+    itemMovement : function() {
+        console.log(items);
+        for(var i = 0; i < items.length; i++) {                    
+        
+            if (items[i].alive === false) {
+                items.splice(i,1);
+            }
+
+            if (!items[i] || !items[i].body) {
+                continue;
+            }
+
+            if (items[i].body.y < 0) {
+                items[i].body.velocity.y *= -1;
+            }
+            if (items[i].body.y >= 600 - items[i].body.height) {
+                items[i].body.velocity.y *= -1;
+            }
+            if (items[i].body.x < 0) {
+                items[i].body.velocity.x *= -1;
+            }
+            if (items[i].body.x >= 900 - items[i].body.width) {
+                items[i].body.velocity.x *= -1;
+            }
+        }
+    },
+
+    emptyItems : function() {
+        items = [];
     },
 
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
@@ -726,9 +766,6 @@ var Game = {
         explosion.play('kaboom', 30, false, true);
 
         if (live_count < 1) {
-            countstage = 1;
-            seconds = 0;
-            minutes = 0;
             this.finishGame();
         }
 
@@ -738,6 +775,7 @@ var Game = {
             countstage++;
             stage++;
             stageText.text = stageString + stage;
+            console.log(stage);
 
             if(debugFlag){
                 console.log("%c STAGE "+stage, 'background: #222; color: #bada55');
@@ -763,10 +801,24 @@ var Game = {
     },
 
     getShield : () => {
+        if (shiptype === 2) {
+            player.loadTexture('armerShip2', 0);
+        }
+        else {
+            player.loadTexture('armerShip', 0);
+        }
         sfx_get_item.play();
         shield.kill();
         player.invincibleTime = game.time.now + 15000;
         isShield = true;    
+        setTimeout(() => {
+            if (shiptype === 2) {
+                player.loadTexture('ship2', 0);
+            }
+            else {
+                player.loadTexture('ship', 0);
+            }
+        }, 15000);
     },
 
     getPower_up: function(player, power_up) {
@@ -785,10 +837,11 @@ var Game = {
 
         music.stop();
 
-        game.time.events.add(Phaser.Timer.SECOND, function() {
+        game.time.events.add(Phaser.Timer.SECOND , function() {
             enemyBullets.callAll('kill');
             //aliens.removeAll();
             this.state.start('ending');
+
         }, this);
     },
 
@@ -873,11 +926,11 @@ var Game = {
         var mainMenu = game.add.text(0, 0, 'MAIN MENU');
         var restartButton1 = game.add.text(0, 0, 'RESTART');
         var resumeButton = game.add.text(0, 0, 'RESUME');
-        var musicOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
+        var musicOnButton = game.add.text(0,0, 'ON', { fontSize: 19});
         var musicOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
         var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic', { fontSize: 19 });
         var dbgMsgText = game.add.text(0, 0, "Debug Message", { fontSize: 19 });
-        var dbgMsgOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
+        var dbgMsgOnButton = game.add.text(0,0, 'ON', { fontSize: 19});
         var dbgMsgOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
         var bulletCollisionText = game.add.text(0, 0, 'Bullets Collision', { fontSize: 19 });
         var bulletCollisionOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
@@ -940,9 +993,9 @@ var Game = {
         resumeButton.events.onInputDown.add(this.hideBox,this);
 
         backgroundMusicText.wordWrapWidth = back * 0.8;
+        backgroundMusicText.addColor("#ffffff", 0);
         backgroundMusicText.x = msgBox.width / 2 - backgroundMusicText.width / 2;
         backgroundMusicText.y = msgBox.y - 40;
-        backgroundMusicText.addColor("#ffffff", 0);
 
         musicOnButton.wordWrapWidth = back * 0.8;
         musicOnButton.addColor("#ffffff", 0);
@@ -959,9 +1012,9 @@ var Game = {
         musicOffButton.events.onInputDown.add(this.turnOffMusic,this);
 
         dbgMsgText.wordWrapWidth = back * 0.8;
+        dbgMsgText.addColor("#ffffff", 0);
         dbgMsgText.x = msgBox.width / 2 - dbgMsgText.width / 2;
         dbgMsgText.y = msgBox.y + 15;
-        dbgMsgText.addColor("#ffffff", 0);
 
         dbgMsgOnButton.wordWrapWidth = back * 0.8;
         dbgMsgOnButton.addColor("#ffffff", 0);
@@ -1060,6 +1113,7 @@ var Game = {
     startGame : function() {
         //this.Game.destroy();
         //this.msgBox.destroy();
+        this.emptyItems();
         game.paused = false;
         music.stop();
         game.state.start('Game');
