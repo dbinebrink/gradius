@@ -86,7 +86,6 @@ var Game = {
         game.load.image('settingButton', 'img/settingButton.png');
         game.load.image('settingBack', 'img/settingBackground.png');
         game.load.image('settingBack1', 'img/settingBackground1.png');
-
     },
 
     create  : function() {
