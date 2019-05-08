@@ -163,7 +163,7 @@ var Game = {
         game.paused = true;
         backButton = game.add.button(game.world.centerX+350,+30,'backButton', this.goMenu1, this);
         characterSelection = game.add.text(game.world.centerX-160, game.world.centerY-120, "Select Spaceship", { font: '50px Arial', fill: '#fff' });
-        ship1button = game.add.button(game.world.centerX-100, game.world.centerY, 'shipimg', this.character1, this);
+        ship1button = game.add.button(game.world.centerX-250, game.world.centerY, 'shipimg', this.character1, this);
         ship2button = game.add.button(game.world.centerX+100, game.world.centerY, 'ship2img', this.character2, this);
 
     },
@@ -271,6 +271,7 @@ var Game = {
     character1 : function() {
         shiptype = 1
         backButton.destroy();
+        characterSelection.destroy();
         ship1button.destroy();
         ship2button.destroy();
         this.createContinue();
@@ -283,6 +284,7 @@ var Game = {
         backButton.destroy();
         ship1button.destroy();
         ship2button.destroy();
+        characterSelection.destroy();
         this.createContinue();
         game.paused = false;
     },
