@@ -260,10 +260,6 @@ var Game = {
         }
     },
 
-    initialize :  function() {
-        
-    },
-
     character1 : function() {
         shiptype = 1
         ship1button.destroy();
@@ -883,7 +879,7 @@ var Game = {
         var musicOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
         var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic', { fontSize: 19 });
         var dbgMsgText = game.add.text(0, 0, "Debug Message", { fontSize: 19 });
-        var dbgMsgOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
+        var dbgMsgOnButton = game.add.text(0,0, 'ON', { fontSize: 19});
         var dbgMsgOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
         var bulletCollisionText = game.add.text(0, 0, 'Bullets Collision', { fontSize: 19 });
         var bulletCollisionOnButton = game.add.text(0,0, 'ON', { fontSize: 19 });
@@ -951,7 +947,7 @@ var Game = {
         backgroundMusicText.y = msgBox.y - 40;
 
         musicOnButton.wordWrapWidth = back * 0.8;
-        musicOnButton.addColor("ffffff", 0);
+        musicOnButton.addColor("#ffffff", 0);
         musicOnButton.x = msgBox.width / 2 - musicOnButton.width - 10;
         musicOnButton.y = msgBox.y + backgroundMusicText.height - 40;
         musicOnButton.inputEnabled = true;
