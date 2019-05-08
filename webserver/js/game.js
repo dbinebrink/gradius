@@ -32,6 +32,8 @@ var first = 0;
 var stage = 1;
 var stageString = '';
 var stageText;
+var alienscount;
+var aliensString;
 var speedup;
 var player_speed;
 var power_up_count = 1;
@@ -58,6 +60,7 @@ var ship1button;
 var ship2button;
 var backButton
 var characterSelection;
+var ailencreatecount;
 var items = [];
 var Game = {
 
@@ -187,6 +190,8 @@ var Game = {
             //  Reset the player, then check for movement keys
             player.body.velocity.setTo(0, 0);
 
+            alienscount.text = aliensString + aliens.countLiving();
+            
             if(cursors.left.isDown && cursors.up.isDown){
                 player.body.velocity.x = -player_speed * Math.sqrt(2) / 2;
                 player.body.velocity.y = -player_speed * Math.sqrt(2) / 2;
@@ -351,6 +356,9 @@ var Game = {
         scoreString = 'Score: ';
         scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
 
+        aliensString = 'Alien: ';
+        alienscount = game.add.text(600,250,aliensString + aliens.countLiving(), { font: '40px Arial', fill: '#fff' });
+
         bulletsCollisionString = 'Bul Col: ';
         bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
 
@@ -450,6 +458,7 @@ var Game = {
             movepoint_y = Math.random() * 540 + 30;
             alien = aliens.create(movepoint_x, movepoint_y, alienImage);
         }
+
         alien.maxHealth = alienHealth;
         alien.setHealth(alienHealth);
         alien.scale.set(alienSizeMultiple);
