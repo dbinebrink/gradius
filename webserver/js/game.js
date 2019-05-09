@@ -34,6 +34,9 @@ var stageString = '';
 var stageText;
 var alienscount;
 var aliensString;
+var alienkillText;
+var alienkill=0;
+var alienString;
 var speedup;
 var player_speed;
 var power_up_count = 1;
@@ -362,6 +365,9 @@ var Game = {
         aliensString = 'Alien: ';
         alienscount = game.add.text(750,70,aliensString + aliens.countLiving(), { font: '40px Arial', fill: '#fff' });
 
+        alienString = 'Kill: ';
+        alienkillText = game.add.text(750,110,alienString + alienkill, { font: '40px Arial', fill: '#fff' });
+
         bulletsCollisionString = 'Bul Col: ';
         bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
 
@@ -580,7 +586,7 @@ var Game = {
             items.push(this.makeRandomItem(alien.body.x, alien.body.y, -130, (Math.random()*2-1)*60 ));
         }
         alien.damage(1);
-
+        alienkill++;
         sfx_enemy_die.play();
 
         //  Increase the score
@@ -597,6 +603,7 @@ var Game = {
         score += 20*live_count;
         }
         scoreText.text = scoreString + score;
+        alienkillText.text = alienString + alienkill;
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
         explosion.reset(alien.body.x, alien.body.y);
