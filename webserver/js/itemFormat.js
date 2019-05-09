@@ -11,7 +11,7 @@ class UndefinedTypeError {
 itemAbilityTags = {
     "Player" : {
         "changeParameter" : [
-            "maxHealth", "evasion", "speed", "image", "invincibleTime", "healthUp"
+            "maxHealth", "evasion", "speed", "image", "invincibleTime", "healthUp", "activeItemOn"
         ],
         "changeFunction" : [
             "animation"
@@ -23,7 +23,7 @@ itemAbilityTags = {
     
     "Bullets" : {
         "changeParameter" : [
-            "damage", "speed", "fireRate", "fireAtOnce",
+            "damage", "speed", "fireRate", "fireAtOnce", "activeItemOn",
             "penetration", "image", "fireSound",
             "outOfBoundsKill", "collideEnemyBullet",
             "checkWorldBounds", "maxBulletCount"
@@ -34,19 +34,22 @@ itemAbilityTags = {
         "addFunction" : [
             "beforeFire", "firing", "afterFire", "hitEnemy", "always"
         ]
+    },
+    "active" : {
+        "changeParameter" : [],
+        "changeFunction" : [],
+        "addFunction" : ["active"]
     }
 }
 
 itemList = [];
-dropTable = {common:[], uncommon:[]};
+dropTable = {};
 uncommonDropTime = 0;
 
-
 class item {
-    constructor(name, rarity, isActive = false) {
+    constructor(name, rarity) {
         this.name = name;
         this.rarity = rarity;
-        this.isActive = isActive;
         this.abilities = {
             "Bullets" : {
                 "changeParameter" : {},
@@ -57,6 +60,11 @@ class item {
                 "changeParameter" : {},
                 "changeFunction" : {},
                 "addFunction" : {}
+            },
+            "active" : {
+                "changeParameter" : {},
+                "changeFunction" : {},
+                "addFunction" : {}
             }
         };
 
@@ -64,7 +72,9 @@ class item {
     }
 
     addToItemList(){
+        if(!dropTable[this.rarity]) dropTable[this.rarity] = []
         dropTable[this.rarity].push(itemList.length);
+        this.itemNumber = itemList.length;
         itemList.push(this);
     }
 
@@ -72,14 +82,63 @@ class item {
         if(!itemAbilityTags[appliedObj][type].includes(tag)) throw new UndefinedTypeError("undefined ability type!");
 
         if(type == "addFunction"){
-            if(!this.abilities[appliedObj][type][tag]) this.abilities[appliedObj][type][tag] = []
-            this.abilities[appliedObj][type][tag].push({
-                "priority" : priority,
-                "function" : value
-            });
+            if(!this.abilities[appliedObj][type][tag]) this.abilities[appliedObj][type][tag] = {};
+            if(!this.abilities[appliedObj][type][tag][priority]) this.abilities[appliedObj][type][tag][priority] = [];
+
+            this.abilities[appliedObj][type][tag][priority].push(value);
         }
         else{
             this.abilities[appliedObj][type][tag] = value;
+        }
+    }
+
+    applyItem(myItemList){
+        if(this.isActiveItem) Player.activeItem = this;
+        else if(!myItemList[this.itemNumber]) myItemList[this.itemNumber] = 1;
+        else myItemList[this.itemNumber] += 1;
+        Bullets.applyItems(myItemList);
+        Player.applyItems(myItemList);
+    }
+
+    removeItem(myItemList){
+        if(this.isActiveItem) Player.activeItem = null;
+        else if(myItemList[this.itemNumber] == 1) delete myItemList[this.itemNumber];
+        else if(myItemList[this.itemNumber] > 1) myItemList[this.itemNumber] -= 1;
+        Bullets.applyItems(myItemList);
+        Player.applyItems(myItemList);
+    }
+    
+    makeActive = function(isActiveItem, duration, requireResource){
+        if(this.isActiveItem) return;
+        this.isActiveItem = isActiveItem;
+        this.duration = duration;
+        this.requireResource = requireResource;
+        this.isActvate = false;
+
+        this.addAbility("Bullets", "changeParameter", "activeItemOn", x => false);
+        this.addAbility("Player", "changeParameter", "activeItemOn", x => false);
+    
+        this.activate = function(){
+            if(!this.isActiveItem || requireResource != Player.currentResource) return;
+            Player.currentResource = 0;
+            if(this.duration == 0){
+                for(tag in this.info.active.addFunction){
+                    for(priority in this.info.active.addFunction[tag]){
+                        for(func in this.info.active.addFunction[tag][prioirty]){
+                            //todo
+
+                        }
+                    }
+                }
+            }
+            else{
+                this.isActivate = true;
+                game.time.events.add(Phaser.Timer.SECOND * this.duration, function() {
+                    this.isActivate = false;
+                }, this);
+
+                ;
+            }
         }
     }
 }
@@ -162,5 +221,10 @@ damageUP_item.addAbility("Bullets", "changeParameter", "damage", x => x+1);
 
 let Heart_item = new item("heart", "common");
 Heart_item.addAbility("Player", "changeParameter", "healthUp", x => Player.heal(1));
+
+let GLP_800_item = new item("GLP-800", "uncommon");
+GLP_800_item.makeActive();
+
+
 
 // var Shotgun_item = new item("Shotgun", "uncommon");

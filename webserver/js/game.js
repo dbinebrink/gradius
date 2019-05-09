@@ -9,6 +9,7 @@ var scoreString = '';
 var scoreText;
 var enemyBullets;
 var itemGroup;
+var myItemList;
 var ailencreatetimer;
 var ailencreatecount = 0;
 var alienHealth = 1;
@@ -25,8 +26,8 @@ var stageText;
 var settings;
 var settingButton;
 var debugFlag = false;
-var bulletsCollision = true;
 var music_status;
+var bulletsCollision = true;
 var bulletsCollision_status;
 var seconds = 0;
 var minutes = 0;
@@ -122,6 +123,7 @@ var Game = {
         itemGroup = game.add.group();
         itemGroup.enableBody = true;
         itemGroup.physicsBodyType = Phaser.Physics.ARCADE;
+        myItemList = {};
 
         // The enemy's bullets
         enemyBullets = game.add.group();
@@ -167,6 +169,7 @@ var Game = {
         //  And some controls to play the game with
         cursors = game.input.keyboard.createCursorKeys();
         fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        activeButton = game.input.keyboard.addKey(Phaser.Keyboard.Q);
 
         var me = this;
 
@@ -405,8 +408,8 @@ var Game = {
 
     getItem : function(player, itemSprite){
         item = itemList[itemSprite.health];
-        Bullets.addItem(item);
-        Player.addItem(item);
+        console.log(item);
+        item.applyItem(myItemList);
         itemSprite.destroy();
     },
     
