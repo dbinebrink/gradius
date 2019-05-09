@@ -86,6 +86,15 @@ var Game = {
         game.load.image('settingButton', 'img/settingButton.png');
         game.load.image('settingBack', 'img/settingBackground.png');
         game.load.image('settingBack1', 'img/settingBackground1.png');
+
+        var req = fetch('http://tallbin98.dothome.co.kr/ranking_read.php')
+            .then(res => res.json())
+            .then(res => {
+                ranking=res;
+            })
+            .catch(res => {
+                ranking = [];
+            });
     },
 
     create  : function() {
@@ -742,6 +751,7 @@ var Game = {
         game.time.events.add(Phaser.Timer.SECOND, function() {
             enemyBullets.callAll('kill');
             //aliens.removeAll();
+            console.log("ending");
             this.state.start('ending');
         }, this);
     },
