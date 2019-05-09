@@ -509,6 +509,8 @@ var Game = {
         
         if (!Player.sprite.alive) {
             countstage = 1;
+            seconds = 0;
+            minutes = 0;
             this.finishGame();
         }
 
