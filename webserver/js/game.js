@@ -122,6 +122,7 @@ var Game = {
         bulletTime = 0;
         invincibleTime = 0;
         score = 0;
+        alienkill = 0;
         scoreString = '';
         firingTimer = 0;
         livingEnemies = [];
