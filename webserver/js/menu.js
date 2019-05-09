@@ -9,9 +9,9 @@ var mainMenu = {
         game.load.image('gradius' , 'img/gradius.png');
         game.load.image('startButton', 'img/startbutton.png');
         game.load.image('controls', 'img/controls.png');
-        game.load.image('controlkey', 'img/controlkey-1.png');
         game.load.image('backButton', 'img/backButton.png');
         game.load.image('exit' , 'img/exit.png');
+        game.load.image('help' , 'img/help.png');
         mainMenu.load.audio('start_sound', 'audio/start_sound.mp3')
     },
 
@@ -24,6 +24,7 @@ var mainMenu = {
         game.add.button(game.world.centerX-85,380,'exit', this.exit, this);
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         if (!start_music) start_music = game.add.audio('start_sound');
+        start_music.loop = true;
         start_music.play();
     },
 
@@ -36,24 +37,19 @@ var mainMenu = {
     },
 
     startGame : function() {
-        this.emptyItems();
         if(music) music.stop();
         start_music.stop();
         this.state.start('Game');
     },
 
     ViewControls : function() {
-        var image2 = game.add.image(0,360,'controlkey');
-        var image3 = game.add.button(805,360,'backButton');
+        var image2 = game.add.image(0,0,'help');
+        var image3 = game.add.button(700,80,'backButton');
         image3.inputEnabled = true;
         image3.events.onInputDown.add(function(){image2.destroy();image3.destroy();});
     },
 
     exit : function(){
       window.open('about:blank', '_self').close();
-    },
-
-    emptyItems : function() {
-        items = [];
-    },
+    }
 }
