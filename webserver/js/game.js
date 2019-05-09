@@ -279,7 +279,7 @@ var Game = {
             movepoint_y = Math.random() * 540 + 30;
             alien = aliens.create(movepoint_x, movepoint_y, alienImage);
         }
-        alien.maxHealth = (1 + 2*Math.round(stage/5))*alienHealth;
+        alien.maxHealth = (1 + 2*Math.floor(stage/5))*alienHealth;
         alien.setHealth(alien.maxHealth);
         alien.scale.set(alienSizeMultiple);
 
