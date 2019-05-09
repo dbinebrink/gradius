@@ -32,7 +32,7 @@ var Bullets = {
     initalizeInfo : function(){
         this.info.image = 'bullet';
         this.info.damage = 1;
-        this.info.fireRate = 0.6;
+        this.info.fireRate = 0.5;
         this.info.penetration = 1;
         this.info.maxBulletCount = 100;
         this.info.speed = 6;
@@ -41,7 +41,7 @@ var Bullets = {
         this.info.outOfBoundsKill = true;
         this.info.checkWorldBounds = true;
         this.info.initValue = {
-            position : {x : 40, y : 0},
+            position : {x : 20, y : 0},
             velocity : {x : this.info.speed*100, y : 0}
         }
         

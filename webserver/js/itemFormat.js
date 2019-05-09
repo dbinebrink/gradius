@@ -157,8 +157,8 @@ laser_item.addAbility("Bullets", "changeFunction", "animation", obj => {
     return 'shootBeam';
 });
 laser_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBullet) => {
-    currentBullet.body.x = Player.sprite.body.x + bulletObj.info.initValue.position.x;
-    currentBullet.body.y = Player.sprite.body.y;
+    currentBullet.body.velocity.x = Player.sprite.body.velocity.x;
+    currentBullet.body.velocity.y = Player.sprite.body.velocity.y;
 });
 
 // make pierce item
@@ -183,6 +183,7 @@ let tracking_item = new item("tracking", "uncommon");
 
 tracking_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBullet) => {
     let enemy = aliens.getClosestTo({x:currentBullet.x - aliens.x,y:currentBullet.y-30});
+    // console.log(enemy);
     let trackingPerformance = 0.03;
     let x = currentBullet.body.velocity.x+(enemy.body.x-currentBullet.x)*trackingPerformance;
     let y = currentBullet.body.velocity.y+(enemy.body.y-currentBullet.y)*trackingPerformance;
@@ -195,16 +196,19 @@ tracking_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, current
         x = x*reduceAmount;
         y = y*reduceAmount;
     }
+    currentBullet.body.velocity.x = x;
+    currentBullet.body.velocity.y = y;
+}, 2);
 
+tracking_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBullet) => {
+    let x = currentBullet.body.velocity.x;
+    let y = currentBullet.body.velocity.y;
     if(x == 0){
         if(y > 0) currentBullet.rotation = Math.PI/2;
         else currentBullet.rotation = -Math.PI/2;
     }
     else currentBullet.rotation = Math.atan(y/x);
-
-    currentBullet.body.velocity.x = x;
-    currentBullet.body.velocity.y = y;
-}, 2);
+}, 3);
 
 
 let fireRateUp_item = new item("fireRateUp", "common");
