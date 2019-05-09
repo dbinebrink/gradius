@@ -7,6 +7,9 @@ Refer : https://github.com/inureyes/gradios/blob/master/wiki.md
 
 ## Student list
 
+<details><summary>Click Me!</summary>
+<p>
+
 | Name         |            |
 |--------------|------------|
 | Jeongkyu Shin | Maintainer |
@@ -89,7 +92,10 @@ Refer : https://github.com/inureyes/gradios/blob/master/wiki.md
 | Wonbae Kim | Student |
 | Yelim Park | student |
 | Yerim Seok | Student |
+| Jae Hyeon Park| Student|
 
+</p>
+</details>
 
 ## Credit
 
