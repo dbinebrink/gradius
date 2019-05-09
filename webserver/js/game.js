@@ -133,6 +133,7 @@ var Game = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         if (!music) music = game.add.audio('music1');
+        music.loop = true;
         music.volume = 0.5;
         music.play();
 
