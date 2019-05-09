@@ -235,8 +235,9 @@ var Game = {
                 player.frame = 2;
             }
 
-            if(game.time.now > ailencreatetimer && ailencreatecount < 10*stage)
+            if((game.time.now > ailencreatetimer && ailencreatecount < 10*stage) || aliens.countLiving() === 0)  {
                 this.createAliens();
+            }
 
             //  Firing?
             if (fireButton.isDown) {
