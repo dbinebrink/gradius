@@ -168,7 +168,7 @@ var Game = {
         backButton = game.add.button(game.world.centerX+350,+30,'backButton', this.goMenu1, this);
         characterSelection = game.add.text(game.world.centerX-160, game.world.centerY-120, "Select Spaceship", { font: '50px Arial', fill: '#fff' });
         ship1button = game.add.button(game.world.centerX-250, game.world.centerY, 'shipimg', this.character1, this);
-        ship2button = game.add.button(game.world.centerX+100, game.world.centerY, 'ship2img', this.character2, this);
+        ship2button = game.add.button(game.world.centerX, game.world.centerY, 'ship2img', this.character2, this);
 
     },
 
