@@ -122,6 +122,7 @@ var Game = {
         bulletTime = 0;
         invincibleTime = 0;
         score = 0;
+        alienkill = 0;
         scoreString = '';
         firingTimer = 0;
         livingEnemies = [];
@@ -632,7 +633,7 @@ var Game = {
         if (debugFlag){
             console.log("Item created at X:"+ x +", Y:"+ y +" velosity = ( X:"+x_vel+", Y:"+y_vel+")");
         }
-        var option = ['power_up', 'speed_up', 'score_up_2', 'score_up_3', 'heart', 'shield'];
+        var option = ['power_up', 'speed_up', 'score_up_2', 'score_up_3', 'heart','shield'];
 
         var random = option[Math.floor(Math.random() * option.length)];
 
@@ -727,8 +728,11 @@ var Game = {
         if (isShield) {
             if ((game.time.now < player.invincibleTime)) {
                 sfx_enemy_die.play();
+                if(game.physics.arcade.overlap(aliens, player)||game.physics.arcade.overlap(player, aliens)){
+                    alienkill++;
+                    alienkillText.text = alienString + alienkill;
+                }
                 object.kill()
-
                 var explosion = explosions.getFirstExists(false);
                 explosion.reset(player.body.x, player.body.y);
                 explosion.play('kaboom', 30, false, true);
@@ -924,7 +928,7 @@ var Game = {
         var resumeButton = game.add.text(0, 0, 'RESUME');
         var musicOnButton = game.add.text(0,0, 'ON', { fontSize: 19});
         var musicOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
-        var backgroundMusicText = game.add.text(0,0, 'BackgroundMusic', { fontSize: 19 });
+        var backgroundMusicText = game.add.text(0,0, 'Music', { fontSize: 19 });
         var dbgMsgText = game.add.text(0, 0, "Debug Message", { fontSize: 19 });
         var dbgMsgOnButton = game.add.text(0,0, 'ON', { fontSize: 19});
         var dbgMsgOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
@@ -1182,12 +1186,22 @@ var Game = {
     turnOnMusic : function(){
         music.play();
         music_status = 'ON';
+        sfx_fire.volume = 0.5;
+        sfx_enemy_die.volume = 0.5;
+        sfx_stage_clear.volume = 0.5;
+        sfx_player_hit.volume = 0.5;
+        sfx_get_item.volume = 0.5;
         musicText.text = musicString + music_status;
     },
 
     turnOffMusic : function(){
         music.stop();
         music_status = 'OFF';
+        sfx_fire.volume = 0;
+        sfx_enemy_die.volume = 0;
+        sfx_stage_clear.volume = 0;
+        sfx_player_hit.volume = 0;
+        sfx_get_item.volume = 0;
         musicText.text = musicString + music_status;
     },
 
