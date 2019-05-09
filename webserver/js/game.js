@@ -541,7 +541,6 @@ var Game = {
         game.time.events.add(Phaser.Timer.SECOND , function() {
             enemyBullets.callAll('kill');
             //aliens.removeAll();
-            console.log("ending");
             this.state.start('ending');
 
         }, this);
