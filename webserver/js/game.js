@@ -114,6 +114,7 @@ var Game = {
 
         // reset
         ailencreatecount = 0;
+        bulletsCollision = true;
         itemchangetime = 0;
         bulletTime = 0;
         invincibleTime = 0;
