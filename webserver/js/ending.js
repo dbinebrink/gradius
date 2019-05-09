@@ -1,6 +1,8 @@
 var easyRestart;
 var ending_sound;
 var ending_music;
+var restartButton;
+var menuButton;
 
 var Ending = {
 
@@ -14,8 +16,10 @@ var Ending = {
     create : function() {
         var image = game.add.image(0,0,'Wall_paper');
         game.stage.background = image;
-        game.add.button(game.world.centerX-110,320,'restartButton', this.startGame, this);
-        game.add.button(game.world.centerX-110,420,'menuButton', this.goMenu, this);
+        restartButton = game.add.button(game.world.centerX-110,320,'restartButton', this.startGame, this);
+        restartButton.inputEnabled=true;
+        menuButton = game.add.button(game.world.centerX-110,420,'menuButton', this.goMenu, this);
+        menuButton.inputEnabled=true;
         if(!ending_music) ending_music = game.add.audio('ending_sound');
         ending_music.play();
         youDied = game.add.text(game.world.centerX + 10, 100, "YOU DIED", { font: '124px Arial', fill: '#f00'}); 
@@ -36,7 +40,10 @@ var Ending = {
         var Ranking_text = game.add.text(0, 0, 'Ranking', { fontsize: 25 });
         var rank_name = "";
         var rank_score = "";
-        
+
+        menuButton.inputEnabled=false;
+        restartButton.inputEnabled=false;
+
         i = 1;
         fetch('http://tallbin98.dothome.co.kr/ranking_write.php?Name=player&Score=' + score)
             .then(send => send.json())
@@ -92,6 +99,8 @@ var Ending = {
     },
 
     closeRanking : function() {
+        menuButton.inputEnabled=true;
+        restartButton.inputEnabled=true;
         this.msgBox2.destroy();
     },
 
