@@ -63,7 +63,7 @@ var Game = {
         game.load.image('upper_mountain', 'img/upper_mountain.png');
         //item
         game.load.image('heart', 'img/heart.png');
-        game.load.image('shield', 'img/shield.png');
+        game.load.image('superArmor', 'img/shield.png');
         game.load.image('damageUp','img/power_up.png');
         game.load.image('speedUp', 'img/speed_up.png');
         game.load.image('debug_message', 'img/debugMessage.png');
@@ -227,14 +227,11 @@ var Game = {
         }
 
         if (Player.sprite.alive) {
-            if(game.time.now > ailencreatetimer && ailencreatecount < 10*stage)
+            if((game.time.now > ailencreatetimer && ailencreatecount < 10*stage) || aliens.countLiving() === 0)  {
                 this.createAliens();
+            }
 
-            //  Firing?
-            // if (fireButton.isDown) {
-            //     // this.fireBullet();
-            //     Bullets.fire(Player.sprite, game.time.now);
-            // }
+            alienscount.text = aliensString + aliens.countLiving();
 
             if (game.time.now > firingTimer) {
                 this.enemyFires();
@@ -261,7 +258,7 @@ var Game = {
             alienHealth = 3;
             alienSizeMultiple = 2;
         }
-        else if(specialEnemyPer < stage/10+7){
+        else if(specialEnemyPer < stage/15+3){
             alienImage = 'invaderGreen';
             alienHealth = 2.5;
             alienSizeMultiple = 1.5;
