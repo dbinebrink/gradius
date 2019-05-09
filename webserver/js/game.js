@@ -253,12 +253,12 @@ var Game = {
         let alienHealth;
         let alienSizeMultiple;
         let specialEnemyPer = Math.random()*100;
-        if(specialEnemyPer < stage/30+1){
+        if(specialEnemyPer < Math.floor(stage/15)){
             alienImage = 'invaderPurple';
             alienHealth = 3;
             alienSizeMultiple = 2;
         }
-        else if(specialEnemyPer < stage/15+3){
+        else if(specialEnemyPer < Math.floor(stage/10)+3){
             alienImage = 'invaderGreen';
             alienHealth = 2.5;
             alienSizeMultiple = 1.5;
