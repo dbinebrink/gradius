@@ -1,5 +1,6 @@
 var easyRestart;
 var ending_sound;
+var ending_music;
 
 var Ending = {
 
@@ -13,12 +14,15 @@ var Ending = {
     create : function() {
         var image = game.add.image(0,0,'Wall_paper');
         game.stage.background = image;
-        game.add.button(game.world.centerX-110,300,'restartButton', this.startGame, this);
-        game.add.button(game.world.centerX-110,400,'menuButton', this.goMenu, this);
-        music1 = game.add.audio('ending_sound');
-        music1.play();
-        totalScore = game.add.text(game.world.centerX, 200, score, { font: '124px Arial', fill: '#00f' });
-        totalScore.anchor.setTo(0.5)
+        game.add.button(game.world.centerX-110,320,'restartButton', this.startGame, this);
+        game.add.button(game.world.centerX-110,420,'menuButton', this.goMenu, this);
+        if(!ending_music) ending_music = game.add.audio('ending_sound');
+        ending_music.play();
+        youDied = game.add.text(game.world.centerX + 10, 100, "YOU DIED", { font: '124px Arial', fill: '#f00'}); 
+        totalScore = game.add.text(game.world.centerX, 237, score, { font: '124px Arial', fill: '#00f' });
+        youDied.anchor.setTo(0.5);
+        totalScore.anchor.setTo(0.5);
+
         easyRestart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     },
 
