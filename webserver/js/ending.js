@@ -41,6 +41,7 @@ var Ending = {
         var rank_name = "";
         var rank_score = "";
 
+        msgBox2.enabledBody=false;
         menuButton.inputEnabled=false;
         restartButton.inputEnabled=false;
 
@@ -96,6 +97,7 @@ var Ending = {
         
                 this.msgBox2 = msgBox2;
             });
+        msgBox2.enabledBody=true;
     },
 
     closeRanking : function() {
