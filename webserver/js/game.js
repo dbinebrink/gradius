@@ -39,6 +39,7 @@ var itemchangetime;
 var shiptype = 0;
 var ship1button;
 var ship2button;
+var resumeByESC;
 var backButton
 var characterSelection;
 var ailencreatecount;
@@ -651,6 +652,9 @@ var Game = {
         setTimeout("hideBox()", 3000);
         resumeButton.events.onInputDown.add(this.hideBox,this);
 
+        resumeByESC = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+        resumeByESC.onDown.add(this.hideBox, this);
+
         backgroundMusicText.wordWrapWidth = back * 0.8;
         backgroundMusicText.addColor("#ffffff", 0);
         backgroundMusicText.x = msgBox.width / 2 - backgroundMusicText.width / 2;
@@ -786,6 +790,8 @@ var Game = {
     },
     hideBox : function(){
         this.msgBox.destroy();
+        resumeByESC.reset();
+        game.input.enabled = false;
         settingButton.inputEnabled = false;
         settings.inputEnabled = false;
         setTimeout(function()
@@ -808,6 +814,7 @@ var Game = {
         }, 2000);
         setTimeout(function(){
             game.paused = false;
+            game.input.enabled = true;
             settingButton.inputEnabled = true;
             settings.inputEnabled = true;
         }, 3000);
