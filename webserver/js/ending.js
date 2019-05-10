@@ -3,6 +3,7 @@ var ending_sound;
 var ending_music;
 var restartButton;
 var menuButton;
+var ranking_init;
 
 var Ending = {
 
@@ -26,10 +27,17 @@ var Ending = {
         totalScore = game.add.text(game.world.centerX, 237, score, { font: '124px Arial', fill: '#00f' });
         youDied.anchor.setTo(0.5);
         totalScore.anchor.setTo(0.5);
-
+        ranking_init = game.add.button(game.world.centerX-110,520,'heart', this.ranking_clear, this);
+        ranking_init.inputEnabled = true;
         easyRestart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.ShowRankingBox();
         
+        
+    },
+    
+    ranking_clear : function() {
+        fetch('http://tallbin98.dothome.co.kr/ranking__develop.php')
+        .then(() => alert("Ranking Clear"));
     },
     
     ShowRankingBox : function() {
