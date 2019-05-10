@@ -1,0 +1,12 @@
+{
+  "name": "gradios",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "gulp"
+  },
+  "dependencies": {
+    "gulp": "^4.0.1",
+    "gulp-webserver": "^0.9.1"
+  }
+}
