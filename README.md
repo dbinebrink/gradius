@@ -10,6 +10,7 @@
 
 
 ## Introduction
+
 * Gradios is simple ARCADE GAME using Phaser library.
 * Originally developed by [Gradius](https://github.com/dbinebrink/gradius) (Recreating Gradius 3 for the SNES, though of course a simplified version of it in JS, using the Phaser library.)
 * The project was started for the open source development class, at Hanyang University Erica Campus.
