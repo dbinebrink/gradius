@@ -69,14 +69,14 @@ var mainMenu = {
         msgBox2.enabledBody=false;
 
         i = 1;
-        fetch('http://tallbin98.dothome.co.kr/ranking_write.php?Name=player&Score=' + score)
+        fetch('http://tallbin98.dothome.co.kr/ranking_write.php?Name=player&Score=0')
             .then(send => send.json())
             .then(send => {
                 ranking=send;
                 ranking.forEach(element => {
                     rank_name += i + '. ' + element.Name + "\n";
                     if(element.Score == score) {
-                        rank_score += element.Score + " <-\n";
+                        rank_score += element.Score + "\n";
                     } else {
                         rank_score += element.Score + "\n";
                     }
