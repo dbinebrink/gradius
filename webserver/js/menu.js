@@ -2,6 +2,9 @@ var easyStart;
 var rankingView
 var start_sound;
 var start_music;
+var startButton;
+var controls;
+var exit;
 
 var mainMenu = {
 
@@ -21,9 +24,9 @@ var mainMenu = {
     	var image = game.add.image(0,0,'Wall_paper');
         var image1 = game.add.image(30,20,'gradius');
         game.stage.background = image;
-        game.add.button(game.world.centerX-220,280,'startButton', this.startGame, this);
-        game.add.button(game.world.centerX+20,280,'controls', this.ViewControls, this);
-        game.add.button(game.world.centerX-85,380,'exit', this.exit, this);
+        startButton=game.add.button(game.world.centerX-220,280,'startButton', this.startGame, this);
+        controls=game.add.button(game.world.centerX+20,280,'controls', this.ViewControls, this);
+        exit=game.add.button(game.world.centerX-85,380,'exit', this.exit, this);
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         if (!start_music) start_music = game.add.audio('start_sound');
         start_music.loop = true;
@@ -52,7 +55,15 @@ var mainMenu = {
         var image2 = game.add.image(0,0,'help');
         var image3 = game.add.button(700,80,'backButton');
         image3.inputEnabled = true;
-        image3.events.onInputDown.add(function(){image2.destroy();image3.destroy();});
+        startButton.inputEnabled=false;
+        controls.inputEnabled=false;
+        exit.inputEnabled=false;
+        image3.events.onInputDown.add(function(){
+            image2.destroy();image3.destroy();
+            startButton.inputEnabled=true;
+            controls.inputEnabled=true;
+            exit.inputEnabled=true;
+        });
     },
 
     ShowRankingBox : function() {
