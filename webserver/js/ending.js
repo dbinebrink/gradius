@@ -10,6 +10,7 @@ var Ending = {
     preload : function() {
     	game.load.image('Wall_paper' , 'img/space.jpg');
         game.load.image('restartButton', 'img/restartbutton.png');
+        game.load.image('reset_ranking', 'img/reset_ranking.png');
         game.load.image('menuButton', 'img/menubutton.png');
         Ending.load.audio('ending_sound', 'audio/ending_sound.mp3')
     },
@@ -27,7 +28,7 @@ var Ending = {
         totalScore = game.add.text(game.world.centerX, 237, score, { font: '124px Arial', fill: '#00f' });
         youDied.anchor.setTo(0.5);
         totalScore.anchor.setTo(0.5);
-        ranking_init = game.add.button(game.world.centerX-110,520,'heart', this.ranking_clear, this);
+        ranking_init = game.add.button(game.world.centerX-110,520,'reset_ranking', this.ranking_clear, this);
         ranking_init.inputEnabled = true;
         easyRestart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.ShowRankingBox();
