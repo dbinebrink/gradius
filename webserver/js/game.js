@@ -308,23 +308,13 @@ var Game = {
         else
             movestyle = movestyle.Out;
 
-        if(movepoint_x < 600)
-            movepoint_x = 700 + Math.random()*200;
-        else
-            movepoint_x = 300 + Math.random()*200;
         if(movepoint_y < 300)
             movepoint_y = 600 - Math.random()*220;
         else
             movepoint_y = Math.random()*220;
 
-        var difficulty = stage;
-        if (difficulty > 20)
-            difficulty = 20;
-
-        //game.physics.arcade.moveToObject(enemyBullet,{x : alien.body.x, y : -100},100 + 20 * countstage);
-
         var tween = game.add.tween(alien).to( { x: -30}, 10000, movestyle, true, 0, 20000, false);
-        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
+        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000, Phaser.Easing.Linear.None, true, 0, 20000, true);
 
 
         //  Alien movements
