@@ -1,93 +1,115 @@
-# Gradios
+Gradios - Arcade Shooting Game
+===============================================================
+<img src="https://i.imgur.com/P1LE2uy.png" width="60%"></img>
+<img src="https://i.imgur.com/xqTC4xJ.png" width="60%"></img>
 
-Gradius clone for educational purpose.
+## Project Info
+* [![Laguage](https://img.shields.io/badge/language-javascript-blue.svg)](https://developer.mozilla.org/ko/docs/Web/JavaScript)
+[![platform1](https://img.shields.io/badge/-node.js-orange.svg)](https://nodejs.org/ko/)
+[![platform2](https://img.shields.io/badge/-Phaser-green.svg)](https://phaser.io/phaser3)
+
+* Gradios is simple ARCADE GAME using Phaser library.
+* Gradius clone for educational purpose.
+* The project was started for the open source development class, at Hanyang University Erica Campus.
+  </br>And anyone can participate.
+
+## If you want to PARTICIPATE IN THIS PROJECT
+
+* How to play Gradios? : https://github.com/inureyes/gradios/blob/master/wiki.md
+* What is Phaser? : https://phaser.io/phaser3
+* Simple Phaser 3 Example : https://labs.phaser.io/
 
 ## Student list
 
+<details><summary>Click Me!</summary>
+<p>
+
 | Name         |            |
 |--------------|------------|
-| Jeongkyu Shin| Maintainer |
-| Jong Hwi Wang | Student  |
-| Beomsu Kwon  | Student    |
-| Junseop Lee | Student    |
-| Jin Hyeok Park| student   |
-| Junyung Park | Student |
-| Hayeong Kim| Student |
-| Suelym Moon  | Student    |
-| Sejin Eom    | Student    |
-| Sujeong Lee    | Student     |
-| Seoyoung Kim | Student     |
-| Seongbin Park| Student    |
-| DongHyun Kim | Student    |
-| Junbeom Wi | Student  |
-| JunHo Choi   | Student    |
-| Jongmin Lee  | Student    |
-| Hanseo An    | Student    |
-| Sungjae An| Student |
-| Sangwon Park| Student |
-| Seungho Kim  | Student    |
-| Hochul Hwang | Student    |
-| DeokYoung Kim | Student|
-| DongHyun Goh | Student    |
-| An yo Han    | Student   |
-| Seungmin Baek| Student	  |
-| Jieun Kwon   | Student    |
-| Soonwoo Kwon | Student    |
-| HyeonSik Kim | Student   |
-| MyoungSoo Kim| Student    |
-| JaeSun Park  | Student   |
-| MinJae Kim   | Student  |
-| Semyeong Lee | Student |
-| DongYeon Han | Student |
-| JaeHyeon Park |   Student   |
-| Yerim Seok | Student |
-| Park Jae Hyeon | Student |
-| Park Myung Chul | Student |
-| Park Hyunseo | Student |
-| Wonbae Kim   | Student   |
-| Jun Sun Park | Student |
-| Junhee Choi | Student |
-| Sungju Yun   | Student    |
+| Jeongkyu Shin | Maintainer |
+| An yo Han | Student |
+| Beomsu Kwon | Student |
 | ChangSun Park | Student |
-| Jiyeon Park  | Student    |
-| Lee Eun Ah | student |
-| Minji Ma | Student |
-| HyeongChang Lee | Student |
-| Cho Seung Hyun| Student |
-| Jaehun Kim   | Student |
-| Sa Eun Soo | Student |
-| JinYong Kim | Student |
-| Ikjun Oh | Student |
-| Jiyoon Kim | Student |
-| Jeong Hwan Lim | Student  |
-| Jiseon Lee | Student |
-| Seogwon Kim | Student |
-| Yelim Park    | student |
-| Choi Byoung Ik| Student|
-| Jeongmin Han | Student |
-| Sieun Hwang | Student |
-| Park Ji ho | Student |
-| Goeun Kim | Student |
-| Jeong Eun Ji | Student |
-| JeHyun Park  | Student |
-| Seyeon Lee | Student | 
-| Minju Kim | Student |
-| JangYoonHo | Student |
-| Jang Dong gun | Student |
-| Kang Dong ho| Student|
-| Gyujin Kim | Student |
-| Jang Si young  | Student |
-| Minji Kim | Student |
-| Chonghyon Yim | Student |
-| Kyungkin You | Student |
-| Kim Jun Woo | Student |
+| Cho Seung Hyun | Student |
+| Choi Byoung Ik | Student |
 | Choi Eun Chul | Student |
+| Chonghyon Yim | Student |
+| DeokYoung Kim | Student |
+| DongHyun Goh | Student |
+| DongHyun Kim | Student |
+| DongYeon Han | Student |
+| Goeun Kim | Student |
+| Gyujin Kim | Student |
+| Hanseo An | Student |
+| Hayeong Kim | Student |
+| Hochul Hwang | Student |
+| HyeonSik Kim | Student |
+| HyeongChang Lee | Student |
+| Ikjun Oh | Student |
+| JaeHyeon Park | Student |
+| JaeSun Park | Student |
+| Jaehun Kim | Student |
+| Jang Dong gun | Student |
+| Jang Si young | Student |
+| JangYoonHo | Student |
+| JeHyun Park | Student |
+| Jeong Eun Ji | Student |
+| Jeong Hwan Lim | Student |
+| Jeongmin Han | Student |
+| Jieun Kwon | Student |
+| Jin Hyeok Park | student |
+| JinYong Kim | Student |
+| Jiseon Lee | Student |
+| Jiyeon Park | Student |
+| Jiyoon Kim | Student |
+| Jong Hwi Wang | Student |
+| Jongmin Lee | Student |
+| Jun Sun Park | Student |
+| JunHo Choi | Student |
+| Junbeom Wi | Student |
+| Junhee Choi | Student |
+| Junseop Lee | Student |
+| Junyung Park | Student |
+| Kang Dong ho | Student |
+| Kim Jun Woo | Student |
+| Kyungkin You | Student |
+| Lee Eun Ah | student |
 | Lee Hyo Jeong | Student |
-| Tsoy Sergey | Student |
+| MinJae Kim | Student |
+| Minji Kim | Student |
+| Minji Ma | Student |
+| Minju Kim | Student |
+| MyoungSoo Kim | Student |
 | Namho Kim | Student |
-| Choi Byoung Ik| Student |
+| Park Hyunseo | Student |
+| Park Jae Hyeon | Student |
+| Park Ji ho | Student |
+| Park Myung Chul | Student |
+| Sa Eun Soo | Student |
+| Sangwon Park | Student |
+| Sejin Eom | Student |
+| Semyeong Lee | Student |
+| Seogwon Kim | Student |
+| Seongbin Park | Student |
+| Seoyoung Kim | Student |
+| Seungho Kim | Student |
+| Seungmin Baek | Student |
+| Seyeon Lee | Student |
 | Shim Hyeonbo | Student |
+| Sieun Hwang | Student |
+| Soonwoo Kwon | Student |
+| Suelym Moon | Student |
+| Sujeong Lee | Student |
+| Sungjae An | Student |
+| Sungju Yun | Student |
+| Sergey Tsoy | Student |
+| Wonbae Kim | Student |
+| Yelim Park | student |
+| Yerim Seok | Student |
+| Jae Hyeon Park| Student|
 
+</p>
+</details>
 
 ## Credit
 
