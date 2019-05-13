@@ -234,7 +234,7 @@ var Game = {
 
     update : function() {
         //  Scroll the background
-        if(!backgroundChanged && (stage % 2 == 0||stage==1)){
+        if(!backgroundChanged && (stage % 5 == 0||stage==1)){
             backgroundChanged=true;
             music.destroy();
             let backgroundSelectPer = Math.random();
