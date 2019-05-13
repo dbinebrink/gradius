@@ -1,12 +1,16 @@
 var easyRestart;
 var ending_sound;
 var ending_music;
+var restartButton;
+var menuButton;
+var ranking_init;
 
 var Ending = {
 
     preload : function() {
     	game.load.image('Wall_paper' , 'img/space.jpg');
         game.load.image('restartButton', 'img/restartbutton.png');
+        game.load.image('reset_ranking', 'img/reset_ranking.png');
         game.load.image('menuButton', 'img/menubutton.png');
         Ending.load.audio('ending_sound', 'audio/ending_sound.mp3')
     },
@@ -14,18 +18,27 @@ var Ending = {
     create : function() {
         var image = game.add.image(0,0,'Wall_paper');
         game.stage.background = image;
-        game.add.button(game.world.centerX-110,320,'restartButton', this.startGame, this);
-        game.add.button(game.world.centerX-110,420,'menuButton', this.goMenu, this);
+        restartButton = game.add.button(game.world.centerX-110,320,'restartButton', this.startGame, this);
+        restartButton.inputEnabled=true;
+        menuButton = game.add.button(game.world.centerX-110,420,'menuButton', this.goMenu, this);
+        menuButton.inputEnabled=true;
         if(!ending_music) ending_music = game.add.audio('ending_sound');
         ending_music.play();
         youDied = game.add.text(game.world.centerX + 10, 100, "YOU DIED", { font: '124px Arial', fill: '#f00'}); 
         totalScore = game.add.text(game.world.centerX, 237, score, { font: '124px Arial', fill: '#00f' });
         youDied.anchor.setTo(0.5);
         totalScore.anchor.setTo(0.5);
-
+        ranking_init = game.add.button(game.world.centerX-20,520,'reset_ranking', this.ranking_clear, this);
+        ranking_init.inputEnabled = true;
         easyRestart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.ShowRankingBox();
         
+        
+    },
+    
+    ranking_clear : function() {
+        fetch('http://tallbin98.dothome.co.kr/ranking__develop.php')
+        .then(() => alert("Ranking Clear"));
     },
     
     ShowRankingBox : function() {
@@ -36,7 +49,11 @@ var Ending = {
         var Ranking_text = game.add.text(0, 0, 'Ranking', { fontsize: 25 });
         var rank_name = "";
         var rank_score = "";
-        
+
+        msgBox2.enabledBody=false;
+        menuButton.inputEnabled=false;
+        restartButton.inputEnabled=false;
+
         i = 1;
         fetch('http://tallbin98.dothome.co.kr/ranking_write.php?Name=player&Score=' + score)
             .then(send => send.json())
@@ -89,9 +106,12 @@ var Ending = {
         
                 this.msgBox2 = msgBox2;
             });
+        msgBox2.enabledBody=true;
     },
 
     closeRanking : function() {
+        menuButton.inputEnabled=true;
+        restartButton.inputEnabled=true;
         this.msgBox2.destroy();
     },
 
