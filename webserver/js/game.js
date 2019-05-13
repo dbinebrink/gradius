@@ -16,6 +16,7 @@ var livingEnemies = [];
 var music;
 var sfx_fire;
 var sfx_enemy_die;
+var sfx_bullet_die;
 var sfx_stage_clear;
 var sfx_player_hit;
 var sfx_get_item;
@@ -72,6 +73,7 @@ var Game = {
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
         game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
+        game.load.audio('sfx_bullet_die', 'audio/bullet-die.wav');
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
@@ -126,6 +128,10 @@ var Game = {
         if (!sfx_enemy_die) sfx_enemy_die = game.add.audio('sfx_enemy_die');
         sfx_enemy_die.volume = 0.5;
         sfx_enemy_die.allowMultiple = true;
+
+        if (!sfx_bullet_die) sfx_bullet_die = game.add.audio('sfx_bullet_die');
+        sfx_bullet_die.volume = 0.5;
+        sfx_bullet_die.allowMultiple = true;
 
         if (!sfx_get_item) sfx_get_item = game.add.audio('sfx_get_item');
         sfx_get_item.volume = 0.5;
@@ -472,7 +478,7 @@ var Game = {
         Bullets.killBullet(bullet);
         enemyBullet.kill();
 
-        sfx_enemy_die.play();
+        sfx_bullet_die.play();
 
         var explosion = explosions.getFirstExists(false);
         explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
@@ -863,6 +869,7 @@ var Game = {
         music_status = 'ON';
         sfx_fire.volume = 0.5;
         sfx_enemy_die.volume = 0.5;
+        sfx_bullet_die.volume = 0.5;
         sfx_stage_clear.volume = 0.5;
         sfx_player_hit.volume = 0.5;
         sfx_get_item.volume = 0.5;
@@ -875,6 +882,7 @@ var Game = {
         music_status = 'OFF';
         sfx_fire.volume = 0;
         sfx_enemy_die.volume = 0;
+        sfx_bullet_die.volume = 0;
         sfx_stage_clear.volume = 0;
         sfx_player_hit.volume = 0;
         sfx_get_item.volume = 0;
@@ -968,6 +976,7 @@ var Game = {
         if(sfx_fire.volume <= 0.9) {
             sfx_fire.volume += 0.1;
             sfx_enemy_die.volume += 0.1;
+            sfx_bullet_die.volume += 0.1;
             sfx_stage_clear.volume += 0.1;
             sfx_player_hit.volume += 0.1;
             sfx_get_item.volume += 0.1;
@@ -979,6 +988,7 @@ var Game = {
         if(sfx_fire.volume >= 0.1) {
             sfx_fire.volume -= 0.1;
             sfx_enemy_die.volume -= 0.1;
+            sfx_bullet_die.volume -= 0.1;
             sfx_stage_clear.volume -= 0.1;
             sfx_player_hit.volume -= 0.1;
             sfx_get_item.volume -= 0.1;
