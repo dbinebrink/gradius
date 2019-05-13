@@ -16,6 +16,7 @@ var livingEnemies = [];
 var music;
 var sfx_fire;
 var sfx_enemy_die;
+var sfx_bullet_die;
 var sfx_stage_clear;
 var sfx_player_hit;
 var sfx_get_item;
@@ -68,10 +69,13 @@ var Game = {
         game.load.image('damageUp','img/power_up.png');
         game.load.image('speedUp', 'img/speed_up.png');
         game.load.image('debug_message', 'img/debugMessage.png');
+        game.load.image('addPenetration', 'img/item/addPenetration.PNG');
+        game.load.image('addBullet','addBullet.PNG');
 
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
         game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
+        game.load.audio('sfx_bullet_die', 'audio/bullet-die.wav');
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
@@ -126,6 +130,10 @@ var Game = {
         if (!sfx_enemy_die) sfx_enemy_die = game.add.audio('sfx_enemy_die');
         sfx_enemy_die.volume = 0.5;
         sfx_enemy_die.allowMultiple = true;
+
+        if (!sfx_bullet_die) sfx_bullet_die = game.add.audio('sfx_bullet_die');
+        sfx_bullet_die.volume = 0.5;
+        sfx_bullet_die.allowMultiple = true;
 
         if (!sfx_get_item) sfx_get_item = game.add.audio('sfx_get_item');
         sfx_get_item.volume = 0.5;
@@ -308,23 +316,13 @@ var Game = {
         else
             movestyle = movestyle.Out;
 
-        if(movepoint_x < 600)
-            movepoint_x = 700 + Math.random()*200;
-        else
-            movepoint_x = 300 + Math.random()*200;
         if(movepoint_y < 300)
             movepoint_y = 600 - Math.random()*220;
         else
             movepoint_y = Math.random()*220;
 
-        var difficulty = stage;
-        if (difficulty > 20)
-            difficulty = 20;
-
-        //game.physics.arcade.moveToObject(enemyBullet,{x : alien.body.x, y : -100},100 + 20 * countstage);
-
         var tween = game.add.tween(alien).to( { x: -30}, 10000, movestyle, true, 0, 20000, false);
-        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
+        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000, Phaser.Easing.Linear.None, true, 0, 20000, true);
 
 
         //  Alien movements
@@ -482,7 +480,7 @@ var Game = {
         Bullets.killBullet(bullet);
         enemyBullet.kill();
 
-        sfx_enemy_die.play();
+        sfx_bullet_die.play();
 
         var explosion = explosions.getFirstExists(false);
         explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
@@ -494,12 +492,12 @@ var Game = {
             this.debugCollisionMessage(player, object);
         }
         // console.log(Player.info.invincibleTime + " " + game.time.now);
-        if ((game.time.now < Player.info.invincibleTime) || !aliens.countLiving()) return;
+        if (((game.time.now < Player.info.invincibleTime) && Player.info.isInvincible == false) || !aliens.countLiving()) return;
         // console.log(1);
         game.add.audio('sfx_player_hit');
         sfx_player_hit.volume = 0.6;
         sfx_player_hit.play();
-        Player.damage(1);
+        if (Player.info.isInvincible == false) Player.damage(1);
 
         object.kill();
 
@@ -515,10 +513,6 @@ var Game = {
             this.finishGame();
         }
 
-        Player.info.invincibleTime = game.time.now + 1000;
-        // blink player
-        game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
-        
         if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
             sfx_stage_clear.play();
             this.createAliens();
@@ -534,6 +528,10 @@ var Game = {
         }
         score_2_switch = false;
         score_3_switch = false;
+
+        Player.info.invincibleTime = game.time.now + 1000;
+        // blink player
+        if (Player.info.isInvincible == false) game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
     },
 
     finishGame : function() {
@@ -661,18 +659,24 @@ var Game = {
         backgroundMusicText.y = msgBox.y - 40;
 
         musicOnButton.wordWrapWidth = back * 0.8;
-        musicOnButton.addColor("#ffffff", 0);
         musicOnButton.x = msgBox.width / 2 - musicOnButton.width - 10;
         musicOnButton.y = msgBox.y + backgroundMusicText.height - 40;
         musicOnButton.inputEnabled = true;
         musicOnButton.events.onInputDown.add(this.turnOnMusic,this);
 
         musicOffButton.wordWrapWidth = back * 0.8;
-        musicOffButton.addColor("#ffffff", 0);
         musicOffButton.x = msgBox.width / 2 + 10;
         musicOffButton.y = msgBox.y + backgroundMusicText.height - 40;
         musicOffButton.inputEnabled = true;
         musicOffButton.events.onInputDown.add(this.turnOffMusic,this);
+        if (music_status == "ON") {
+            musicOnButton.addColor("#fff500", 0);
+            musicOffButton.addColor("#ffffff", 0);
+        }
+        else {
+            musicOnButton.addColor("#ffffff", 0);
+            musicOffButton.addColor("#fff500", 0);
+        }
 
         dbgMsgText.wordWrapWidth = back * 0.8;
         dbgMsgText.addColor("#ffffff", 0);
@@ -680,18 +684,24 @@ var Game = {
         dbgMsgText.y = msgBox.y + 15;
 
         dbgMsgOnButton.wordWrapWidth = back * 0.8;
-        dbgMsgOnButton.addColor("#ffffff", 0);
         dbgMsgOnButton.x = msgBox.width / 2 - dbgMsgOnButton.width - 10;
         dbgMsgOnButton.y = msgBox.y + dbgMsgText.height + 15;
         dbgMsgOnButton.inputEnabled = true;
         dbgMsgOnButton.events.onInputDown.add(this.turnOnDbgMsg,this);
 
         dbgMsgOffButton.wordWrapWidth = back * 0.8;
-        dbgMsgOffButton.addColor("#ffffff", 0);
         dbgMsgOffButton.x = msgBox.width / 2 + 10;
         dbgMsgOffButton.y = msgBox.y + dbgMsgText.height + 15;
         dbgMsgOffButton.inputEnabled = true;
         dbgMsgOffButton.events.onInputDown.add(this.turnOffDbgMsg,this);
+        if (debugFlag) {
+            dbgMsgOnButton.addColor("#fff500", 0);
+            dbgMsgOffButton.addColor("#ffffff", 0);
+        }
+        else {
+            dbgMsgOnButton.addColor("#ffffff", 0);
+            dbgMsgOffButton.addColor("#fff500", 0);
+        }
 
         bulletCollisionText.wordWrapWidth = back * 0.8;
         bulletCollisionText.x = msgBox.width / 2 - bulletCollisionText.width / 2;
@@ -699,18 +709,25 @@ var Game = {
         bulletCollisionText.addColor("#ffffff", 0);
 
         bulletCollisionOnButton.wordWrapWidth = back * 0.8;
-        bulletCollisionOnButton.addColor("#ffffff", 0);
         bulletCollisionOnButton.x = msgBox.width / 2 - bulletCollisionOnButton.width - 10;
         bulletCollisionOnButton.y = msgBox.y + bulletCollisionText.height + 70;
         bulletCollisionOnButton.inputEnabled = true;
         bulletCollisionOnButton.events.onInputDown.add(this.turnOnBulletsCollision,this);
 
         bulletCollisionOffButton.wordWrapWidth = back * 0.8;
-        bulletCollisionOffButton.addColor("#ffffff", 0);
         bulletCollisionOffButton.x = msgBox.width / 2 + 10;
         bulletCollisionOffButton.y = msgBox.y + bulletCollisionText.height + 70;
         bulletCollisionOffButton.inputEnabled = true;
         bulletCollisionOffButton.events.onInputDown.add(this.turnOffBulletsCollision,this);
+
+        if (Bullets.info.collideEnemyBullet) {
+            bulletCollisionOnButton.addColor("#fff500", 0);
+            bulletCollisionOffButton.addColor("#ffffff", 0);
+        }
+        else {
+            bulletCollisionOnButton.addColor("#ffffff", 0);
+            bulletCollisionOffButton.addColor("#fff500", 0);
+        }
 
         m_vol_text.wordWrapWidth = back * 0.8;
         m_vol_text.addColor("#ffffff", 0);
@@ -854,10 +871,12 @@ var Game = {
         music_status = 'ON';
         sfx_fire.volume = 0.5;
         sfx_enemy_die.volume = 0.5;
+        sfx_bullet_die.volume = 0.5;
         sfx_stage_clear.volume = 0.5;
         sfx_player_hit.volume = 0.5;
         sfx_get_item.volume = 0.5;
         musicText.text = musicString + music_status;
+        this.showSettingMessageBox();
     },
 
     turnOffMusic : function(){
@@ -865,20 +884,24 @@ var Game = {
         music_status = 'OFF';
         sfx_fire.volume = 0;
         sfx_enemy_die.volume = 0;
+        sfx_bullet_die.volume = 0;
         sfx_stage_clear.volume = 0;
         sfx_player_hit.volume = 0;
         sfx_get_item.volume = 0;
         musicText.text = musicString + music_status;
+        this.showSettingMessageBox();
     },
 
     turnOnDbgMsg : function(){
         debugFlag = true;
         console.log("debugFlag is now on");
+        this.showSettingMessageBox();
     },
 
     turnOffDbgMsg : function(){
         debugFlag = false;
         console.log("debugFlag is now off");
+        this.showSettingMessageBox();
     },
 
     turnOnBulletsCollision : function(){
@@ -886,6 +909,7 @@ var Game = {
         console.log("bulletsCollision is now on");
         bulletsCollision_status = 'ON';
         bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
+        this.showSettingMessageBox();
     },
 
     turnOffBulletsCollision : function(){
@@ -893,6 +917,7 @@ var Game = {
         console.log("bulletsCollision is now off");
         bulletsCollision_status = 'OFF';
         bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
+        this.showSettingMessageBox();
     },
 
     debugCollisionMessage : function(object1, object2){
@@ -953,6 +978,7 @@ var Game = {
         if(sfx_fire.volume <= 0.9) {
             sfx_fire.volume += 0.1;
             sfx_enemy_die.volume += 0.1;
+            sfx_bullet_die.volume += 0.1;
             sfx_stage_clear.volume += 0.1;
             sfx_player_hit.volume += 0.1;
             sfx_get_item.volume += 0.1;
@@ -964,6 +990,7 @@ var Game = {
         if(sfx_fire.volume >= 0.1) {
             sfx_fire.volume -= 0.1;
             sfx_enemy_die.volume -= 0.1;
+            sfx_bullet_die.volume -= 0.1;
             sfx_stage_clear.volume -= 0.1;
             sfx_player_hit.volume -= 0.1;
             sfx_get_item.volume -= 0.1;
