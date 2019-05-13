@@ -9,24 +9,27 @@ var exit;
 var mainMenu = {
 
     preload : function() {
-    	game.load.image('Wall_paper' , 'img/space.jpg');
+        game.load.image('Wall_paper' , 'img/space.jpg');
         game.load.image('gradius' , 'img/gradius.png');
         game.load.image('startButton', 'img/startbutton.png');
         game.load.image('controls', 'img/controls.png');
         game.load.image('backButton', 'img/backButton.png');
         game.load.image('exit' , 'img/exit.png');
+        game.load.image('credit' , 'img/credit.png');
         game.load.image('help' , 'img/help.png');
+        game.load.image('creditList' , 'img/credit_list.png');
         game.load.image('settingBack', 'img/settingBackground.png');
         mainMenu.load.audio('start_sound', 'audio/start_sound.mp3')
     },
 
     create : function() {
-    	var image = game.add.image(0,0,'Wall_paper');
+        var image = game.add.image(0,0,'Wall_paper');
         var image1 = game.add.image(30,20,'gradius');
         game.stage.background = image;
         startButton=game.add.button(game.world.centerX-220,280,'startButton', this.startGame, this);
         controls=game.add.button(game.world.centerX+20,280,'controls', this.ViewControls, this);
         exit=game.add.button(game.world.centerX-85,380,'exit', this.exit, this);
+        credit=game.add.button(game.world.centerX-85,470,'credit', this.ViewCredit, this);
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         if (!start_music) start_music = game.add.audio('start_sound');
         start_music.loop = true;
@@ -46,7 +49,7 @@ var mainMenu = {
     },
 
     startGame : function() {
-        if(music) music.stop();
+        if(music) music.destroy();
         start_music.stop();
         this.state.start('Game');
     },
@@ -54,6 +57,21 @@ var mainMenu = {
     ViewControls : function() {
         var image2 = game.add.image(0,0,'help');
         var image3 = game.add.button(700,80,'backButton');
+        image3.inputEnabled = true;
+        startButton.inputEnabled=false;
+        controls.inputEnabled=false;
+        exit.inputEnabled=false;
+        image3.events.onInputDown.add(function(){
+            image2.destroy();image3.destroy();
+            startButton.inputEnabled=true;
+            controls.inputEnabled=true;
+            exit.inputEnabled=true;
+        });
+    },
+
+    ViewCredit : function() {
+        var image2 = game.add.image(0,0,'creditList');
+        var image3 = game.add.button(700,40,'backButton');
         image3.inputEnabled = true;
         startButton.inputEnabled=false;
         controls.inputEnabled=false;
