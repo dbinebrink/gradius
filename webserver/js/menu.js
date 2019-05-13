@@ -49,7 +49,7 @@ var mainMenu = {
     },
 
     startGame : function() {
-        if(music) music.stop();
+        if(music) music.destroy();
         start_music.stop();
         this.state.start('Game');
     },
