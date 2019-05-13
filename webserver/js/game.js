@@ -2,7 +2,8 @@ var aliens;
 var cursors;
 var fireButton;
 var explosions;
-var starfield;
+var background;
+var backgroundChanged;
 var score = 0;
 var scoreString = '';
 var scoreText;
@@ -61,6 +62,11 @@ var Game = {
         game.load.image('enemyBullet', 'img/enemy-bullet.png');
         //map
         game.load.image('starfield', 'img/starfield.png');
+        game.load.image('astronomy','img/astronomy.png');
+        game.load.image('bluespace','img/bluespace.png');
+        game.load.image('bluespace2','img/bluespace2.png');
+        game.load.image('starfield2','img/starfield2.png');
+        game.load.image('neonfield','img/neonfield.png');
         game.load.image('lower_mountain', 'img/lower_mountain.png');
         game.load.image('upper_mountain', 'img/upper_mountain.png');
         //item
@@ -140,10 +146,10 @@ var Game = {
         sfx_get_item.allowMultiple = true;
 
         //  The scrolling starfield background
-        starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
+        background = game.add.tileSprite(0, 0, 900, 600, 'starfield');
         upper_mountain = game.add.tileSprite(0, 0, 900, 30, 'upper_mountain');
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
-        
+
         //  The starship
         Player.initalize(game);
         
@@ -223,7 +229,29 @@ var Game = {
 
     update : function() {
         //  Scroll the background
-        starfield.tilePosition.x -= 3;
+        if(!backgroundChanged && stage % 5 == 0){
+            backgroundChanged=true;
+            var backgroundSelectPer = Math.random();
+            if(backgroundSelectPer<0.17){
+                background.loadTexture('starfield');
+            }
+            else if(backgroundSelectPer<0.34){
+                background.loadTexture('starfield2');
+            }
+            else if(backgroundSelectPer<0.51){
+                background.loadTexture('bluespace');
+            }
+            else if(backgroundSelectPer<0.68){
+                background.loadTexture('bluespace2');
+            }
+            else if(backgroundSelectPer<0.84){
+                background.loadTexture('astronomy');
+            }
+            else {
+                background.loadTexture('neonfield');
+            }
+        }
+        background.tilePosition.x -= 3;
         upper_mountain.tilePosition.x -= 1;
         lower_mountain.tilePosition.x -= 1;
 
@@ -385,9 +413,9 @@ var Game = {
             this.createAliens();
             countstage++;
             stage++;
+            backgroundChanged=false;
             stageText.text = stageString + stage;
             console.log(stage, aliens.countLiving(), ailencreatecount);
-
             if(debugFlag){
                 console.log("%c STAGE "+stage, 'background: #222; color: #bada55');
             }
@@ -518,6 +546,7 @@ var Game = {
             this.createAliens();
             countstage++;
             stage++;
+            backgroundChanged=false;
             stageText.text = stageString + stage;
             console.log(stage);
 
