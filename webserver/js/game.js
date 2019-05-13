@@ -69,6 +69,8 @@ var Game = {
         game.load.image('damageUp','img/power_up.png');
         game.load.image('speedUp', 'img/speed_up.png');
         game.load.image('debug_message', 'img/debugMessage.png');
+        game.load.image('addPenetration', 'img/item/addPenetration.PNG');
+        game.load.image('addBullet','addBullet.PNG');
 
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
