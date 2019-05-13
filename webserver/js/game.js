@@ -80,6 +80,11 @@ var Game = {
 
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
+        game.load.audio('starmusic', 'audio/starmusic.mp3');
+        game.load.audio('astromusic', 'audio/astromusic.mp3');
+        game.load.audio('bluemusic1', 'audio/bluemusic1.mp3');
+        game.load.audio('bluemusic2', 'audio/bluemusic2.mp3');
+        game.load.audio('neonmusic', 'audio/neonmusic.mp3');
         game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
         game.load.audio('sfx_bullet_die', 'audio/bullet-die.wav');
         game.load.audio('sfx_fire', 'audio/fire.wav');
@@ -115,7 +120,7 @@ var Game = {
         bulletsCollision_status = 'ON';
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        if (!music) music = game.add.audio('music1');
+        music = game.add.audio('music1');
         music.loop = true;
         music.volume = 0.5;
         music.play();
@@ -229,27 +234,37 @@ var Game = {
 
     update : function() {
         //  Scroll the background
-        if(!backgroundChanged && stage % 5 == 0){
+        if(!backgroundChanged && (stage % 5 == 0||stage==1)){
             backgroundChanged=true;
-            var backgroundSelectPer = Math.random();
-            if(backgroundSelectPer<0.17){
+            music.destroy();
+            let backgroundSelectPer = Math.random();
+            if(stage==1||backgroundSelectPer<0.17){
                 background.loadTexture('starfield');
+                music=game.add.audio('music1');
             }
             else if(backgroundSelectPer<0.34){
                 background.loadTexture('starfield2');
+                music=game.add.audio('starmusic');
             }
             else if(backgroundSelectPer<0.51){
                 background.loadTexture('bluespace');
+                music=game.add.audio('bluemusic1');
             }
             else if(backgroundSelectPer<0.68){
                 background.loadTexture('bluespace2');
+                music=game.add.audio('bluemusic2');
             }
             else if(backgroundSelectPer<0.84){
                 background.loadTexture('astronomy');
+                music=game.add.audio('astromusic');
             }
             else {
                 background.loadTexture('neonfield');
+                music=game.add.audio('neonmusic');
             }
+            music.loop=true;
+            music.volume=0.5;
+            music.play();
         }
         background.tilePosition.x -= 3;
         upper_mountain.tilePosition.x -= 1;

@@ -122,6 +122,7 @@ var Ending = {
     },
 
     startGame : function() {
+        music.destroy();
         game.state.start('Game');
         minutes = 0;
         seconds = 0;
