@@ -2,11 +2,13 @@
   "name": "gradios",
   "version": "0.0.0",
   "private": true,
+  "main": "main.js",
   "scripts": {
     "start": "gulp"
   },
   "dependencies": {
-    "gulp-webserver": "^0.9.1"
+    "gulp-webserver": "^0.9.1",
+    "node-static": "^0.7.11"
   },
   "devDependencies": {
     "gulp": "^4.0.2"
