@@ -2,6 +2,7 @@
   "name": "gradios",
   "version": "0.0.0",
   "private": true,
+  "main": "main.js",
   "scripts": {
     "start": "gulp"
   },
@@ -9,6 +10,7 @@
     "electron": "^5.0.1",
     "electron-package": "^0.1.0",
     "gulp-webserver": "^0.9.1"
+    "node-static": "^0.7.11"
   },
   "devDependencies": {
     "gulp": "^4.0.2"
