@@ -171,20 +171,21 @@ var Game = {
 
         // The stage
         stageString = 'Stage: ';
-        stageText = game.add.text(70, 10, stageString + stage, { font: '40px Arial', fill: '#fff' });
+        stageText = game.add.text(70, 10, stageString + stage, { font: '30px Arial', fill: '#fff' });
         // this.generatespeed_up();
         this.createAliens();
         musicString = 'BGM: ';
         musicText = game.add.text(70,50,musicString + music_status,{ font: '30px Arial', fill: '#fff' });
         //  The score
         scoreString = 'Score: ';
-        scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
+        scoreText = game.add.text(250, 10, scoreString + score, { font: '30px Arial', fill: '#fff' });
 
         aliensString = 'Alien: ';
-        alienscount = game.add.text(750,70,aliensString + aliens.countLiving(), { font: '40px Arial', fill: '#fff' });
+
+        alienscount = game.add.text(735,70,aliensString + aliens.countLiving(), { font: '30px Arial', fill: '#fff' });
 
         alienString = 'Kill: ';
-        alienkillText = game.add.text(750,110,alienString + alienkill, { font: '40px Arial', fill: '#fff' });
+        alienkillText = game.add.text(735,110,alienString + alienkill, { font: '30px Arial', fill: '#fff' });
 
         bulletsCollisionString = 'Bul Col: ';
         bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
@@ -876,6 +877,7 @@ var Game = {
         sfx_stage_clear.volume = 0.5;
         sfx_player_hit.volume = 0.5;
         sfx_get_item.volume = 0.5;
+        music.volume =0;
         musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
@@ -888,6 +890,7 @@ var Game = {
         sfx_stage_clear.volume = 0;
         sfx_player_hit.volume = 0;
         sfx_get_item.volume = 0;
+        music.volume=0;
         musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
