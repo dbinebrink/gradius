@@ -13,6 +13,7 @@
     "node-static": "^0.7.11"
   },
   "devDependencies": {
+    "electron-packager": "^13.1.1",
     "gulp": "^4.0.2"
   }
 }
