@@ -4,7 +4,7 @@ Gradios - Arcade Shooting Game
 <img src="https://i.imgur.com/xqTC4xJ.png" width="60%"></img>
 
 ## Project Info
-* [![Laguage](https://img.shields.io/badge/language-javascript-blue.svg)](https://developer.mozilla.org/ko/docs/Web/JavaScript)
+* [![Language](https://img.shields.io/badge/language-javascript-blue.svg)](https://developer.mozilla.org/ko/docs/Web/JavaScript)
 [![platform1](https://img.shields.io/badge/-node.js-orange.svg)](https://nodejs.org/ko/)
 [![platform2](https://img.shields.io/badge/-Phaser-green.svg)](https://phaser.io/phaser3)
 
@@ -18,6 +18,25 @@ Gradios - Arcade Shooting Game
 * How to play Gradios? : https://github.com/inureyes/gradios/blob/master/wiki.md
 * What is Phaser? : https://phaser.io/phaser3
 * Simple Phaser 3 Example : https://labs.phaser.io/
+
+## Electron package
+
+Uses electron-packager.
+
+Global installation: 
+```
+electron-packager . --ignore=node_modules/electron-packager --ignore=.git --overwrite --ignore="\.git(ignore|modules)" --out=app --platform=[darwin OR win32 OR linux]
+```
+
+Global installation in Window: 
+```
+electron-packager . --ignore=node_modules/electron-packager --ignore=.git --overwrite --ignore="\.git(ignore||modules)" --out=app --platform=[darwin OR win32 OR linux]
+```
+
+Local electron-packager installation: 
+```
+./node_modules/electron-packager/cli.js . --ignore=node_modules/electron-packager --ignore=.git --overwrite --ignore="\.git(ignore|modules)" --out=app --platform=[darwin OR win32 OR linux]
+```
 
 ## Student list
 

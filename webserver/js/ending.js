@@ -54,6 +54,7 @@ var Ending = {
         menuButton.inputEnabled=false;
         restartButton.inputEnabled=false;
 
+        check = 0;
         i = 1;
         fetch('http://tallbin98.dothome.co.kr/ranking_write.php?Name=player&Score=' + score)
             .then(send => send.json())
@@ -61,8 +62,9 @@ var Ending = {
                 ranking=send;
                 ranking.forEach(element => {
                     rank_name += i + '. ' + element.Name + "\n";
-                    if(element.Score == score) {
+                    if(element.Score == score && check == 0) {
                         rank_score += element.Score + " <-\n";
+                        check ++;
                     } else {
                         rank_score += element.Score + "\n";
                     }
@@ -122,6 +124,7 @@ var Ending = {
     },
 
     startGame : function() {
+        music.destroy();
         game.state.start('Game');
         minutes = 0;
         seconds = 0;
