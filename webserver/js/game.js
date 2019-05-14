@@ -324,7 +324,7 @@ var Game = {
 
         //game.physics.arcade.moveToObject(enemyBullet,{x : alien.body.x, y : -100},100 + 20 * countstage);
 
-        var tween = game.add.tween(alien).to( { x: -30}, 10000, movestyle, true, 0, 20000, false);
+        var tween = game.add.tween(alien).to( { x: -30}, 38000, movestyle, true, 0, 38000, false);
         var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
 
 
