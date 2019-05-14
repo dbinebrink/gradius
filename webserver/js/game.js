@@ -876,6 +876,7 @@ var Game = {
         sfx_stage_clear.volume = 0.5;
         sfx_player_hit.volume = 0.5;
         sfx_get_item.volume = 0.5;
+        music.volume =0;
         musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
@@ -888,6 +889,7 @@ var Game = {
         sfx_stage_clear.volume = 0;
         sfx_player_hit.volume = 0;
         sfx_get_item.volume = 0;
+        music.volume =0;
         musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
