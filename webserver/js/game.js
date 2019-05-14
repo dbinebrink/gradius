@@ -68,6 +68,8 @@ var Game = {
         game.load.image('damageUp','img/power_up.png');
         game.load.image('speedUp', 'img/speed_up.png');
         game.load.image('debug_message', 'img/debugMessage.png');
+        game.load.image('addPenetration', 'img/item/addPenetration.png');
+        game.load.image('addBullet','img/item/addBullet.png');
 
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
@@ -255,12 +257,12 @@ var Game = {
         let alienHealth;
         let alienSizeMultiple;
         let specialEnemyPer = Math.random()*100;
-        if(specialEnemyPer < Math.floor(stage/15)){
+        if(specialEnemyPer < Math.floor(stage/30)){
             alienImage = 'invaderPurple';
             alienHealth = 3;
             alienSizeMultiple = 2;
         }
-        else if(specialEnemyPer < Math.floor(stage/10)+3){
+        else if(specialEnemyPer < Math.floor(stage/20)+3){
             alienImage = 'invaderGreen';
             alienHealth = 2.5;
             alienSizeMultiple = 1.5;
@@ -293,19 +295,15 @@ var Game = {
 
         var movestyle = Phaser.Easing;
         var style = Math.random();
-        if (style < 0.2)
+        if (style < 0.3)
             movestyle = movestyle.Cubic;
-        else if (style < 0.4)
+        else if (style < 0.5)
             movestyle = movestyle.Back;
-        else if (style < 0.6)
-            movestyle = movestyle.Circular;
-        else if (style < 0.8)
+        else
             movestyle = movestyle.Linear;
         style = Math.random();
-        if (style < 0.33)
+        if (style < 0.5)
             movestyle = movestyle.In;
-        else if (style < 0.66)
-            movestyle = movestyle.InOut;
         else
             movestyle = movestyle.Out;
 
@@ -322,17 +320,8 @@ var Game = {
         if (difficulty > 20)
             difficulty = 20;
 
-        //game.physics.arcade.moveToObject(enemyBullet,{x : alien.body.x, y : -100},100 + 20 * countstage);
-
-        var tween = game.add.tween(alien).to( { x: -30}, 38000, movestyle, true, 0, 38000, false);
-        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
-
-
-        //  Alien movements
-
-            
-        // var tween = game.add.tween(aliens).to( { y: 500 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 0, true);
-
+        var tween = game.add.tween(alien).to( { x: -30}, 10000, movestyle, true, 0, 20000, false);
+        var tween = game.add.tween(alien).to( { y: movepoint_y }, 5000 - 100*Math.random() - 50*difficulty, movestyle, true, 0, 20000, true);
 
         // When the tween loops it calls descend
         tween.onLoop.add(this.descend, this);
@@ -366,7 +355,8 @@ var Game = {
         // alien.kill();
         alien.damage(Bullets.info.damage);
         if(!alien.alive) {
-            this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, alien.key);
+            if(alien.key == 'invaderGreen') this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'uncommon');
+            if(alien.key == 'invaderPurple') this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'rare');
             alienkill++;
         }
         sfx_enemy_die.play();
@@ -381,7 +371,10 @@ var Game = {
         explosion.play('kaboom', 30, false, true);
 
         if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
-            this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'invaderGreen');
+            if(stage%3 == 0)
+                this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'uncommon');
+            else this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'common');
+
             aliens.removeAll();
             sfx_stage_clear.play();
 
@@ -398,18 +391,9 @@ var Game = {
         }
     },
 
-    makeRandomItem : function(x, y, x_vel = 0, y_vel = 0, alienType){
+    makeRandomItem : function(x, y, x_vel = 0, y_vel = 0, itemRarity){
         var itemIndex;
-        if(alienType == 'invaderPurple' && uncommonDropTime == 0){
-            itemIndex = dropTable.uncommon[Math.floor(Math.random()*dropTable.uncommon.length)];
-            uncommonDropTime += 1;
-        }
-        else if(alienType == 'invaderGreen'){
-            itemIndex = dropTable.common[Math.floor(Math.random()*dropTable.common.length)];
-        }
-        else{
-            return;
-        }
+        itemIndex = dropTable[itemRarity][Math.floor(Math.random()*dropTable[itemRarity].length)];
 
         itemSprite = itemGroup.create(x, y, itemList[itemIndex].name);
         itemSprite.setHealth(itemIndex);
