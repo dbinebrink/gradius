@@ -372,7 +372,7 @@ var Game = {
         sfx_enemy_die.play();
 
         //  Increase the score
-        score += 150;
+        score += 200;
         scoreText.text = scoreString + score;
         alienkillText.text = alienString + alienkill;
         //  And create an explosion :)
