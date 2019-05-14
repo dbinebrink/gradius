@@ -2,8 +2,7 @@ var aliens;
 var cursors;
 var fireButton;
 var explosions;
-var background;
-var backgroundChanged;
+var starfield;
 var score = 0;
 var scoreString = '';
 var scoreText;
@@ -17,7 +16,6 @@ var livingEnemies = [];
 var music;
 var sfx_fire;
 var sfx_enemy_die;
-var sfx_bullet_die;
 var sfx_stage_clear;
 var sfx_player_hit;
 var sfx_get_item;
@@ -62,11 +60,6 @@ var Game = {
         game.load.image('enemyBullet', 'img/enemy-bullet.png');
         //map
         game.load.image('starfield', 'img/starfield.png');
-        game.load.image('astronomy','img/astronomy.png');
-        game.load.image('bluespace','img/bluespace.png');
-        game.load.image('bluespace2','img/bluespace2.png');
-        game.load.image('starfield2','img/starfield2.png');
-        game.load.image('neonfield','img/neonfield.png');
         game.load.image('lower_mountain', 'img/lower_mountain.png');
         game.load.image('upper_mountain', 'img/upper_mountain.png');
         //item
@@ -75,18 +68,10 @@ var Game = {
         game.load.image('damageUp','img/power_up.png');
         game.load.image('speedUp', 'img/speed_up.png');
         game.load.image('debug_message', 'img/debugMessage.png');
-        game.load.image('addPenetration', 'img/item/addPenetration.PNG');
-        game.load.image('addBullet','addBullet.PNG');
 
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
-        game.load.audio('starmusic', 'audio/starmusic.mp3');
-        game.load.audio('astromusic', 'audio/astromusic.mp3');
-        game.load.audio('bluemusic1', 'audio/bluemusic1.mp3');
-        game.load.audio('bluemusic2', 'audio/bluemusic2.mp3');
-        game.load.audio('neonmusic', 'audio/neonmusic.mp3');
         game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
-        game.load.audio('sfx_bullet_die', 'audio/bullet-die.wav');
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
@@ -120,7 +105,7 @@ var Game = {
         bulletsCollision_status = 'ON';
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        music = game.add.audio('music1');
+        if (!music) music = game.add.audio('music1');
         music.loop = true;
         music.volume = 0.5;
         music.play();
@@ -142,19 +127,15 @@ var Game = {
         sfx_enemy_die.volume = 0.5;
         sfx_enemy_die.allowMultiple = true;
 
-        if (!sfx_bullet_die) sfx_bullet_die = game.add.audio('sfx_bullet_die');
-        sfx_bullet_die.volume = 0.5;
-        sfx_bullet_die.allowMultiple = true;
-
         if (!sfx_get_item) sfx_get_item = game.add.audio('sfx_get_item');
         sfx_get_item.volume = 0.5;
         sfx_get_item.allowMultiple = true;
 
         //  The scrolling starfield background
-        background = game.add.tileSprite(0, 0, 900, 600, 'starfield');
+        starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
         upper_mountain = game.add.tileSprite(0, 0, 900, 30, 'upper_mountain');
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
-
+        
         //  The starship
         Player.initalize(game);
         
@@ -200,10 +181,11 @@ var Game = {
         scoreText = game.add.text(250, 10, scoreString + score, { font: '30px Arial', fill: '#fff' });
 
         aliensString = 'Alien: ';
-        alienscount = game.add.text(735,70,aliensString + aliens.countLiving(), { font: '40px Arial', fill: '#fff' });
+
+        alienscount = game.add.text(735,70,aliensString + aliens.countLiving(), { font: '30px Arial', fill: '#fff' });
 
         alienString = 'Kill: ';
-        alienkillText = game.add.text(735,110,alienString + alienkill, { font: '40px Arial', fill: '#fff' });
+        alienkillText = game.add.text(735,110,alienString + alienkill, { font: '30px Arial', fill: '#fff' });
 
         bulletsCollisionString = 'Bul Col: ';
         bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
@@ -234,39 +216,7 @@ var Game = {
 
     update : function() {
         //  Scroll the background
-        if(!backgroundChanged && (stage % 5 == 0||stage==1)){
-            backgroundChanged=true;
-            music.destroy();
-            let backgroundSelectPer = Math.random();
-            if(stage==1||backgroundSelectPer<0.17){
-                background.loadTexture('starfield');
-                music=game.add.audio('music1');
-            }
-            else if(backgroundSelectPer<0.34){
-                background.loadTexture('starfield2');
-                music=game.add.audio('starmusic');
-            }
-            else if(backgroundSelectPer<0.51){
-                background.loadTexture('bluespace');
-                music=game.add.audio('bluemusic1');
-            }
-            else if(backgroundSelectPer<0.68){
-                background.loadTexture('bluespace2');
-                music=game.add.audio('bluemusic2');
-            }
-            else if(backgroundSelectPer<0.84){
-                background.loadTexture('astronomy');
-                music=game.add.audio('astromusic');
-            }
-            else {
-                background.loadTexture('neonfield');
-                music=game.add.audio('neonmusic');
-            }
-            music.loop=true;
-            music.volume=0.5;
-            music.play();
-        }
-        background.tilePosition.x -= 3;
+        starfield.tilePosition.x -= 3;
         upper_mountain.tilePosition.x -= 1;
         lower_mountain.tilePosition.x -= 1;
 
@@ -359,13 +309,23 @@ var Game = {
         else
             movestyle = movestyle.Out;
 
+        if(movepoint_x < 600)
+            movepoint_x = 700 + Math.random()*200;
+        else
+            movepoint_x = 300 + Math.random()*200;
         if(movepoint_y < 300)
             movepoint_y = 600 - Math.random()*220;
         else
             movepoint_y = Math.random()*220;
 
+        var difficulty = stage;
+        if (difficulty > 20)
+            difficulty = 20;
+
+        //game.physics.arcade.moveToObject(enemyBullet,{x : alien.body.x, y : -100},100 + 20 * countstage);
+
         var tween = game.add.tween(alien).to( { x: -30}, 10000, movestyle, true, 0, 20000, false);
-        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000, Phaser.Easing.Linear.None, true, 0, 20000, true);
+        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
 
 
         //  Alien movements
@@ -428,9 +388,9 @@ var Game = {
             this.createAliens();
             countstage++;
             stage++;
-            backgroundChanged=false;
             stageText.text = stageString + stage;
             console.log(stage, aliens.countLiving(), ailencreatecount);
+
             if(debugFlag){
                 console.log("%c STAGE "+stage, 'background: #222; color: #bada55');
             }
@@ -523,7 +483,7 @@ var Game = {
         Bullets.killBullet(bullet);
         enemyBullet.kill();
 
-        sfx_bullet_die.play();
+        sfx_enemy_die.play();
 
         var explosion = explosions.getFirstExists(false);
         explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
@@ -561,7 +521,6 @@ var Game = {
             this.createAliens();
             countstage++;
             stage++;
-            backgroundChanged=false;
             stageText.text = stageString + stage;
             console.log(stage);
 
@@ -915,10 +874,10 @@ var Game = {
         music_status = 'ON';
         sfx_fire.volume = 0.5;
         sfx_enemy_die.volume = 0.5;
-        sfx_bullet_die.volume = 0.5;
         sfx_stage_clear.volume = 0.5;
         sfx_player_hit.volume = 0.5;
         sfx_get_item.volume = 0.5;
+        music.volume =0;
         musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
@@ -928,7 +887,6 @@ var Game = {
         music_status = 'OFF';
         sfx_fire.volume = 0;
         sfx_enemy_die.volume = 0;
-        sfx_bullet_die.volume = 0;
         sfx_stage_clear.volume = 0;
         sfx_player_hit.volume = 0;
         sfx_get_item.volume = 0;
@@ -1023,7 +981,6 @@ var Game = {
         if(sfx_fire.volume <= 0.9) {
             sfx_fire.volume += 0.1;
             sfx_enemy_die.volume += 0.1;
-            sfx_bullet_die.volume += 0.1;
             sfx_stage_clear.volume += 0.1;
             sfx_player_hit.volume += 0.1;
             sfx_get_item.volume += 0.1;
@@ -1035,7 +992,6 @@ var Game = {
         if(sfx_fire.volume >= 0.1) {
             sfx_fire.volume -= 0.1;
             sfx_enemy_die.volume -= 0.1;
-            sfx_bullet_die.volume -= 0.1;
             sfx_stage_clear.volume -= 0.1;
             sfx_player_hit.volume -= 0.1;
             sfx_get_item.volume -= 0.1;
