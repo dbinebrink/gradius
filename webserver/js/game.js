@@ -71,7 +71,7 @@ var Game = {
 
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
-        game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
+        //game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
