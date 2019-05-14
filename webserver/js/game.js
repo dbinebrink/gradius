@@ -171,20 +171,21 @@ var Game = {
 
         // The stage
         stageString = 'Stage: ';
-        stageText = game.add.text(70, 10, stageString + stage, { font: '40px Arial', fill: '#fff' });
+        stageText = game.add.text(70, 10, stageString + stage, { font: '30px Arial', fill: '#fff' });
         // this.generatespeed_up();
         this.createAliens();
         musicString = 'BGM: ';
         musicText = game.add.text(70,50,musicString + music_status,{ font: '30px Arial', fill: '#fff' });
         //  The score
         scoreString = 'Score: ';
-        scoreText = game.add.text(250, 10, scoreString + score, { font: '40px Arial', fill: '#fff' });
+        scoreText = game.add.text(250, 10, scoreString + score, { font: '30px Arial', fill: '#fff' });
 
         aliensString = 'Alien: ';
-        alienscount = game.add.text(750,70,aliensString + aliens.countLiving(), { font: '40px Arial', fill: '#fff' });
+
+        alienscount = game.add.text(735,70,aliensString + aliens.countLiving(), { font: '30px Arial', fill: '#fff' });
 
         alienString = 'Kill: ';
-        alienkillText = game.add.text(750,110,alienString + alienkill, { font: '40px Arial', fill: '#fff' });
+        alienkillText = game.add.text(735,110,alienString + alienkill, { font: '30px Arial', fill: '#fff' });
 
         bulletsCollisionString = 'Bul Col: ';
         bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
@@ -308,13 +309,23 @@ var Game = {
         else
             movestyle = movestyle.Out;
 
+        if(movepoint_x < 600)
+            movepoint_x = 700 + Math.random()*200;
+        else
+            movepoint_x = 300 + Math.random()*200;
         if(movepoint_y < 300)
             movepoint_y = 600 - Math.random()*220;
         else
             movepoint_y = Math.random()*220;
 
+        var difficulty = stage;
+        if (difficulty > 20)
+            difficulty = 20;
+
+        //game.physics.arcade.moveToObject(enemyBullet,{x : alien.body.x, y : -100},100 + 20 * countstage);
+
         var tween = game.add.tween(alien).to( { x: -30}, 10000, movestyle, true, 0, 20000, false);
-        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000, Phaser.Easing.Linear.None, true, 0, 20000, true);
+        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
 
 
         //  Alien movements
@@ -866,6 +877,7 @@ var Game = {
         sfx_stage_clear.volume = 0.5;
         sfx_player_hit.volume = 0.5;
         sfx_get_item.volume = 0.5;
+        music.volume =0;
         musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
@@ -878,6 +890,7 @@ var Game = {
         sfx_stage_clear.volume = 0;
         sfx_player_hit.volume = 0;
         sfx_get_item.volume = 0;
+        music.volume=0;
         musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },

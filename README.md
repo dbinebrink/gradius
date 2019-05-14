@@ -4,7 +4,7 @@ Gradios - Arcade Shooting Game
 <img src="https://i.imgur.com/xqTC4xJ.png" width="60%"></img>
 
 ## Project Info
-* [![Laguage](https://img.shields.io/badge/language-javascript-blue.svg)](https://developer.mozilla.org/ko/docs/Web/JavaScript)
+* [![Language](https://img.shields.io/badge/language-javascript-blue.svg)](https://developer.mozilla.org/ko/docs/Web/JavaScript)
 [![platform1](https://img.shields.io/badge/-node.js-orange.svg)](https://nodejs.org/ko/)
 [![platform2](https://img.shields.io/badge/-Phaser-green.svg)](https://phaser.io/phaser3)
 
