@@ -1,9 +1,23 @@
-# Gradios
+Gradios - Arcade Shooting Game
+===============================================================
+<img src="https://i.imgur.com/P1LE2uy.png" width="60%"></img>
+<img src="https://i.imgur.com/xqTC4xJ.png" width="60%"></img>
 
-Gradius clone for educational purpose.
+## Project Info
+* [![Laguage](https://img.shields.io/badge/language-javascript-blue.svg)](https://developer.mozilla.org/ko/docs/Web/JavaScript)
+[![platform1](https://img.shields.io/badge/-node.js-orange.svg)](https://nodejs.org/ko/)
+[![platform2](https://img.shields.io/badge/-Phaser-green.svg)](https://phaser.io/phaser3)
 
-## Setting before play
-Refer : https://github.com/inureyes/gradios/blob/master/wiki.md
+* Gradios is simple ARCADE GAME using Phaser library.
+* Gradius clone for educational purpose.
+* The project was started for the open source development class, at Hanyang University Erica Campus.
+  </br>And anyone can participate.
+
+## If you want to PARTICIPATE IN THIS PROJECT
+
+* How to play Gradios? : https://github.com/inureyes/gradios/blob/master/wiki.md
+* What is Phaser? : https://phaser.io/phaser3
+* Simple Phaser 3 Example : https://labs.phaser.io/
 
 ## Student list
 
