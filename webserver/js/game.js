@@ -181,6 +181,7 @@ var Game = {
         scoreText = game.add.text(250, 10, scoreString + score, { font: '30px Arial', fill: '#fff' });
 
         aliensString = 'Alien: ';
+
         alienscount = game.add.text(735,70,aliensString + aliens.countLiving(), { font: '30px Arial', fill: '#fff' });
 
         alienString = 'Kill: ';
@@ -889,7 +890,7 @@ var Game = {
         sfx_stage_clear.volume = 0;
         sfx_player_hit.volume = 0;
         sfx_get_item.volume = 0;
-        music.volume =0;
+        music.volume=0;
         musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
