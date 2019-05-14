@@ -19,6 +19,13 @@ Gradios - Arcade Shooting Game
 * What is Phaser? : https://phaser.io/phaser3
 * Simple Phaser 3 Example : https://labs.phaser.io/
 
+## Electron package
+
+Uses electron-packager.
+```
+electron-packager . --ignore=node_modules/electron-packager --ignore=.git --overwrite --ignore="\.git(ignore|modules)" --out=app --platform=darwin
+```
+
 ## Student list
 
 <details><summary>Click Me!</summary>

@@ -82,7 +82,7 @@ app.once('ready', function() {
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1280, 
+    width: 1280,
     height: 970,
     title: "Gradios",
     frame: true,
@@ -93,8 +93,7 @@ function createWindow () {
   })
   mainWindow.loadURL('http://localhost:9990');
 
-
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
@@ -122,32 +121,3 @@ app.on('activate', function () {
     createWindow()
   }
 })
-app.on('certificate-error', function(event, webContents, url, error, 
-  certificate, callback) {
-      event.preventDefault();
-      callback(true);
-});
-// Let windows without node integration
-app.on('web-contents-created', (event, contents) => {
-  contents.on('will-attach-webview', (event, webPreferences, params) => {
-    // Strip away preload scripts if unused or verify their location is legitimate
-    delete webPreferences.preload
-    delete webPreferences.preloadURL
-
-    // Disable Node.js integration
-    webPreferences.nodeIntegration = false
-  })
-})
-app.on('before-quit', function() {
-  pids.forEach(function(pid) {
-    // A simple pid lookup
-    ps.kill( pid, function( err ) {
-        if (err) {
-            throw new Error( err );
-        }
-        else {
-            console.log( 'Process %s has been killed!', pid );
-        }
-    });
-  });
-});

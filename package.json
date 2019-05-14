@@ -1,12 +1,13 @@
 {
   "name": "gradios",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "main": "main.js",
   "scripts": {
     "start": "gulp"
   },
   "dependencies": {
+    "electron": "^5.0.1",
     "gulp-webserver": "^0.9.1",
     "node-static": "^0.7.11"
   },
