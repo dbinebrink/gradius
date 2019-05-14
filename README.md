@@ -125,7 +125,6 @@ Local electron-packager installation:
 | Wonbae Kim | Student |
 | Yelim Park | student |
 | Yerim Seok | Student |
-| Jae Hyeon Park| Student|
 
 </p>
 </details>
