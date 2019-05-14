@@ -28,6 +28,11 @@ Global installation:
 electron-packager . --ignore=node_modules/electron-packager --ignore=.git --overwrite --ignore="\.git(ignore|modules)" --out=app --platform=[darwin OR win32 OR linux]
 ```
 
+Global installation in Window: 
+```
+electron-packager . --ignore=node_modules/electron-packager --ignore=.git --overwrite --ignore="\.git(ignore||modules)" --out=app --platform=[darwin OR win32 OR linux]
+```
+
 Local electron-packager installation: 
 ```
 ./node_modules/electron-packager/cli.js . --ignore=node_modules/electron-packager --ignore=.git --overwrite --ignore="\.git(ignore|modules)" --out=app --platform=[darwin OR win32 OR linux]
