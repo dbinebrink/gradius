@@ -73,7 +73,7 @@ var Game = {
 
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
-        game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
+        //game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
@@ -362,7 +362,7 @@ var Game = {
         sfx_enemy_die.play();
 
         //  Increase the score
-        score += 40*Player.sprite.health;
+        score += 200;
         scoreText.text = scoreString + score;
         alienkillText.text = alienString + alienkill;
         //  And create an explosion :)
@@ -516,9 +516,9 @@ var Game = {
         score_2_switch = false;
         score_3_switch = false;
 
-        Player.info.invincibleTime = game.time.now + 1000;
+        if (Player.info.isInvincible == false) Player.info.invincibleTime = game.time.now + 2000;
         // blink player
-        if (Player.info.isInvincible == false) game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
+        if (Player.info.isInvincible == false) game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 2, true);
     },
 
     finishGame : function() {
