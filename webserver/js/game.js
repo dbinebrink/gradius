@@ -532,9 +532,9 @@ var Game = {
         score_2_switch = false;
         score_3_switch = false;
 
-        if (Player.info.isInvincible == false) Player.info.invincibleTime = game.time.now + 2500;
+        if (Player.info.isInvincible == false) Player.info.invincibleTime = game.time.now + 2000;
         // blink player
-        if (Player.info.isInvincible == false) game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
+        if (Player.info.isInvincible == false) game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 2, true);
     },
 
     finishGame : function() {
