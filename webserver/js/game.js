@@ -2,7 +2,8 @@ var aliens;
 var cursors;
 var fireButton;
 var explosions;
-var starfield;
+var background;
+var backgroundChanged;
 var score = 0;
 var scoreString = '';
 var scoreText;
@@ -60,6 +61,11 @@ var Game = {
         game.load.image('enemyBullet', 'img/enemy-bullet.png');
         //map
         game.load.image('starfield', 'img/starfield.png');
+        game.load.image('astronomy','img/astronomy.png');
+        game.load.image('bluespace','img/bluespace.png');
+        game.load.image('bluespace2','img/bluespace2.png');
+        game.load.image('starfield2','img/starfield2.png');
+        game.load.image('neonfield','img/neonfield.png');
         game.load.image('lower_mountain', 'img/lower_mountain.png');
         game.load.image('upper_mountain', 'img/upper_mountain.png');
         //item
@@ -68,10 +74,17 @@ var Game = {
         game.load.image('damageUp','img/power_up.png');
         game.load.image('speedUp', 'img/speed_up.png');
         game.load.image('debug_message', 'img/debugMessage.png');
+        game.load.image('addPenetration', 'img/item/addPenetration.png');
+        game.load.image('addBullet','img/item/addBullet.png');
 
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
-        game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
+        game.load.audio('starmusic', 'audio/starmusic.mp3');
+        game.load.audio('astromusic', 'audio/astromusic.mp3');
+        game.load.audio('bluemusic1', 'audio/bluemusic1.mp3');
+        game.load.audio('bluemusic2', 'audio/bluemusic2.mp3');
+        game.load.audio('neonmusic', 'audio/neonmusic.mp3');
+        //game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
         game.load.audio('sfx_stage_clear', 'audio/stage-clear.wav');
@@ -105,7 +118,7 @@ var Game = {
         bulletsCollision_status = 'ON';
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        if (!music) music = game.add.audio('music1');
+        music = game.add.audio('music1');
         music.loop = true;
         music.volume = 0.5;
         music.play();
@@ -132,7 +145,7 @@ var Game = {
         sfx_get_item.allowMultiple = true;
 
         //  The scrolling starfield background
-        starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
+        background = game.add.tileSprite(0, 0, 900, 600, 'starfield');
         upper_mountain = game.add.tileSprite(0, 0, 900, 30, 'upper_mountain');
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
         
@@ -215,8 +228,41 @@ var Game = {
     },
 
     update : function() {
+        //random stage select
+        if(!backgroundChanged && (stage % 2 == 0||stage == 1)){
+            backgroundChanged=true;
+            music.destroy();
+            var backgroundSelectPer = Math.random();
+            if(backgroundSelectPer<0.17){
+                background.loadTexture('starfield');
+                music=game.add.audio('music1');
+            }
+            else if(backgroundSelectPer<0.34){
+                background.loadTexture('starfield2');
+                music=game.add.audio('starmusic');
+            }
+            else if(backgroundSelectPer<0.51){
+                background.loadTexture('bluespace');
+                music=game.add.audio('bluemusic1');
+            }
+            else if(backgroundSelectPer<0.68){
+                background.loadTexture('bluespace2');
+                music=game.add.audio('bluemusic2');
+            }
+            else if(backgroundSelectPer<0.84){
+                background.loadTexture('astronomy');
+                music=game.add.audio('astromusic');
+            }
+            else {
+                background.loadTexture('neonfield');
+                music=game.add.audio('neonmusic');
+            }
+            music.loop=true;
+            music.volume=0.5;
+            music.play();
+        }
         //  Scroll the background
-        starfield.tilePosition.x -= 3;
+        background.tilePosition.x -= 3;
         upper_mountain.tilePosition.x -= 1;
         lower_mountain.tilePosition.x -= 1;
 
@@ -255,12 +301,12 @@ var Game = {
         let alienHealth;
         let alienSizeMultiple;
         let specialEnemyPer = Math.random()*100;
-        if(specialEnemyPer < Math.floor(stage/15)){
+        if(specialEnemyPer < Math.floor(stage/30)){
             alienImage = 'invaderPurple';
             alienHealth = 3;
             alienSizeMultiple = 2;
         }
-        else if(specialEnemyPer < Math.floor(stage/10)+3){
+        else if(specialEnemyPer < Math.floor(stage/20)+3){
             alienImage = 'invaderGreen';
             alienHealth = 2.5;
             alienSizeMultiple = 1.5;
@@ -293,19 +339,15 @@ var Game = {
 
         var movestyle = Phaser.Easing;
         var style = Math.random();
-        if (style < 0.2)
+        if (style < 0.3)
             movestyle = movestyle.Cubic;
-        else if (style < 0.4)
+        else if (style < 0.5)
             movestyle = movestyle.Back;
-        else if (style < 0.6)
-            movestyle = movestyle.Circular;
-        else if (style < 0.8)
+        else
             movestyle = movestyle.Linear;
         style = Math.random();
-        if (style < 0.33)
+        if (style < 0.5)
             movestyle = movestyle.In;
-        else if (style < 0.66)
-            movestyle = movestyle.InOut;
         else
             movestyle = movestyle.Out;
 
@@ -322,17 +364,8 @@ var Game = {
         if (difficulty > 20)
             difficulty = 20;
 
-        //game.physics.arcade.moveToObject(enemyBullet,{x : alien.body.x, y : -100},100 + 20 * countstage);
-
         var tween = game.add.tween(alien).to( { x: -30}, 10000, movestyle, true, 0, 20000, false);
-        var tween = game.add.tween(alien).to( { y: movepoint_y }, 3000 - 1000*Math.random() - 50*difficulty*Math.random(), movestyle, true, 0, 20000, true);
-
-
-        //  Alien movements
-
-            
-        // var tween = game.add.tween(aliens).to( { y: 500 }, 2000, Phaser.Easing.Cubic.Out, true, 0, 0, true);
-
+        var tween = game.add.tween(alien).to( { y: movepoint_y }, 5000 - 100*Math.random() - 50*difficulty, movestyle, true, 0, 20000, true);
 
         // When the tween loops it calls descend
         tween.onLoop.add(this.descend, this);
@@ -366,13 +399,14 @@ var Game = {
         // alien.kill();
         alien.damage(Bullets.info.damage);
         if(!alien.alive) {
-            this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, alien.key);
+            if(alien.key == 'invaderGreen') this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'uncommon');
+            if(alien.key == 'invaderPurple') this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'rare');
             alienkill++;
         }
         sfx_enemy_die.play();
 
         //  Increase the score
-        score += 40*Player.sprite.health;
+        score += 200;
         scoreText.text = scoreString + score;
         alienkillText.text = alienString + alienkill;
         //  And create an explosion :)
@@ -381,13 +415,17 @@ var Game = {
         explosion.play('kaboom', 30, false, true);
 
         if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
-            this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'invaderGreen');
+            if(stage%3 == 0)
+                this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'uncommon');
+            else this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'common');
+
             aliens.removeAll();
             sfx_stage_clear.play();
 
             this.createAliens();
             countstage++;
             stage++;
+            backgroundChanged=false;
             stageText.text = stageString + stage;
             console.log(stage, aliens.countLiving(), ailencreatecount);
 
@@ -398,18 +436,9 @@ var Game = {
         }
     },
 
-    makeRandomItem : function(x, y, x_vel = 0, y_vel = 0, alienType){
+    makeRandomItem : function(x, y, x_vel = 0, y_vel = 0, itemRarity){
         var itemIndex;
-        if(alienType == 'invaderPurple' && uncommonDropTime == 0){
-            itemIndex = dropTable.uncommon[Math.floor(Math.random()*dropTable.uncommon.length)];
-            uncommonDropTime += 1;
-        }
-        else if(alienType == 'invaderGreen'){
-            itemIndex = dropTable.common[Math.floor(Math.random()*dropTable.common.length)];
-        }
-        else{
-            return;
-        }
+        itemIndex = dropTable[itemRarity][Math.floor(Math.random()*dropTable[itemRarity].length)];
 
         itemSprite = itemGroup.create(x, y, itemList[itemIndex].name);
         itemSprite.setHealth(itemIndex);
@@ -521,6 +550,7 @@ var Game = {
             this.createAliens();
             countstage++;
             stage++;
+            backgroundChanged=false;
             stageText.text = stageString + stage;
             console.log(stage);
 
@@ -532,9 +562,9 @@ var Game = {
         score_2_switch = false;
         score_3_switch = false;
 
-        Player.info.invincibleTime = game.time.now + 1000;
+        if (Player.info.isInvincible == false) Player.info.invincibleTime = game.time.now + 2000;
         // blink player
-        if (Player.info.isInvincible == false) game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 1, true);
+        if (Player.info.isInvincible == false) game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 2, true);
     },
 
     finishGame : function() {
@@ -877,7 +907,7 @@ var Game = {
         sfx_stage_clear.volume = 0.5;
         sfx_player_hit.volume = 0.5;
         sfx_get_item.volume = 0.5;
-        music.volume =0;
+        music.volume =0.5;
         musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
@@ -967,13 +997,20 @@ var Game = {
         }
     },
 
-    m_VolumeUp : function() {
+
+    m_VolumeUp: function() {
         if(music.volume <= 0.9) music.volume += 0.1;
+       if(music.volume += 0.0) music_status = 'ON';
+       if(music.volume += 0.0) musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
 
+
+
     m_VolumeDown : function() {
         if(music.volume >= 0.1) music.volume -= 0.1;
+        if(music.volume < 0.1) music_status = 'OFF';
+        if(music.volume <0.1) musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
 
@@ -985,6 +1022,8 @@ var Game = {
             sfx_player_hit.volume += 0.1;
             sfx_get_item.volume += 0.1;
         }
+        if(sfx_enemy_die.volume += 0 ) music_status = 'ON';
+        if(sfx_enemy_die.volume += 0) musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
 
@@ -996,6 +1035,11 @@ var Game = {
             sfx_player_hit.volume -= 0.1;
             sfx_get_item.volume -= 0.1;
         }
+        if(sfx_enemy_die.volume < 0.1) music_status = 'OFF';
+        if(sfx_enemy_die.volume < 0.1) musicText.text = musicString + music_status;
+       
         this.showSettingMessageBox();
     }
+    
 }
+
