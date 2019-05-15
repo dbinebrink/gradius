@@ -57,6 +57,7 @@ var mainMenu = {
     ViewControls : function() {
         var image2 = game.add.image(0,0,'help');
         var image3 = game.add.button(700,80,'backButton');
+        credit.inputEnabled = false;
         image3.inputEnabled = true;
         startButton.inputEnabled=false;
         controls.inputEnabled=false;
@@ -66,12 +67,14 @@ var mainMenu = {
             startButton.inputEnabled=true;
             controls.inputEnabled=true;
             exit.inputEnabled=true;
+            credit.inputEnabled = true;
         });
     },
 
     ViewCredit : function() {
         var image2 = game.add.image(0,0,'creditList');
         var image3 = game.add.button(700,40,'backButton');
+        credit.inputEnabled = false;
         image3.inputEnabled = true;
         startButton.inputEnabled=false;
         controls.inputEnabled=false;
@@ -81,6 +84,7 @@ var mainMenu = {
             startButton.inputEnabled=true;
             controls.inputEnabled=true;
             exit.inputEnabled=true;
+            credit.inputEnabled = true;
         });
     },
 
