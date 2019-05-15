@@ -7,6 +7,7 @@ Gradios - Arcade Shooting Game
 * [![Language](https://img.shields.io/badge/language-javascript-blue.svg)](https://developer.mozilla.org/ko/docs/Web/JavaScript)
 [![platform1](https://img.shields.io/badge/-node.js-orange.svg)](https://nodejs.org/ko/)
 [![platform2](https://img.shields.io/badge/-Phaser-green.svg)](https://phaser.io/phaser3)
+[![platform3](https://img.shields.io/badge/-Electron-red.svg)](https://electronjs.org/)
 
 * Gradios is simple ARCADE GAME using Phaser library.
 * Gradius clone for educational purpose.
