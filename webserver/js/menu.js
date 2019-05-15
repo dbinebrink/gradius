@@ -16,7 +16,7 @@ var mainMenu = {
         game.load.image('backButton', 'img/backButton.png');
         game.load.image('exit' , 'img/exit.png');
         game.load.image('credit' , 'img/credit.png');
-        game.load.image('help' , 'img/help.png');
+        game.load.image('help' , 'img/help.jpg');
         game.load.image('creditList' , 'img/credit_list.png');
         game.load.image('settingBack', 'img/settingBackground.png');
         mainMenu.load.audio('start_sound', 'audio/start_sound.mp3')
