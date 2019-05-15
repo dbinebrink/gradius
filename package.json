@@ -1,0 +1,25 @@
+{
+  "name": "gradios",
+  "version": "0.0.1",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "gulp",
+    "test": "electron .",
+    "build": "node runglobal.js",
+    "build-local": "node runlocal.js",
+    "build2" : "electron-packager . --out=dist --asar --overwite --all",
+    "build2:darwin" : "electron-packager . --out=dist --asar --overwite --platfrom=darwin",
+    "build2:linux" : "electron-packager . gradios --platform linux --out dist/",
+    "build2:windows" : "electron-packager . gradios --platform win32 --out dist/"
+  },
+  "dependencies": {
+    "electron": "^5.0.1",
+    "gulp-webserver": "^0.9.1",
+    "node-static": "^0.7.11"
+  },
+  "devDependencies": {
+    "electron-packager": "^13.1.1",
+    "gulp": "^4.0.2"
+  }
+}
