@@ -7,6 +7,7 @@ Gradios - Arcade Shooting Game
 * [![Language](https://img.shields.io/badge/language-javascript-blue.svg)](https://developer.mozilla.org/ko/docs/Web/JavaScript)
 [![platform1](https://img.shields.io/badge/-node.js-orange.svg)](https://nodejs.org/ko/)
 [![platform2](https://img.shields.io/badge/-Phaser-green.svg)](https://phaser.io/phaser3)
+[![platform3](https://img.shields.io/badge/-Electron-red.svg)](https://electronjs.org/)
 
 * Gradios is simple ARCADE GAME using Phaser library.
 * Gradius clone for educational purpose.
@@ -19,24 +20,9 @@ Gradios - Arcade Shooting Game
 * What is Phaser? : https://phaser.io/phaser3
 * Simple Phaser 3 Example : https://labs.phaser.io/
 
-## Electron package
+## Electron wiki
 
-Uses electron-packager.
-
-Global installation: 
-```
-electron-packager . --ignore=node_modules/electron-packager --ignore=.git --overwrite --ignore="\.git(ignore|modules)" --out=app --platform=[darwin OR win32 OR linux]
-```
-
-Global installation in Window PowerShell: 
-```
-electron-packager . --ignore=node_modules/electron-packager --ignore=.git --overwrite  --out=app --platform="win32" --ignore=`""\.git(ignore^|modules)`""
-```
-
-Local electron-packager installation: 
-```
-node ./node_modules/electron-packager/cli.js . --ignore=node_modules/electron-packager --ignore=.git --overwrite --ignore="\.git(ignore|modules)" --out=app --platform=[darwin OR win32 OR linux]
-```
+* https://github.com/inureyes/gradios/blob/master/electron.md
 
 ## Student list
 
