@@ -2,7 +2,8 @@ var aliens;
 var cursors;
 var fireButton;
 var explosions;
-var starfield;
+var background;
+var backgroundChanged;
 var score = 0;
 var scoreString = '';
 var scoreText;
@@ -60,6 +61,11 @@ var Game = {
         game.load.image('enemyBullet', 'img/enemy-bullet.png');
         //map
         game.load.image('starfield', 'img/starfield.png');
+        game.load.image('astronomy','img/astronomy.png');
+        game.load.image('bluespace','img/bluespace.png');
+        game.load.image('bluespace2','img/bluespace2.png');
+        game.load.image('starfield2','img/starfield2.png');
+        game.load.image('neonfield','img/neonfield.png');
         game.load.image('lower_mountain', 'img/lower_mountain.png');
         game.load.image('upper_mountain', 'img/upper_mountain.png');
         //item
@@ -73,6 +79,11 @@ var Game = {
 
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
+        game.load.audio('starmusic', 'audio/starmusic.mp3');
+        game.load.audio('astromusic', 'audio/astromusic.mp3');
+        game.load.audio('bluemusic1', 'audio/bluemusic1.mp3');
+        game.load.audio('bluemusic2', 'audio/bluemusic2.mp3');
+        game.load.audio('neonmusic', 'audio/neonmusic.mp3');
         //game.load.audio('sfx_enemy_die', 'audio/enemy-die.wav');
         game.load.audio('sfx_fire', 'audio/fire.wav');
         game.load.audio('sfx_player_hit', 'audio/player-hit.wav');
@@ -107,7 +118,7 @@ var Game = {
         bulletsCollision_status = 'ON';
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        if (!music) music = game.add.audio('music1');
+        music = game.add.audio('music1');
         music.loop = true;
         music.volume = 0.5;
         music.play();
@@ -134,7 +145,7 @@ var Game = {
         sfx_get_item.allowMultiple = true;
 
         //  The scrolling starfield background
-        starfield = game.add.tileSprite(0, 0, 900, 600, 'starfield');
+        background = game.add.tileSprite(0, 0, 900, 600, 'starfield');
         upper_mountain = game.add.tileSprite(0, 0, 900, 30, 'upper_mountain');
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
         
@@ -217,8 +228,41 @@ var Game = {
     },
 
     update : function() {
+        //random stage select
+        if(!backgroundChanged && (stage % 2 == 0||stage == 1)){
+            backgroundChanged=true;
+            music.destroy();
+            var backgroundSelectPer = Math.random();
+            if(backgroundSelectPer<0.17){
+                background.loadTexture('starfield');
+                music=game.add.audio('music1');
+            }
+            else if(backgroundSelectPer<0.34){
+                background.loadTexture('starfield2');
+                music=game.add.audio('starmusic');
+            }
+            else if(backgroundSelectPer<0.51){
+                background.loadTexture('bluespace');
+                music=game.add.audio('bluemusic1');
+            }
+            else if(backgroundSelectPer<0.68){
+                background.loadTexture('bluespace2');
+                music=game.add.audio('bluemusic2');
+            }
+            else if(backgroundSelectPer<0.84){
+                background.loadTexture('astronomy');
+                music=game.add.audio('astromusic');
+            }
+            else {
+                background.loadTexture('neonfield');
+                music=game.add.audio('neonmusic');
+            }
+            music.loop=true;
+            music.volume=0.5;
+            music.play();
+        }
         //  Scroll the background
-        starfield.tilePosition.x -= 3;
+        background.tilePosition.x -= 3;
         upper_mountain.tilePosition.x -= 1;
         lower_mountain.tilePosition.x -= 1;
 
@@ -381,6 +425,7 @@ var Game = {
             this.createAliens();
             countstage++;
             stage++;
+            backgroundChanged=false;
             stageText.text = stageString + stage;
             console.log(stage, aliens.countLiving(), ailencreatecount);
 
@@ -505,6 +550,7 @@ var Game = {
             this.createAliens();
             countstage++;
             stage++;
+            backgroundChanged=false;
             stageText.text = stageString + stage;
             console.log(stage);
 
