@@ -148,10 +148,10 @@ var Game = {
         background = game.add.tileSprite(0, 0, 900, 600, 'starfield');
         upper_mountain = game.add.tileSprite(0, 0, 900, 30, 'upper_mountain');
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
-        
+
         //  The starship
         Player.initalize(game);
-        
+
         //  Our bullet group
         Bullets.initalize(game);
 
@@ -266,6 +266,53 @@ var Game = {
         upper_mountain.tilePosition.x -= 1;
         lower_mountain.tilePosition.x -= 1;
 
+        if (game.input.keyboard.isDown(Phaser.Keyboard.ONE)){
+            if(music_status == 'ON'){
+                music_status = 'OFF';
+                sfx_fire.volume = 0;
+                sfx_enemy_die.volume = 0;
+                sfx_stage_clear.volume = 0;
+                sfx_player_hit.volume = 0;
+                sfx_get_item.volume = 0;
+                music.volume=0;
+                musicText.text = musicString + music_status;
+            }
+            else{
+                music_status = 'ON';
+                sfx_fire.volume = 0.5;
+                sfx_enemy_die.volume = 0.5;
+                sfx_stage_clear.volume = 0.5;
+                sfx_player_hit.volume = 0.5;
+                sfx_get_item.volume = 0.5;
+                music.volume =0.5;
+                musicText.text = musicString + music_status;
+            }
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.TWO)){
+            if(debugFlag){
+                debugFlag = false;
+                console.log("debugFlag is now off");
+            }
+            else{
+                debugFlag = true;
+                console.log("debugFlag is now on");
+            }
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.THREE)){
+            if(Bullets.info.collideEnemyBullet){
+                Bullets.info.collideEnemyBullet = false;
+                console.log("bulletsCollision is now off");
+                bulletsCollision_status = 'OFF';
+                bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
+            }
+            else{
+                Bullets.info.collideEnemyBullet = true;
+                console.log("bulletsCollision is now on");
+                bulletsCollision_status = 'ON';
+                bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
+            }
+        }
+
         // Setting
         if (settings.isDown){
             music.stop();
@@ -294,7 +341,7 @@ var Game = {
             game.physics.arcade.overlap(Player.sprite, enemyBullets, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(Player.sprite, itemGroup, this.getItem, null, this);
         }
-    },   
+      },
 
     createAliens : function() {
         let alienImage;
@@ -466,7 +513,7 @@ var Game = {
         item.applyItem(myItemList);
         itemSprite.destroy();
     },
-    
+
     createTimer : function() {
 
         var me = this;
@@ -518,7 +565,7 @@ var Game = {
         explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
         explosion.play('kaboom', 30, false, true);
     },
- 
+
     enemyHitsPlayer : function(player, object) {
         if(debugFlag){
             this.debugCollisionMessage(player, object);
@@ -537,7 +584,7 @@ var Game = {
         var explosion = explosions.getFirstExists(false);
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
-        
+
         if (!Player.sprite.alive) {
             countstage = 1;
             seconds = 0;
@@ -635,7 +682,6 @@ var Game = {
         var sfx_volumeDown = game.add.text(0, 0, '-', {fontsize: 19});
         var sfx_volume = game.add.text(0, 0, Math.round(sfx_fire.volume * 100), { fontsize: 19 });
 
-
         msgBox.add(back);
         msgBox.add(mainMenu);
         msgBox.add(restartButton1);
@@ -727,6 +773,8 @@ var Game = {
         dbgMsgOffButton.y = msgBox.y + dbgMsgText.height + 15;
         dbgMsgOffButton.inputEnabled = true;
         dbgMsgOffButton.events.onInputDown.add(this.turnOffDbgMsg,this);
+
+      
         if (debugFlag) {
             dbgMsgOnButton.addColor("#fff500", 0);
             dbgMsgOffButton.addColor("#ffffff", 0);
@@ -1037,6 +1085,5 @@ var Game = {
         }
         this.showSettingMessageBox();
     }
-    
-}
 
+}
