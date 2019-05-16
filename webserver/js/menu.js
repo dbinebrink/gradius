@@ -19,6 +19,7 @@ var mainMenu = {
         game.load.image('help' , 'img/help.jpg');
         game.load.image('creditList' , 'img/credit_list.png');
         game.load.image('settingBack', 'img/settingBackground.png');
+        game.load.image('githubButton', 'img/githubIcon.png');
         mainMenu.load.audio('start_sound', 'audio/start_sound.mp3')
     },
 
@@ -74,6 +75,7 @@ var mainMenu = {
     ViewCredit : function() {
         var image2 = game.add.image(0,0,'creditList');
         var image3 = game.add.button(700,40,'backButton');
+        var image4 = game.add.button(630,40,'githubButton');
         credit.inputEnabled = false;
         image3.inputEnabled = true;
         startButton.inputEnabled=false;
@@ -85,6 +87,9 @@ var mainMenu = {
             controls.inputEnabled=true;
             exit.inputEnabled=true;
             credit.inputEnabled = true;
+        });
+        image4.events.onInputDown.add(function(){
+            window.open('https://github.com/inureyes/gradios', '_blank');
         });
     },
 
