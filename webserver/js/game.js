@@ -1009,8 +1009,8 @@ var Game = {
 
     m_VolumeDown : function() {
         if(music.volume >= 0.1) music.volume -= 0.1;
-        if(music.volume < 0.1) music_status = 'OFF';
-        if(music.volume <0.1) musicText.text = musicString + music_status;
+        if(music.volume < 0.1 && sfx_enemy_die.volume  < 0.1 ) music_status = 'OFF';
+        if(music.volume < 0.1 && sfx_enemy_die.volume  < 0.1) musicText.text = musicString + music_status;
         this.showSettingMessageBox();
     },
 
@@ -1035,9 +1035,6 @@ var Game = {
             sfx_player_hit.volume -= 0.1;
             sfx_get_item.volume -= 0.1;
         }
-        if(sfx_enemy_die.volume < 0.1) music_status = 'OFF';
-        if(sfx_enemy_die.volume < 0.1) musicText.text = musicString + music_status;
-       
         this.showSettingMessageBox();
     }
     
