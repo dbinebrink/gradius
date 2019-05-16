@@ -44,6 +44,7 @@ var resumeByESC;
 var backButton
 var characterSelection;
 var ailencreatecount;
+var countstage=1;
 var items = [];
 var Game = {
 
@@ -53,8 +54,12 @@ var Game = {
         game.load.spritesheet('invaderGreen', 'img/invader32x32x4-green.png', 32, 32);
         game.load.spritesheet('invaderPurple', 'img/invader32x32x4-purple.png', 32, 32);
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
+        game.load.spritesheet('ship2', 'img/ship264x64x5.png', 64, 64, 5);
         game.load.spritesheet('armerShip', 'img/armerShip64x64x5.png', 64, 64, 5);
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
+        //ship img
+        game.load.image('shipimg', 'img/ship.png');
+        game.load.image('ship2img', 'img/ship2.png');
         //bullet
         game.load.image('bullet', 'img/bullet.png');
         game.load.spritesheet('laser', 'img/blue_beam_ani.png', 900, 30);
@@ -94,6 +99,8 @@ var Game = {
         game.load.image('settingBack', 'img/settingBackground.png');
         game.load.image('settingBack1', 'img/settingBackground1.png');
         game.load.image('backButton', 'img/backButton.png');
+
+        game.load.image('Wall_paper' , 'img/space.jpg');
     },
 
     create  : function() {
@@ -149,8 +156,10 @@ var Game = {
         upper_mountain = game.add.tileSprite(0, 0, 900, 30, 'upper_mountain');
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
 
-        //  The starship
-        Player.initalize(game);
+        ship1button = game.add.button(game.world.centerX-200, game.world.centerY, 'shipimg', this.character1, this);
+        ship2button = game.add.button(game.world.centerX, game.world.centerY, 'ship2img', this.character2, this);
+        game.paused = true;
+
 
         //  Our bullet group
         Bullets.initalize(game);
@@ -341,7 +350,25 @@ var Game = {
             game.physics.arcade.overlap(Player.sprite, enemyBullets, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(Player.sprite, itemGroup, this.getItem, null, this);
         }
-      },
+    },
+
+    character1 : function() {
+        shiptype = 1
+        ship1button.destroy();
+        ship2button.destroy();
+        game.paused = false;
+        //this.msgBox5.destroy();
+        Player.initalize(game);
+    },
+    
+    character2 : function() {
+        shiptype = 2
+        ship1button.destroy();
+        ship2button.destroy();
+        game.paused = false;
+        //this.msgBox5.destroy();
+        Player.initalize(game);
+    },
 
     createAliens : function() {
         let alienImage;
