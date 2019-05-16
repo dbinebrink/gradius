@@ -82,7 +82,7 @@ var mainMenu = {
         controls.inputEnabled=false;
         exit.inputEnabled=false;
         image3.events.onInputDown.add(function(){
-            image2.destroy();image3.destroy();
+            image2.destroy();image3.destroy();image4.destroy();
             startButton.inputEnabled=true;
             controls.inputEnabled=true;
             exit.inputEnabled=true;
