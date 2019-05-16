@@ -106,6 +106,7 @@
 | Seungmin Baek | Student |
 | Seyeon Lee | Student |
 | Shim Hyeonbo | Student |
+| Shim Yoovin | Student |
 | Sieun Hwang | Student |
 | Soonwoo Kwon | Student |
 | Suelym Moon | Student |
