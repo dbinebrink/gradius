@@ -664,6 +664,7 @@ var Game = {
         var mainMenu = game.add.text(0, 0, 'MAIN MENU');
         var restartButton1 = game.add.text(0, 0, 'RESTART');
         var resumeButton = game.add.text(0, 0, 'RESUME');
+        var exitButton = game.add.text(0, 0, 'EXIT');
         var musicOnButton = game.add.text(0,0, 'ON', { fontSize: 19});
         var musicOffButton = game.add.text(0,0,'OFF', { fontSize: 19 });
         var backgroundMusicText = game.add.text(0,0, 'Music', { fontSize: 19 });
@@ -686,6 +687,7 @@ var Game = {
         msgBox.add(mainMenu);
         msgBox.add(restartButton1);
         msgBox.add(resumeButton);
+        msgBox.add(exitButton);
         msgBox.add(musicOnButton);
         msgBox.add(musicOffButton);
         msgBox.add(backgroundMusicText);
@@ -732,6 +734,13 @@ var Game = {
         resumeByESC = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
         resumeByESC.onDown.add(this.hideBox, this);
 
+        exitButton.wordWrapWidth = back * 0.8;
+        exitButton.addColor("#ffffff", 0);
+        exitButton.x = msgBox.width / 2 - exitButton.width / 2;
+        exitButton.y = msgBox.height - exitButton.height*1.25;
+        exitButton.inputEnabled = true;
+        exitButton.events.onInputDown.add(this.endGame,this);
+
         backgroundMusicText.wordWrapWidth = back * 0.8;
         backgroundMusicText.addColor("#ffffff", 0);
         backgroundMusicText.x = msgBox.width / 2 - backgroundMusicText.width / 2;
@@ -774,7 +783,7 @@ var Game = {
         dbgMsgOffButton.inputEnabled = true;
         dbgMsgOffButton.events.onInputDown.add(this.turnOffDbgMsg,this);
 
-      
+
         if (debugFlag) {
             dbgMsgOnButton.addColor("#fff500", 0);
             dbgMsgOffButton.addColor("#ffffff", 0);
@@ -885,6 +894,9 @@ var Game = {
         game.state.start('Game');
         minutes = 0;
         seconds = 0;
+    },
+    endGame : function(){
+        window.open('about:blank', '_self').close();
     },
     hideBox : function(){
         this.msgBox.destroy();
