@@ -1,4 +1,8 @@
 var Player = {
+    // preload : function() {
+    //     game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
+    //     game.load.spritesheet('ship2', 'newship264x64x5.png', 64, 64, 5);
+    // },
     tagList : {
         changeParameter : [
             "maxHealth", "evasion", "speed", "image", "invincibleTime", "healthUp", "isInvincible"
@@ -35,7 +39,10 @@ var Player = {
     },
 
     initalizeInfo : function(){
-        this.info.image = 'ship';
+        if(shiptype==1)
+            this.info.image = 'ship';
+        else
+            this.info.image = 'ship2';
         this.info.speed = 200;
         this.info.maxHealth = 3;
         this.info.evasion = 0; // 0~100까지의 숫자로 풀레이어의 총알 회피 확률을 나타냄
