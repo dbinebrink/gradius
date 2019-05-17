@@ -8,10 +8,10 @@
     "test": "electron .",
     "build": "node runglobal.js",
     "build-local": "node runlocal.js",
-    "build2" : "electron-packager . --out=dist --asar --overwite --all",
-    "build2:darwin" : "electron-packager . --out=dist --asar --overwite --platfrom=darwin",
-    "build2:linux" : "electron-packager . gradios --platform linux --out dist/",
-    "build2:windows" : "electron-packager . gradios --platform win32 --out dist/"
+    "build2": "electron-packager . --out=dist --asar --overwite --all",
+    "build2:darwin": "electron-packager . --out=dist --asar --overwite --platfrom=darwin",
+    "build2:linux": "electron-packager . gradios --platform linux --out dist/",
+    "build2:windows": "electron-packager . gradios --platform win32 --out dist/"
   },
   "dependencies": {
     "electron": "^5.0.1",

@@ -4,6 +4,9 @@ var ending_music;
 var restartButton;
 var menuButton;
 var ranking_init;
+var twitterButton;
+var facebookButton;
+var exitButton;
 
 var Ending = {
 
@@ -12,19 +15,26 @@ var Ending = {
         game.load.image('restartButton', 'img/restartbutton.png');
         game.load.image('reset_ranking', 'img/reset_ranking.png');
         game.load.image('menuButton', 'img/menubutton.png');
+        game.load.image('twitterButton', 'img/twitterIcon.png');
+        game.load.image('facebookButton', 'img/facebookIcon.png');
+        game.load.image('eixtButton', 'img/exit.png');
         Ending.load.audio('ending_sound', 'audio/ending_sound.mp3')
     },
 
     create : function() {
         var image = game.add.image(0,0,'Wall_paper');
         game.stage.background = image;
-        restartButton = game.add.button(game.world.centerX-110,320,'restartButton', this.startGame, this);
+        restartButton = game.add.button(game.world.centerX-110,280,'restartButton', this.startGame, this);
         restartButton.inputEnabled=true;
-        menuButton = game.add.button(game.world.centerX-110,420,'menuButton', this.goMenu, this);
+        exitButton = game.add.button(game.world.centerX-85,430,'eixtButton', this.endGame, this);
+        exitButton.inputEnabled = true;
+        menuButton = game.add.button(game.world.centerX-110,350,'menuButton', this.goMenu, this);
         menuButton.inputEnabled=true;
+        twitterButton = game.add.button(828,520,'twitterButton',this.shareTwitter, this);
+        facebookButton = game.add.button(775,520,'facebookButton',this.shareFacebook, this);
         if(!ending_music) ending_music = game.add.audio('ending_sound');
         ending_music.play();
-        youDied = game.add.text(game.world.centerX + 10, 100, "YOU DIED", { font: '124px Arial', fill: '#f00'}); 
+        youDied = game.add.text(game.world.centerX + 10, 100, "YOU DIED", { font: '124px Arial', fill: '#f00'});
         totalScore = game.add.text(game.world.centerX, 237, score, { font: '124px Arial', fill: '#00f' });
         youDied.anchor.setTo(0.5);
         totalScore.anchor.setTo(0.5);
@@ -32,15 +42,15 @@ var Ending = {
         ranking_init.inputEnabled = true;
         easyRestart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.ShowRankingBox();
-        
-        
+
+
     },
-    
+
     ranking_clear : function() {
         fetch('http://tallbin98.dothome.co.kr/ranking__develop.php')
         .then(() => alert("Ranking Clear"));
     },
-    
+
     ShowRankingBox : function() {
         // load DB setting
         var msgBox2 = game.add.group();
@@ -91,8 +101,8 @@ var Ending = {
                 close_button.y = 0;
                 close_button.inputEnabled = true;
                 close_button.events.onInputDown.add(this.closeRanking, this);
-        
-        
+
+
                 msgBox2.add(rank_1st);
                 msgBox2.add(rank_2nd);
 
@@ -105,7 +115,7 @@ var Ending = {
                 rank_2nd.addColor("#ffffff", 0);
                 rank_2nd.x = Ranking_text.x + 100;
                 rank_2nd.y = 60;
-        
+
                 this.msgBox2 = msgBox2;
             });
         msgBox2.enabledBody=true;
@@ -134,5 +144,20 @@ var Ending = {
         game.state.start('mainMenu');
         minutes = 0;
         seconds = 0;
+    },
+
+    endGame : function(){
+        window.open('about:blank', '_self').close();
+    },
+
+    shareTwitter : function() {
+        var twitterLink = 'https://twitter.com/intent/tweet?text=What is my score? ' + score + '! join the grdios! &url=https://github.com/inureyes/gradios';
+        window.open(twitterLink, '_blank');
+    },
+
+    shareFacebook : function() {
+        var facebookLink = 'https://www.facebook.com/sharer/sharer.php?u=https://github.com/inureyes/gradios&quote=what is my score? ' + score + '! join the gradios!';
+        window.open(facebookLink, '_blank');
     }
+
 }
