@@ -16,7 +16,7 @@ var mainMenu = {
         game.load.image('backButton', 'img/backButton.png');
         game.load.image('exit' , 'img/exit.png');
         game.load.image('credit' , 'img/credit.png');
-        game.load.image('help' , 'img/help.jpg');
+        game.load.image('new help' , 'img/new help.png');
         game.load.image('creditList' , 'img/credit_list.png');
         game.load.image('settingBack', 'img/settingBackground.png');
         game.load.image('githubButton', 'img/githubIcon.png');
@@ -56,7 +56,7 @@ var mainMenu = {
     },
 
     ViewControls : function() {
-        var image2 = game.add.image(0,0,'help');
+        var image2 = game.add.image(0,0,'new help');
         var image3 = game.add.button(700,80,'backButton');
         credit.inputEnabled = false;
         image3.inputEnabled = true;
