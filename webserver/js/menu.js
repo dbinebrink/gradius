@@ -57,7 +57,7 @@ var mainMenu = {
 
     ViewControls : function() {
         var image2 = game.add.image(0,0,'new help');
-        var image3 = game.add.button(700,80,'backButton');
+        var image3 = game.add.button(750,40,'backButton');
         credit.inputEnabled = false;
         image3.inputEnabled = true;
         startButton.inputEnabled=false;
