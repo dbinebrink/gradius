@@ -18,6 +18,7 @@ var Ending = {
         game.load.image('twitterButton', 'img/twitterIcon.png');
         game.load.image('facebookButton', 'img/facebookIcon.png');
         game.load.image('eixtButton', 'img/exit.png');
+        game.load.image('award', 'img/zero.png');
         Ending.load.audio('ending_sound', 'audio/ending_sound.mp3')
     },
 
@@ -42,7 +43,7 @@ var Ending = {
         ranking_init.inputEnabled = true;
         easyRestart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.ShowRankingBox();
-
+        if(score == 0) this.showAward();
 
     },
 
@@ -158,6 +159,15 @@ var Ending = {
     shareFacebook : function() {
         var facebookLink = 'https://www.facebook.com/sharer/sharer.php?u=https://github.com/inureyes/gradios&quote=what is my score? ' + score + '! join the gradios!';
         window.open(facebookLink, '_blank');
+    },
+
+    showAward : function() {
+        var AwardImg = game.add.image(268,58,'award');
+        var closeButton = game.add.text(300, 60, 'X', { fontsize: 20 });
+        closeButton.inputEnabled = true;
+        closeButton.events.onInputDown.add(function(){
+            AwardImg.destroy();closeButton.destroy();
+        });
     }
 
 }
