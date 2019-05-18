@@ -209,7 +209,7 @@ var Game = {
 
         aliensString = 'Alien: ';
 
-        alienscount = game.add.text(735,70,aliensString + aliens.countLiving(), { font: '30px Arial', fill: '#fff' });
+        alienscount = game.add.text(740,80,aliensString + aliens.countLiving(), { font: '25px Arial', fill: '#fff' });
 
         alienString = 'Kill: ';
         //alienkillText = game.add.text(735,110,alienString + alienkill, { font: '30px Arial', fill: '#fff' });
