@@ -25,7 +25,7 @@ var Player = {
             health.anchor.setTo(0.5, 0.5);
             health.angle = 0;
         }
-        game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
+        //game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
 
         this.sprite = game.add.sprite(150, 300, this.info.image);
         game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
