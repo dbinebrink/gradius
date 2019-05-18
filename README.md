@@ -29,9 +29,6 @@
   <img src="https://i.imgur.com/xqTC4xJ.png" width="60%"></img>
 </p>
 
-## Back-up
-* Back-up Repo for developers : https://github.com/DDongKim/gradios
-
 ## Contributors
 
 <details><summary>List</summary>
