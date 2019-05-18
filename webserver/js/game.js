@@ -40,6 +40,7 @@ var itemchangetime;
 var shiptype = 0;
 var ship1button;
 var ship2button;
+var ship3button;
 var resumeByESC;
 var backButton
 var characterSelection;
@@ -55,11 +56,13 @@ var Game = {
         game.load.spritesheet('invaderPurple', 'img/invader32x32x4-purple.png', 32, 32);
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
         game.load.spritesheet('ship2', 'img/ship264x64x5.png', 64, 64, 5);
+        game.load.spritesheet('ship3', 'img/ship364x64x5.png', 64, 64, 5);
         game.load.spritesheet('armerShip', 'img/armerShip64x64x5.png', 64, 64, 5);
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         //ship img
         game.load.image('shipimg', 'img/ship.png');
         game.load.image('ship2img', 'img/ship2.png');
+        game.load.image('ship3img', 'img/ship3.png');
         //bullet
         game.load.image('bullet', 'img/bullet.png');
         game.load.spritesheet('laser', 'img/blue_beam_ani.png', 900, 30);
@@ -159,6 +162,7 @@ var Game = {
 
         ship1button = game.add.button(game.world.centerX-200, game.world.centerY, 'shipimg', this.character1, this);
         ship2button = game.add.button(game.world.centerX, game.world.centerY, 'ship2img', this.character2, this);
+        ship3button = game.add.button(game.world.centerX+200, game.world.centerY, 'ship3img', this.character3, this);
         game.paused = true;
 
 
@@ -357,6 +361,7 @@ var Game = {
         shiptype = 1
         ship1button.destroy();
         ship2button.destroy();
+        ship3button.destroy();
         game.paused = false;
         //this.msgBox5.destroy();
         Player.initalize(game);
@@ -366,6 +371,17 @@ var Game = {
         shiptype = 2
         ship1button.destroy();
         ship2button.destroy();
+        ship3button.destroy();
+        game.paused = false;
+        //this.msgBox5.destroy();
+        Player.initalize(game);
+    },
+
+    character3 : function() {
+        shiptype = 3
+        ship1button.destroy();
+        ship2button.destroy();
+        ship3button.destroy();
         game.paused = false;
         //this.msgBox5.destroy();
         Player.initalize(game);
