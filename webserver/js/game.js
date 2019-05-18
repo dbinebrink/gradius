@@ -41,6 +41,7 @@ var shiptype = 0;
 var ship1button;
 var ship2button;
 var ship3button;
+var ship4button;
 var resumeByESC;
 var backButton
 var characterSelection;
@@ -57,12 +58,14 @@ var Game = {
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
         game.load.spritesheet('ship2', 'img/ship264x64x5.png', 64, 64, 5);
         game.load.spritesheet('ship3', 'img/ship364x64x5.png', 64, 64, 5);
+        game.load.spritesheet('ship4', 'img/newship264x64x5-1.png', 64, 64, 5);
         game.load.spritesheet('armerShip', 'img/armerShip64x64x5.png', 64, 64, 5);
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         //ship img
         game.load.image('shipimg', 'img/ship.png');
         game.load.image('ship2img', 'img/ship2.png');
         game.load.image('ship3img', 'img/ship3.png');
+        game.load.image('ship4img', 'img/ship4.png');
         //bullet
         game.load.image('bullet', 'img/bullet.png');
         game.load.spritesheet('laser', 'img/blue_beam_ani.png', 900, 30);
@@ -160,9 +163,10 @@ var Game = {
         upper_mountain = game.add.tileSprite(0, 0, 900, 30, 'upper_mountain');
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
 
-        ship1button = game.add.button(game.world.centerX-200, game.world.centerY, 'shipimg', this.character1, this);
-        ship2button = game.add.button(game.world.centerX, game.world.centerY, 'ship2img', this.character2, this);
-        ship3button = game.add.button(game.world.centerX+200, game.world.centerY, 'ship3img', this.character3, this);
+        ship1button = game.add.button(game.world.centerX-300, game.world.centerY, 'shipimg', this.character1, this);
+        ship2button = game.add.button(game.world.centerX-100, game.world.centerY, 'ship2img', this.character2, this);
+        ship3button = game.add.button(game.world.centerX+100, game.world.centerY, 'ship3img', this.character3, this);
+        ship4button = game.add.button(game.world.centerX+300, game.world.centerY, 'ship4img', this.character4, this);
         game.paused = true;
 
 
@@ -362,8 +366,8 @@ var Game = {
         ship1button.destroy();
         ship2button.destroy();
         ship3button.destroy();
+        ship4button.destroy();
         game.paused = false;
-        //this.msgBox5.destroy();
         Player.initalize(game);
     },
     
@@ -372,8 +376,8 @@ var Game = {
         ship1button.destroy();
         ship2button.destroy();
         ship3button.destroy();
+        ship4button.destroy();
         game.paused = false;
-        //this.msgBox5.destroy();
         Player.initalize(game);
     },
 
@@ -382,8 +386,17 @@ var Game = {
         ship1button.destroy();
         ship2button.destroy();
         ship3button.destroy();
+        ship4button.destroy();
         game.paused = false;
-        //this.msgBox5.destroy();
+        Player.initalize(game);
+    },
+    character4 : function() {
+        shiptype = 4
+        ship1button.destroy();
+        ship2button.destroy();
+        ship3button.destroy();
+        ship4button.destroy();
+        game.paused = false;
         Player.initalize(game);
     },
 
