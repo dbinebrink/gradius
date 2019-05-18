@@ -931,30 +931,44 @@ var Game = {
         game.input.enabled = false;
         settingButton.inputEnabled = false;
         settings.inputEnabled = false;
-        setTimeout(function()
+
+        if( shiptype == 0 )
         {
-            var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 3, { font: '124px Arial', fill: '#00f' });
-            resumetimer.anchor.setTo(0.5, 0.5);
-            setTimeout(function(){resumetimer.destroy();}, 999);
-        }, 0);
-        setTimeout(function()
+            setTimeout(function(){
+                game.paused = true;
+                game.input.enabled = true;
+                settingButton.inputEnabled = true;
+                settings.inputEnabled = true;
+            }, 3000);
+        }
+
+        else
         {
-            var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 2, { font: '124px Arial', fill: '#00f' });
-            resumetimer.anchor.setTo(0.5, 0.5);
-            setTimeout(function(){resumetimer.destroy();}, 999);
-        }, 1000);
-        setTimeout(function()
-        {
-            var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 1, { font: '124px Arial', fill: '#00f' });
-            resumetimer.anchor.setTo(0.5, 0.5);
-            setTimeout(function(){resumetimer.destroy();}, 999);
-        }, 2000);
-        setTimeout(function(){
-            game.paused = false;
-            game.input.enabled = true;
-            settingButton.inputEnabled = true;
-            settings.inputEnabled = true;
-        }, 3000);
+            setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 3, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);
+            }, 0);
+            setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 2, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);
+            }, 1000);
+            setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 1, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);
+            }, 2000);
+            setTimeout(function(){
+                game.paused = false;
+                game.input.enabled = true;
+                settingButton.inputEnabled = true;
+                settings.inputEnabled = true;
+            }, 3000);
+        }
     },
     hideBox1 : function(){
         this.msgBox1.destroy();
