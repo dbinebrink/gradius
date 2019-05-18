@@ -118,6 +118,7 @@ var Game = {
         stage = 1;
         stageString = '';
         alienHealth = 1;
+        shiptype = 0;
 
         seconds = 0;
         minutes = 0;
@@ -343,7 +344,7 @@ var Game = {
 
             //  Run collision
             game.physics.arcade.overlap(Bullets.bulletGroup, aliens, this.collisionHandler, null, this);
-            if (Bullets.info.collideEnemyBullet){
+            if (Bullets.info.collide){
                 game.physics.arcade.overlap(Bullets.bulletGroup, enemyBullets, this.playerBreakEnemyBullet, null, this);
             }
             game.physics.arcade.overlap(Player.sprite, aliens, this.enemyHitsPlayer, null, this);
