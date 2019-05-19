@@ -48,6 +48,9 @@ var characterSelection;
 var ailencreatecount;
 var countstage=1;
 var items = [];
+var cheatmode = false;
+var cheat_status;
+
 var Game = {
 
     preload : function() {
@@ -130,6 +133,7 @@ var Game = {
         minutes = 0;
         music_status = 'ON';
         bulletsCollision_status = 'ON';
+        cheat_status = 'OFF';
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         music = game.add.audio('music1');
@@ -206,7 +210,7 @@ var Game = {
         // this.generatespeed_up();
         this.createAliens();
         musicString = 'BGM: ';
-        musicText = game.add.text(70,50,musicString + music_status,{ font: '30px Arial', fill: '#fff' });
+        musicText = game.add.text(70,50,musicString + music_status,{ font: '20px Arial', fill: '#fff' });
         //  The score
         scoreString = 'Score: ';
         scoreText = game.add.text(250, 10, scoreString + score, { font: '30px Arial', fill: '#fff' });
@@ -219,7 +223,10 @@ var Game = {
         //alienkillText = game.add.text(735,110,alienString + alienkill, { font: '30px Arial', fill: '#fff' });
 
         bulletsCollisionString = 'Bul Col: ';
-        bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
+        bulletsCollisionText = game.add.text(190,50,bulletsCollisionString+bulletsCollision_status,{ font: '20px Arial', fill: '#fff' });
+
+        cheatString = 'Cheat: ';
+        cheatText = game.add.text(320,50,cheatString+cheat_status,{ font: '20px Arial', fill: '#fff' });
 
 
         //  An explosion pool
@@ -330,7 +337,35 @@ var Game = {
                 bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
             }
         }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.CONTROL) && game.input.keyboard.isDown(Phaser.Keyboard.C)){
+            cheatmode = true;
+            cheat_status = 'ON';
+            cheatText.text = cheatString + cheat_status;
+        }
 
+        if (game.input.keyboard.isDown(Phaser.Keyboard.CONTROL) && game.input.keyboard.isDown(Phaser.Keyboard.V)){
+            cheatmode = false;
+            cheat_status = 'OFF';
+            cheatText.text = cheatString + cheat_status;
+        }
+
+        if (cheatmode) {
+            if (game.input.keyboard.isDown(Phaser.Keyboard.Z)){
+                Player.info.healthUp = Player.heal(1);
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.X)){
+                Player.info.isInvincible = true;
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.X) && game.input.keyboard.isDown(Phaser.Keyboard.CONTROL)){
+                Player.info.isInvincible = false;
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.C)){
+                Bullets.info.fireRate = Bullets.info.fireRate - Bullets.info.fireRate/25;
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.V)){
+                Player.info.speed = Player.info.speed + Player.info.speed/15;
+            }
+        }
         // Setting
         if (settings.isDown){
             music.stop();
