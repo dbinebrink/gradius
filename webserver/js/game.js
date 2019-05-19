@@ -292,17 +292,7 @@ var Game = {
         lower_mountain.tilePosition.x -= 1;
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.ONE)){
-            if(music_status == 'ON'){
-                music_status = 'OFF';
-                sfx_fire.volume = 0;
-                sfx_enemy_die.volume = 0;
-                sfx_stage_clear.volume = 0;
-                sfx_player_hit.volume = 0;
-                sfx_get_item.volume = 0;
-                music.volume=0;
-                musicText.text = musicString + music_status;
-            }
-            else{
+            if(music_status == 'OFF'){
                 music_status = 'ON';
                 sfx_fire.volume = 0.5;
                 sfx_enemy_die.volume = 0.5;
@@ -314,26 +304,42 @@ var Game = {
             }
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.TWO)){
-            if(debugFlag){
-                debugFlag = false;
-                console.log("debugFlag is now off");
+            if(music_status == 'ON'){
+                music_status = 'OFF';
+                sfx_fire.volume = 0;
+                sfx_enemy_die.volume = 0;
+                sfx_stage_clear.volume = 0;
+                sfx_player_hit.volume = 0;
+                sfx_get_item.volume = 0;
+                music.volume=0;
+                musicText.text = musicString + music_status;
             }
-            else{
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.THREE)){
+            if(!debugFlag){
                 debugFlag = true;
                 console.log("debugFlag is now on");
             }
         }
-        if (game.input.keyboard.isDown(Phaser.Keyboard.THREE)){
+        if (game.input.keyboard.isDown(Phaser.Keyboard.FOUR)){
+            if(debugFlag){
+                debugFlag = false;
+                console.log("debugFlag is now off");
+            }
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.FIVE)){
+            if(!Bullets.info.collideEnemyBullet){
+                Bullets.info.collideEnemyBullet = true;
+                console.log("bulletsCollision is now on");
+                bulletsCollision_status = 'ON';
+                bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
+            }
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.SIX)){
             if(Bullets.info.collideEnemyBullet){
                 Bullets.info.collideEnemyBullet = false;
                 console.log("bulletsCollision is now off");
                 bulletsCollision_status = 'OFF';
-                bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
-            }
-            else{
-                Bullets.info.collideEnemyBullet = true;
-                console.log("bulletsCollision is now on");
-                bulletsCollision_status = 'ON';
                 bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
             }
         }
