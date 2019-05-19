@@ -12,11 +12,11 @@ var mainMenu = {
     preload : function() {
         game.load.image('Wall_paper' , 'img/space.jpg');
         game.load.image('gradius' , 'img/gradius.png');
-        game.load.image('startButton', 'img/startbutton.png');
-        game.load.image('controls', 'img/controls.png');
-        game.load.image('backButton', 'img/backButton.png');
-        game.load.image('exit' , 'img/exit.png');
-        game.load.image('credit' , 'img/credit.png');
+        game.load.image('startButton', 'img/button/start.png');
+        game.load.image('controls', 'img/button/controls.png');
+        game.load.image('backButton', 'img/button/back.png');
+        game.load.image('exit' , 'img/button/exit.png');
+        game.load.image('credit' , 'img/button/credit.png');
         game.load.image('new help' , 'img/new help.png');
         game.load.image('creditList' , 'img/credit_list.png');
         game.load.image('settingBack', 'img/settingBackground.png');
@@ -26,13 +26,13 @@ var mainMenu = {
 
     create : function() {
         var image = game.add.image(0,0,'Wall_paper');
-        var image1 = game.add.image(30,20,'gradius');
+        var image1 = game.add.image(game.world.centerX-425,70,'gradius');
         game.stage.background = image;
-        startButton=game.add.button(game.world.centerX-220,280,'startButton', this.startGame, this);
-        controls=game.add.button(game.world.centerX+20,280,'controls', this.ViewControls, this);
-        exit=game.add.button(game.world.centerX-85,380,'exit', this.real, this);
-        credit=game.add.button(game.world.centerX-85,470,'credit', this.ViewCredit, this);
-        version = game.add.text(game.world.centerX-85,570, "v1.0.0", { font: '30px Arial', fill: '#fff' });
+        startButton=game.add.button(game.world.centerX-195,350,'startButton', this.startGame, this);
+        controls=game.add.button(game.world.centerX+20,350,'controls', this.ViewControls, this);
+        exit=game.add.button(game.world.centerX-195,430,'exit', this.real, this);
+        credit=game.add.button(game.world.centerX+20,430,'credit', this.ViewCredit, this);
+        version = game.add.text(game.world.centerX-50,570, "v1.0.0", { font: '30px Arial', fill: '#fff' });
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         if (!start_music) start_music = game.add.audio('start_sound');
         start_music.loop = true;

@@ -12,12 +12,12 @@ var Ending = {
 
     preload : function() {
     	game.load.image('Wall_paper' , 'img/space.jpg');
-        game.load.image('restartButton', 'img/restartbutton.png');
-        game.load.image('reset_ranking', 'img/reset_ranking.png');
-        game.load.image('menuButton', 'img/menubutton.png');
+        game.load.image('restartButton', 'img/button/restart.png');
+        game.load.image('reset_ranking', 'img/button/reset_ranking.png');
+        game.load.image('menuButton', 'img/button/menu.png');
         game.load.image('twitterButton', 'img/twitterIcon.png');
         game.load.image('facebookButton', 'img/facebookIcon.png');
-        game.load.image('eixtButton', 'img/exit.png');
+        game.load.image('eixtButton', 'img/button/exit.png');
         game.load.image('award', 'img/zero.png');
         Ending.load.audio('ending_sound', 'audio/ending_sound.mp3')
     },
@@ -25,21 +25,21 @@ var Ending = {
     create : function() {
         var image = game.add.image(0,0,'Wall_paper');
         game.stage.background = image;
-        restartButton = game.add.button(game.world.centerX-110,280,'restartButton', this.startGame, this);
+        restartButton = game.add.button(game.world.centerX-85,280,'restartButton', this.startGame, this);
         restartButton.inputEnabled=true;
         exitButton = game.add.button(game.world.centerX-85,430,'eixtButton', this.real, this);
         exitButton.inputEnabled = true;
-        menuButton = game.add.button(game.world.centerX-110,350,'menuButton', this.goMenu, this);
+        menuButton = game.add.button(game.world.centerX-85,355,'menuButton', this.goMenu, this);
         menuButton.inputEnabled=true;
         twitterButton = game.add.button(828,520,'twitterButton',this.shareTwitter, this);
         facebookButton = game.add.button(775,520,'facebookButton',this.shareFacebook, this);
         if(!ending_music) ending_music = game.add.audio('ending_sound');
         ending_music.play();
         youDied = game.add.text(game.world.centerX + 10, 100, "YOU DIED", { font: '124px Arial', fill: '#f00'});
-        totalScore = game.add.text(game.world.centerX, 237, score, { font: '124px Arial', fill: '#00f' });
+        totalScore = game.add.text(game.world.centerX, 215, score, { font: '124px Arial', fill: '#00f' });
         youDied.anchor.setTo(0.5);
         totalScore.anchor.setTo(0.5);
-        ranking_init = game.add.button(game.world.centerX-20,520,'reset_ranking', this.ranking_clear, this);
+        ranking_init = game.add.button(game.world.centerX-20,500,'reset_ranking', this.ranking_clear, this);
         ranking_init.inputEnabled = true;
         easyRestart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.ShowRankingBox();
