@@ -401,7 +401,7 @@ var Game = {
 
             //  Run collision
             game.physics.arcade.overlap(Bullets.bulletGroup, aliens, this.collisionHandler, null, this);
-            if (Bullets.info.collide){
+            if (Bullets.info.collideEnemyBullet){
                 game.physics.arcade.overlap(Bullets.bulletGroup, enemyBullets, this.playerBreakEnemyBullet, null, this);
             }
             game.physics.arcade.overlap(Player.sprite, aliens, this.enemyHitsPlayer, null, this);
