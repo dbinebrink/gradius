@@ -370,7 +370,7 @@ var Game = {
         game.paused = false;
         Player.initalize(game);
     },
-    
+
     character2 : function() {
         shiptype = 2
         ship1button.destroy();
@@ -796,7 +796,7 @@ var Game = {
         exitButton.x = msgBox.width / 2 - exitButton.width / 2;
         exitButton.y = msgBox.height - exitButton.height*1.25;
         exitButton.inputEnabled = true;
-        exitButton.events.onInputDown.add(this.endGame,this);
+        exitButton.events.onInputDown.add(this.real2,this);
 
         backgroundMusicText.wordWrapWidth = back * 0.8;
         backgroundMusicText.addColor("#ffffff", 0);
@@ -1026,6 +1026,31 @@ var Game = {
         no.inputEnabled = true;
         yes.inputEnabled = true;
         yes.events.onInputDown.add(this.goMenu,this);
+        no.events.onInputDown.add(this.hideBox1,this);
+        this.msgBox1 = msgBox1;
+    },
+    real2 : function(){
+        this.msgBox.destroy();
+        settingButton.inputEnabled = false;
+        settings.inputEnabled = false;
+        var msgBox1 = game.add.group();
+        var back1 = game.add.sprite(300,200,'settingBack1');
+        var real_exit = game.add.text(310,250,'Do you want to exit Gradios?',{ fontSize: 19 });
+        var yes = game.add.text(370,310,'yes',{ fontSize: 19 });
+        var no = game.add.text(500,310,'no',{ fontSize: 19 });
+        msgBox1.add(back1);
+        msgBox1.add(real_exit);
+        msgBox1.add(yes);
+        msgBox1.add(no);
+        real_exit.wordWrapWidth = back1;
+        real_exit.addColor("#ffffff", 0);
+        yes.wordWrapWidth = back1;
+        yes.addColor("#ffffff", 0);
+        no.wordWrapWidth = back1;
+        no.addColor("#ffffff", 0);
+        no.inputEnabled = true;
+        yes.inputEnabled = true;
+        yes.events.onInputDown.add(this.endGame,this);
         no.events.onInputDown.add(this.hideBox1,this);
         this.msgBox1 = msgBox1;
     },
