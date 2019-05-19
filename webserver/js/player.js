@@ -25,7 +25,7 @@ var Player = {
             health.anchor.setTo(0.5, 0.5);
             health.angle = 0;
         }
-        game.add.text(game.world.width - 100, 10, 'Health: ', { font: '24px Arial', fill: '#fff' });
+        game.add.text(game.world.width - 190, 10, 'Health: ', { font: '20px Arial', fill: '#fff' });
 
         this.sprite = game.add.sprite(150, 300, this.info.image);
         game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
@@ -41,8 +41,12 @@ var Player = {
     initalizeInfo : function(){
         if(shiptype==1)
             this.info.image = 'ship';
-        else
+        else if(shiptype==2)
             this.info.image = 'ship2';
+        else if(shiptype==3)
+            this.info.image = 'ship3';
+        else
+            this.info.image = 'ship4';
         this.info.speed = 200;
         this.info.maxHealth = 3;
         this.info.evasion = 0; // 0~100까지의 숫자로 풀레이어의 총알 회피 확률을 나타냄

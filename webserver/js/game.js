@@ -40,12 +40,17 @@ var itemchangetime;
 var shiptype = 0;
 var ship1button;
 var ship2button;
+var ship3button;
+var ship4button;
 var resumeByESC;
 var backButton
 var characterSelection;
 var ailencreatecount;
 var countstage=1;
 var items = [];
+var cheatmode = false;
+var cheat_status;
+
 var Game = {
 
     preload : function() {
@@ -55,11 +60,15 @@ var Game = {
         game.load.spritesheet('invaderPurple', 'img/invader32x32x4-purple.png', 32, 32);
         game.load.spritesheet('ship', 'img/ship64x64x5.png', 64, 64, 5);
         game.load.spritesheet('ship2', 'img/ship264x64x5.png', 64, 64, 5);
+        game.load.spritesheet('ship3', 'img/ship364x64x5.png', 64, 64, 5);
+        game.load.spritesheet('ship4', 'img/newship264x64x5-1.png', 64, 64, 5);
         game.load.spritesheet('armerShip', 'img/armerShip64x64x5.png', 64, 64, 5);
         game.load.spritesheet('kaboom', 'img/explode.png', 128, 128);
         //ship img
         game.load.image('shipimg', 'img/ship.png');
         game.load.image('ship2img', 'img/ship2.png');
+        game.load.image('ship3img', 'img/ship3.png');
+        game.load.image('ship4img', 'img/ship4.png');
         //bullet
         game.load.image('bullet', 'img/bullet.png');
         game.load.spritesheet('laser', 'img/blue_beam_ani.png', 900, 30);
@@ -118,11 +127,13 @@ var Game = {
         stage = 1;
         stageString = '';
         alienHealth = 1;
+        shiptype = 0;
 
         seconds = 0;
         minutes = 0;
         music_status = 'ON';
         bulletsCollision_status = 'ON';
+        cheat_status = 'OFF';
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         music = game.add.audio('music1');
@@ -156,8 +167,10 @@ var Game = {
         upper_mountain = game.add.tileSprite(0, 0, 900, 30, 'upper_mountain');
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
 
-        ship1button = game.add.button(game.world.centerX-200, game.world.centerY, 'shipimg', this.character1, this);
-        ship2button = game.add.button(game.world.centerX, game.world.centerY, 'ship2img', this.character2, this);
+        ship1button = game.add.button(game.world.centerX-300, game.world.centerY, 'shipimg', this.character1, this);
+        ship2button = game.add.button(game.world.centerX-100, game.world.centerY, 'ship2img', this.character2, this);
+        ship3button = game.add.button(game.world.centerX+100, game.world.centerY, 'ship3img', this.character3, this);
+        ship4button = game.add.button(game.world.centerX+300, game.world.centerY, 'ship4img', this.character4, this);
         game.paused = true;
 
 
@@ -197,20 +210,23 @@ var Game = {
         // this.generatespeed_up();
         this.createAliens();
         musicString = 'BGM: ';
-        musicText = game.add.text(70,50,musicString + music_status,{ font: '30px Arial', fill: '#fff' });
+        musicText = game.add.text(70,50,musicString + music_status,{ font: '20px Arial', fill: '#fff' });
         //  The score
         scoreString = 'Score: ';
         scoreText = game.add.text(250, 10, scoreString + score, { font: '30px Arial', fill: '#fff' });
 
         aliensString = 'Alien: ';
 
-        alienscount = game.add.text(735,70,aliensString + aliens.countLiving(), { font: '30px Arial', fill: '#fff' });
+        alienscount = game.add.text(740,80,aliensString + aliens.countLiving(), { font: '25px Arial', fill: '#fff' });
 
         alienString = 'Kill: ';
-        alienkillText = game.add.text(735,110,alienString + alienkill, { font: '30px Arial', fill: '#fff' });
+        //alienkillText = game.add.text(735,110,alienString + alienkill, { font: '30px Arial', fill: '#fff' });
 
         bulletsCollisionString = 'Bul Col: ';
-        bulletsCollisionText = game.add.text(230,50,bulletsCollisionString+bulletsCollision_status,{ font: '30px Arial', fill: '#fff' });
+        bulletsCollisionText = game.add.text(190,50,bulletsCollisionString+bulletsCollision_status,{ font: '20px Arial', fill: '#fff' });
+
+        cheatString = 'Cheat: ';
+        cheatText = game.add.text(320,50,cheatString+cheat_status,{ font: '20px Arial', fill: '#fff' });
 
 
         //  An explosion pool
@@ -276,17 +292,7 @@ var Game = {
         lower_mountain.tilePosition.x -= 1;
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.ONE)){
-            if(music_status == 'ON'){
-                music_status = 'OFF';
-                sfx_fire.volume = 0;
-                sfx_enemy_die.volume = 0;
-                sfx_stage_clear.volume = 0;
-                sfx_player_hit.volume = 0;
-                sfx_get_item.volume = 0;
-                music.volume=0;
-                musicText.text = musicString + music_status;
-            }
-            else{
+            if(music_status == 'OFF'){
                 music_status = 'ON';
                 sfx_fire.volume = 0.5;
                 sfx_enemy_die.volume = 0.5;
@@ -298,30 +304,82 @@ var Game = {
             }
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.TWO)){
-            if(debugFlag){
-                debugFlag = false;
-                console.log("debugFlag is now off");
+            if(music_status == 'ON'){
+                music_status = 'OFF';
+                sfx_fire.volume = 0;
+                sfx_enemy_die.volume = 0;
+                sfx_stage_clear.volume = 0;
+                sfx_player_hit.volume = 0;
+                sfx_get_item.volume = 0;
+                music.volume=0;
+                musicText.text = musicString + music_status;
             }
-            else{
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.THREE)){
+            if(!debugFlag){
                 debugFlag = true;
                 console.log("debugFlag is now on");
             }
         }
-        if (game.input.keyboard.isDown(Phaser.Keyboard.THREE)){
-            if(Bullets.info.collideEnemyBullet){
-                Bullets.info.collideEnemyBullet = false;
-                console.log("bulletsCollision is now off");
-                bulletsCollision_status = 'OFF';
-                bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
+        if (game.input.keyboard.isDown(Phaser.Keyboard.FOUR)){
+            if(debugFlag){
+                debugFlag = false;
+                console.log("debugFlag is now off");
             }
-            else{
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.FIVE)){
+            if(!Bullets.info.collideEnemyBullet){
                 Bullets.info.collideEnemyBullet = true;
                 console.log("bulletsCollision is now on");
                 bulletsCollision_status = 'ON';
                 bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
             }
         }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.SIX)){
+            if(Bullets.info.collideEnemyBullet){
+                Bullets.info.collideEnemyBullet = false;
+                console.log("bulletsCollision is now off");
+                bulletsCollision_status = 'OFF';
+                bulletsCollisionText.text = bulletsCollisionString + bulletsCollision_status;
+            }
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.CONTROL) && game.input.keyboard.isDown(Phaser.Keyboard.C)){
+            cheatmode = true;
+            cheat_status = 'ON';
+            cheatText.text = cheatString + cheat_status;
+        }
 
+        if (game.input.keyboard.isDown(Phaser.Keyboard.CONTROL) && game.input.keyboard.isDown(Phaser.Keyboard.V)){
+            cheatmode = false;
+            Bullets.info.fireRate = 0.5;
+            Player.info.speed = 200;
+            cheat_status = 'OFF';
+            cheatText.text = cheatString + cheat_status;
+        }
+
+        if (cheatmode) {
+            if (game.input.keyboard.isDown(Phaser.Keyboard.Z)){
+                Player.info.healthUp = Player.heal(1);
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.X)){
+                Player.info.isInvincible = true;
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.X) && game.input.keyboard.isDown(Phaser.Keyboard.CONTROL)){
+                Player.info.isInvincible = false;
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.C)){
+                Bullets.info.fireRate = Bullets.info.fireRate - Bullets.info.fireRate/25;
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.D)){
+                Bullets.info.fireRate = Bullets.info.fireRate + Bullets.info.fireRate/25;
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.V)){
+                Player.info.speed = Player.info.speed + Player.info.speed/15;
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.F)){
+                Player.info.speed = Player.info.speed - Player.info.speed/15;
+            }
+        }
         // Setting
         if (settings.isDown){
             music.stop();
@@ -356,17 +414,38 @@ var Game = {
         shiptype = 1
         ship1button.destroy();
         ship2button.destroy();
+        ship3button.destroy();
+        ship4button.destroy();
         game.paused = false;
-        //this.msgBox5.destroy();
         Player.initalize(game);
     },
-    
+
     character2 : function() {
         shiptype = 2
         ship1button.destroy();
         ship2button.destroy();
+        ship3button.destroy();
+        ship4button.destroy();
         game.paused = false;
-        //this.msgBox5.destroy();
+        Player.initalize(game);
+    },
+
+    character3 : function() {
+        shiptype = 3
+        ship1button.destroy();
+        ship2button.destroy();
+        ship3button.destroy();
+        ship4button.destroy();
+        game.paused = false;
+        Player.initalize(game);
+    },
+    character4 : function() {
+        shiptype = 4
+        ship1button.destroy();
+        ship2button.destroy();
+        ship3button.destroy();
+        ship4button.destroy();
+        game.paused = false;
         Player.initalize(game);
     },
 
@@ -482,7 +561,7 @@ var Game = {
         //  Increase the score
         score += 200;
         scoreText.text = scoreString + score;
-        alienkillText.text = alienString + alienkill;
+        //alienkillText.text = alienString + alienkill;
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
         explosion.reset(alien.body.x, alien.body.y);
@@ -766,7 +845,7 @@ var Game = {
         exitButton.x = msgBox.width / 2 - exitButton.width / 2;
         exitButton.y = msgBox.height - exitButton.height*1.25;
         exitButton.inputEnabled = true;
-        exitButton.events.onInputDown.add(this.endGame,this);
+        exitButton.events.onInputDown.add(this.real2,this);
 
         backgroundMusicText.wordWrapWidth = back * 0.8;
         backgroundMusicText.addColor("#ffffff", 0);
@@ -931,30 +1010,44 @@ var Game = {
         game.input.enabled = false;
         settingButton.inputEnabled = false;
         settings.inputEnabled = false;
-        setTimeout(function()
+
+        if( shiptype == 0 )
         {
-            var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 3, { font: '124px Arial', fill: '#00f' });
-            resumetimer.anchor.setTo(0.5, 0.5);
-            setTimeout(function(){resumetimer.destroy();}, 999);
-        }, 0);
-        setTimeout(function()
+            setTimeout(function(){
+                game.paused = true;
+                game.input.enabled = true;
+                settingButton.inputEnabled = true;
+                settings.inputEnabled = true;
+            }, 3000);
+        }
+
+        else
         {
-            var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 2, { font: '124px Arial', fill: '#00f' });
-            resumetimer.anchor.setTo(0.5, 0.5);
-            setTimeout(function(){resumetimer.destroy();}, 999);
-        }, 1000);
-        setTimeout(function()
-        {
-            var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 1, { font: '124px Arial', fill: '#00f' });
-            resumetimer.anchor.setTo(0.5, 0.5);
-            setTimeout(function(){resumetimer.destroy();}, 999);
-        }, 2000);
-        setTimeout(function(){
-            game.paused = false;
-            game.input.enabled = true;
-            settingButton.inputEnabled = true;
-            settings.inputEnabled = true;
-        }, 3000);
+            setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 3, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);
+            }, 0);
+            setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 2, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);
+            }, 1000);
+            setTimeout(function()
+            {
+                var resumetimer = game.add.text(game.world.centerX, game.world.centerY, 1, { font: '124px Arial', fill: '#00f' });
+                resumetimer.anchor.setTo(0.5, 0.5);
+                setTimeout(function(){resumetimer.destroy();}, 999);
+            }, 2000);
+            setTimeout(function(){
+                game.paused = false;
+                game.input.enabled = true;
+                settingButton.inputEnabled = true;
+                settings.inputEnabled = true;
+            }, 3000);
+        }
     },
     hideBox1 : function(){
         this.msgBox1.destroy();
@@ -982,6 +1075,31 @@ var Game = {
         no.inputEnabled = true;
         yes.inputEnabled = true;
         yes.events.onInputDown.add(this.goMenu,this);
+        no.events.onInputDown.add(this.hideBox1,this);
+        this.msgBox1 = msgBox1;
+    },
+    real2 : function(){
+        this.msgBox.destroy();
+        settingButton.inputEnabled = false;
+        settings.inputEnabled = false;
+        var msgBox1 = game.add.group();
+        var back1 = game.add.sprite(300,200,'settingBack1');
+        var real_exit = game.add.text(310,250,'Do you want to exit Gradios?',{ fontSize: 19 });
+        var yes = game.add.text(370,310,'yes',{ fontSize: 19 });
+        var no = game.add.text(500,310,'no',{ fontSize: 19 });
+        msgBox1.add(back1);
+        msgBox1.add(real_exit);
+        msgBox1.add(yes);
+        msgBox1.add(no);
+        real_exit.wordWrapWidth = back1;
+        real_exit.addColor("#ffffff", 0);
+        yes.wordWrapWidth = back1;
+        yes.addColor("#ffffff", 0);
+        no.wordWrapWidth = back1;
+        no.addColor("#ffffff", 0);
+        no.inputEnabled = true;
+        yes.inputEnabled = true;
+        yes.events.onInputDown.add(this.endGame,this);
         no.events.onInputDown.add(this.hideBox1,this);
         this.msgBox1 = msgBox1;
     },
