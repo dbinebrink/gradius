@@ -120,3 +120,9 @@
 
 </p>
 </details>
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT)
+
+Copyright (c) 2019 Jeongkyu Shin
