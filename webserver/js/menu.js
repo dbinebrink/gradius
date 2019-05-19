@@ -59,7 +59,7 @@ var mainMenu = {
 
     ViewControls : function() {
         var image2 = game.add.image(0,0,'new help');
-        var image3 = game.add.button(700,40,'backButton');
+        var image3 = game.add.button(700,30,'backButton');
         credit.inputEnabled = false;
         image3.inputEnabled = true;
         startButton.inputEnabled=false;
@@ -76,7 +76,7 @@ var mainMenu = {
 
     ViewCredit : function() {
         var image2 = game.add.image(0,0,'creditList');
-        var image3 = game.add.button(700,40,'backButton');
+        var image3 = game.add.button(700,30,'backButton');
         var image4 = game.add.button(630,40,'githubButton');
         credit.inputEnabled = false;
         image3.inputEnabled = true;
