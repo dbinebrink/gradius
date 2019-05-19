@@ -351,6 +351,8 @@ var Game = {
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.CONTROL) && game.input.keyboard.isDown(Phaser.Keyboard.V)){
             cheatmode = false;
+            Bullets.info.fireRate = 0.5;
+            Player.info.speed = 200;
             cheat_status = 'OFF';
             cheatText.text = cheatString + cheat_status;
         }
@@ -368,8 +370,14 @@ var Game = {
             if (game.input.keyboard.isDown(Phaser.Keyboard.C)){
                 Bullets.info.fireRate = Bullets.info.fireRate - Bullets.info.fireRate/25;
             }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.D)){
+                Bullets.info.fireRate = Bullets.info.fireRate + Bullets.info.fireRate/25;
+            }
             if (game.input.keyboard.isDown(Phaser.Keyboard.V)){
                 Player.info.speed = Player.info.speed + Player.info.speed/15;
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.F)){
+                Player.info.speed = Player.info.speed - Player.info.speed/15;
             }
         }
         // Setting
