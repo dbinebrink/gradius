@@ -4,6 +4,7 @@ var start_sound;
 var start_music;
 var startButton;
 var controls;
+var version;
 var exit;
 
 var mainMenu = {
@@ -31,6 +32,7 @@ var mainMenu = {
         controls=game.add.button(game.world.centerX+20,280,'controls', this.ViewControls, this);
         exit=game.add.button(game.world.centerX-85,380,'exit', this.real, this);
         credit=game.add.button(game.world.centerX-85,470,'credit', this.ViewCredit, this);
+        version = game.add.text(game.world.centerX-85,570, "v1.0.0", { font: '30px Arial', fill: '#fff' });
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         if (!start_music) start_music = game.add.audio('start_sound');
         start_music.loop = true;
