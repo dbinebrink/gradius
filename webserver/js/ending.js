@@ -27,7 +27,7 @@ var Ending = {
         game.stage.background = image;
         restartButton = game.add.button(game.world.centerX-110,280,'restartButton', this.startGame, this);
         restartButton.inputEnabled=true;
-        exitButton = game.add.button(game.world.centerX-85,430,'eixtButton', this.endGame, this);
+        exitButton = game.add.button(game.world.centerX-85,430,'eixtButton', this.real, this);
         exitButton.inputEnabled = true;
         menuButton = game.add.button(game.world.centerX-110,350,'menuButton', this.goMenu, this);
         menuButton.inputEnabled=true;
@@ -145,6 +145,44 @@ var Ending = {
         game.state.start('mainMenu');
         minutes = 0;
         seconds = 0;
+    },
+
+    real : function(){
+        restartButton.inputEnabled=false;
+        menuButton.inputEnabled=false;
+        exitButton.inputEnabled = false;
+        var msgBox = game.add.group();
+        var back = game.add.sprite(270,220,'settingBack');
+        back.scale.setTo(1,0.3);
+        var real_exit = game.add.text(310,250,'Do you want to exit Gradios?',{ fontSize: 19 });
+        var yes = game.add.text(370,310,'yes',{ fontSize: 19 });
+        var no = game.add.text(500,310,'no',{ fontSize: 19 });
+        msgBox.add(back);
+        msgBox.add(real_exit);
+        msgBox.add(yes);
+        msgBox.add(no);
+        real_exit.wordWrapWidth = back;
+        real_exit.addColor("#ffffff", 0);
+        yes.wordWrapWidth = back;
+        yes.addColor("#ffffff", 0);
+        no.wordWrapWidth = back;
+        no.addColor("#ffffff", 0);
+        no.inputEnabled = true;
+        yes.inputEnabled = true;
+        yes.events.onInputDown.add(this.exit,this);
+        no.events.onInputDown.add(this.hideBox,this);
+        this.msgBox = msgBox;
+    },
+
+    hideBox : function(){
+        restartButton.inputEnabled=true;
+        menuButton.inputEnabled=true;
+        exitButton.inputEnabled = true;
+        this.msgBox.destroy();
+    },
+
+    exit : function(){
+      window.open('about:blank', '_self').close();
     },
 
     endGame : function(){
