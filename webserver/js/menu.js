@@ -174,7 +174,7 @@ var mainMenu = {
         var msgBox = game.add.group();
         var back = game.add.sprite(270,220,'settingBack');
         back.scale.setTo(1,0.3);
-        var real_exit = game.add.text(310,250,'Do you want to close Gradios?',{ fontSize: 19 });
+        var real_exit = game.add.text(310,250,'Do you want to exit Gradios?',{ fontSize: 19 });
         var yes = game.add.text(370,310,'yes',{ fontSize: 19 });
         var no = game.add.text(500,310,'no',{ fontSize: 19 });
         msgBox.add(back);

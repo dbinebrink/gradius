@@ -43,8 +43,10 @@ var Player = {
             this.info.image = 'ship';
         else if(shiptype==2)
             this.info.image = 'ship2';
-        else
+        else if(shiptype==3)
             this.info.image = 'ship3';
+        else
+            this.info.image = 'ship4';
         this.info.speed = 200;
         this.info.maxHealth = 3;
         this.info.evasion = 0; // 0~100까지의 숫자로 풀레이어의 총알 회피 확률을 나타냄
