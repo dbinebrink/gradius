@@ -264,3 +264,5 @@ $RECYCLE.BIN/
 
 # ignore .idea
 .idea/
+
+app/

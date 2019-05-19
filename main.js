@@ -82,14 +82,15 @@ app.once('ready', function() {
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 970,
+    resizable: false,
+    width: 900,
+    height: 640,
     title: "Gradios",
     frame: true,
     webPreferences: {
       nativeWindowOpen: true,
       nodeIntegration: false
-    }  
+    }
   })
   mainWindow.loadURL('http://localhost:9990');
 

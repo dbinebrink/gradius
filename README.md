@@ -1,41 +1,37 @@
-Gradios - Arcade Shooting Game
-===============================================================
-<img src="https://i.imgur.com/P1LE2uy.png" width="60%"></img>
-<img src="https://i.imgur.com/xqTC4xJ.png" width="60%"></img>
+<p align="center">
+  <img width="340" height="120" src="https://github.com/3people/test-reposit/blob/master/gradius.png">
+</p>
+ 
+ <p align="center">
+  <a href="https://developer.mozilla.org/ko/docs/Web/JavaScript"><img src="https://img.shields.io/badge/language-javascript-blue.svg" alt="Language"></a>
+  <a href="https://nodejs.org/ko"><img src="https://img.shields.io/badge/-node.js-orange.svg" alt="nodejs"></a>
+  <a href="https://phaser.io/phaser3"><img src="https://img.shields.io/badge/-Phaser-green.svg"></a>
+</p>
 
-## Project Info
-* [![Language](https://img.shields.io/badge/language-javascript-blue.svg)](https://developer.mozilla.org/ko/docs/Web/JavaScript)
-[![platform1](https://img.shields.io/badge/-node.js-orange.svg)](https://nodejs.org/ko/)
-[![platform2](https://img.shields.io/badge/-Phaser-green.svg)](https://phaser.io/phaser3)
 
+## Introduction
 * Gradios is simple ARCADE GAME using Phaser library.
-* Gradius clone for educational purpose.
+* Originally developed by [Gradius](https://github.com/dbinebrink/gradius) (Recreating Gradius 3 for the SNES, though of course a simplified version of it in JS, using the Phaser library.)
 * The project was started for the open source development class, at Hanyang University Erica Campus.
-  </br>And anyone can participate.
+  </br>And anyone can participate
+  
+## Documentation
+* Checkout [wiki.md](https://github.com/inureyes/gradios/blob/master/wiki.md) and [electron.md](https://github.com/inureyes/gradios/blob/master/electron.md)
 
-## If you want to PARTICIPATE IN THIS PROJECT
-
+## Participation
 * How to play Gradios? : https://github.com/inureyes/gradios/blob/master/wiki.md
 * What is Phaser? : https://phaser.io/phaser3
 * Simple Phaser 3 Example : https://labs.phaser.io/
 
-## Electron package
+## In game play
+<p align="center">
+  <img src="https://i.imgur.com/P1LE2uy.png" width="60%"></img>
+  <img src="https://i.imgur.com/xqTC4xJ.png" width="60%"></img>
+</p>
 
-Uses electron-packager.
+## Contributors
 
-Global installation: 
-```
-electron-packager . --ignore=node_modules/electron-packager --ignore=.git --overwrite --ignore="\.git(ignore|modules)" --out=app --platform=[darwin OR win32 OR linux]
-```
-
-Local electron-packager installation: 
-```
-./node_modules/electron-packager/cli.js . --ignore=node_modules/electron-packager --ignore=.git --overwrite --ignore="\.git(ignore|modules)" --out=app --platform=[darwin OR win32 OR linux]
-```
-
-## Student list
-
-<details><summary>Click Me!</summary>
+<details><summary>List</summary>
 <p>
 
 | Name         |            |
@@ -110,6 +106,7 @@ Local electron-packager installation:
 | Seungmin Baek | Student |
 | Seyeon Lee | Student |
 | Shim Hyeonbo | Student |
+| Shim Yoovin | Student |
 | Sieun Hwang | Student |
 | Soonwoo Kwon | Student |
 | Suelym Moon | Student |
@@ -120,13 +117,12 @@ Local electron-packager installation:
 | Wonbae Kim | Student |
 | Yelim Park | student |
 | Yerim Seok | Student |
-| Jae Hyeon Park| Student|
 
 </p>
 </details>
 
-## Credit
+## License
 
-Originally developed by https://github.com/dbinebrink/gradius
+[MIT](http://opensource.org/licenses/MIT)
 
-Recreating Gradius 3 for the SNES, though of course a simplified version of it in JS, using the Phaser library.
+Copyright (c) 2019 Jeongkyu Shin

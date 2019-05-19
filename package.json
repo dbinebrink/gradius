@@ -4,11 +4,17 @@
   "private": true,
   "main": "main.js",
   "scripts": {
-    "start": "gulp"
+    "start": "gulp",
+    "test": "electron .",
+    "build": "node runglobal.js",
+    "build-local": "node runlocal.js",
+    "build2": "electron-packager . --out=dist --asar --overwite --all",
+    "build2:darwin": "electron-packager . --out=dist --asar --overwite --platfrom=darwin",
+    "build2:linux": "electron-packager . gradios --platform linux --out dist/",
+    "build2:windows": "electron-packager . gradios --platform win32 --out dist/"
   },
   "dependencies": {
     "electron": "^5.0.1",
-    "electron-package": "^0.1.0",
     "gulp-webserver": "^0.9.1",
     "node-static": "^0.7.11"
   },

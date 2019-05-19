@@ -93,11 +93,13 @@ class item {
     }
 
     applyItem(myItemList){
-        if(this.isActiveItem) Player.activeItem = this;
-        else if(!myItemList[this.itemNumber]) myItemList[this.itemNumber] = 1;
-        else myItemList[this.itemNumber] += 1;
-        Bullets.applyItems(myItemList);
-        Player.applyItems(myItemList);
+        if(cheatmode==false){
+            if(this.isActiveItem) Player.activeItem = this;
+            else if(!myItemList[this.itemNumber]) myItemList[this.itemNumber] = 1;
+            else myItemList[this.itemNumber] += 1;
+            Bullets.applyItems(myItemList);
+            Player.applyItems(myItemList);
+        }
     }
 
     removeItem(myItemList){
@@ -146,7 +148,7 @@ class item {
 // 웹브라우저 콘솔에서 게임을 실행시킨 후 Bullets.addItem(laser_item);
 // 를 입력하면 공격이 레이저로 바뀝니다.
 // make laser item
-let laser_item = new item("laser-bullet", "uncommon");
+let laser_item = new item("laser-bullet", "rare");
 
 laser_item.addAbility("Bullets", "changeParameter", "damage", x => x/3);
 laser_item.addAbility("Bullets", "changeParameter", "fireRate", x => x*3);
@@ -162,7 +164,7 @@ laser_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBul
 });
 
 // make pierce item
-let pierce_item = new item("addPenetration", "common");
+let pierce_item = new item("addPenetration", "uncommon");
 
 pierce_item.addAbility("Bullets", "changeParameter", "penetration", x => {
     if(x > 0) return x+1;
@@ -170,7 +172,7 @@ pierce_item.addAbility("Bullets", "changeParameter", "penetration", x => {
 });
 
 // make double bullet fire item
-let addBullet_item = new item("addBullet", "common");
+let addBullet_item = new item("addBullet", "uncommon");
 
 addBullet_item.addAbility("Bullets", "changeParameter", "fireAtOnce", x => x+1);
 addBullet_item.addAbility("Bullets", "addFunction", "beforeFire", (bulletObj, currentBullet) => {
@@ -179,7 +181,7 @@ addBullet_item.addAbility("Bullets", "addFunction", "beforeFire", (bulletObj, cu
 });
 
 // make bullet tracking item
-let tracking_item = new item("tracking", "uncommon");
+let tracking_item = new item("tracking", "rare");
 
 tracking_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBullet) => {
     let enemy = aliens.getClosestTo({x:currentBullet.x - aliens.x,y:currentBullet.y-30});
@@ -211,11 +213,11 @@ tracking_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, current
 }, 3);
 
 
-let fireRateUp_item = new item("fireRateUp", "common");
-fireRateUp_item.addAbility("Bullets", "changeParameter", "fireRate", x => x-0.1);
+let fireRateUp_item = new item("fireRateUp", "uncommon");
+fireRateUp_item.addAbility("Bullets", "changeParameter", "fireRate", x => x-x/15);
 
 let playerSpeedUp_item = new item("speedUp", "common");
-playerSpeedUp_item.addAbility("Player", "changeParameter", "speed", x => x+10);
+playerSpeedUp_item.addAbility("Player", "changeParameter", "speed", x => x+x/10);
 
 let superArmer_item = new item("superArmor", "common");
 superArmer_item.addAbility("Player", "changeParameter", "invincibleTime", x => game.time.now + 5000);
@@ -242,8 +244,8 @@ Heart_item.addAbility("Player", "changeParameter", "healthUp", x => {
     Heart_item.removeItem(myItemList);
 });
 
-let GLP_800_item = new item("GLP-800", "uncommon");
-GLP_800_item.makeActive();
+// let GLP_800_item = new item("GLP-800", "uncommon");
+// GLP_800_item.makeActive();
 
 
 

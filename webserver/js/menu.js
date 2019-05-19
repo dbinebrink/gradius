@@ -4,6 +4,7 @@ var start_sound;
 var start_music;
 var startButton;
 var controls;
+var version;
 var exit;
 
 var mainMenu = {
@@ -16,9 +17,10 @@ var mainMenu = {
         game.load.image('backButton', 'img/backButton.png');
         game.load.image('exit' , 'img/exit.png');
         game.load.image('credit' , 'img/credit.png');
-        game.load.image('help' , 'img/help.png');
+        game.load.image('new help' , 'img/new help.png');
         game.load.image('creditList' , 'img/credit_list.png');
         game.load.image('settingBack', 'img/settingBackground.png');
+        game.load.image('githubButton', 'img/githubIcon.png');
         mainMenu.load.audio('start_sound', 'audio/start_sound.mp3')
     },
 
@@ -28,8 +30,9 @@ var mainMenu = {
         game.stage.background = image;
         startButton=game.add.button(game.world.centerX-220,280,'startButton', this.startGame, this);
         controls=game.add.button(game.world.centerX+20,280,'controls', this.ViewControls, this);
-        exit=game.add.button(game.world.centerX-85,380,'exit', this.exit, this);
+        exit=game.add.button(game.world.centerX-85,380,'exit', this.real, this);
         credit=game.add.button(game.world.centerX-85,470,'credit', this.ViewCredit, this);
+        version = game.add.text(game.world.centerX-85,570, "v1.0.0", { font: '30px Arial', fill: '#fff' });
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         if (!start_music) start_music = game.add.audio('start_sound');
         start_music.loop = true;
@@ -55,8 +58,9 @@ var mainMenu = {
     },
 
     ViewControls : function() {
-        var image2 = game.add.image(0,0,'help');
-        var image3 = game.add.button(700,80,'backButton');
+        var image2 = game.add.image(0,0,'new help');
+        var image3 = game.add.button(750,40,'backButton');
+        credit.inputEnabled = false;
         image3.inputEnabled = true;
         startButton.inputEnabled=false;
         controls.inputEnabled=false;
@@ -66,21 +70,28 @@ var mainMenu = {
             startButton.inputEnabled=true;
             controls.inputEnabled=true;
             exit.inputEnabled=true;
+            credit.inputEnabled = true;
         });
     },
 
     ViewCredit : function() {
         var image2 = game.add.image(0,0,'creditList');
         var image3 = game.add.button(700,40,'backButton');
+        var image4 = game.add.button(630,40,'githubButton');
+        credit.inputEnabled = false;
         image3.inputEnabled = true;
         startButton.inputEnabled=false;
         controls.inputEnabled=false;
         exit.inputEnabled=false;
         image3.events.onInputDown.add(function(){
-            image2.destroy();image3.destroy();
+            image2.destroy();image3.destroy();image4.destroy();
             startButton.inputEnabled=true;
             controls.inputEnabled=true;
             exit.inputEnabled=true;
+            credit.inputEnabled = true;
+        });
+        image4.events.onInputDown.add(function(){
+            window.open('https://github.com/inureyes/gradios', '_blank');
         });
     },
 
@@ -132,8 +143,8 @@ var mainMenu = {
                 close_button.y = 0;
                 close_button.inputEnabled = true;
                 close_button.events.onInputDown.add(this.closeRanking, this);
-        
-        
+
+
                 msgBox2.add(rank_1st);
                 msgBox2.add(rank_2nd);
 
@@ -146,7 +157,7 @@ var mainMenu = {
                 rank_2nd.addColor("#ffffff", 0);
                 rank_2nd.x = Ranking_text.x + 100;
                 rank_2nd.y = 60;
-        
+
                 this.msgBox2 = msgBox2;
             });
         msgBox2.enabledBody=true;
@@ -156,6 +167,40 @@ var mainMenu = {
         rankingView = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
         rankingView.onDown.add(this.ShowRankingBox, this);
         this.msgBox2.destroy();
+    },
+    real : function(){
+        startButton.inputEnabled = false;
+        controls.inputEnabled = false;
+        credit.inputEnabled = false;
+        exit.inputEnabled = false;
+        var msgBox = game.add.group();
+        var back = game.add.sprite(270,220,'settingBack');
+        back.scale.setTo(1,0.3);
+        var real_exit = game.add.text(310,250,'Do you want to exit Gradios?',{ fontSize: 19 });
+        var yes = game.add.text(370,310,'yes',{ fontSize: 19 });
+        var no = game.add.text(500,310,'no',{ fontSize: 19 });
+        msgBox.add(back);
+        msgBox.add(real_exit);
+        msgBox.add(yes);
+        msgBox.add(no);
+        real_exit.wordWrapWidth = back;
+        real_exit.addColor("#ffffff", 0);
+        yes.wordWrapWidth = back;
+        yes.addColor("#ffffff", 0);
+        no.wordWrapWidth = back;
+        no.addColor("#ffffff", 0);
+        no.inputEnabled = true;
+        yes.inputEnabled = true;
+        yes.events.onInputDown.add(this.exit,this);
+        no.events.onInputDown.add(this.hideBox,this);
+        this.msgBox = msgBox;
+    },
+    hideBox : function(){
+        startButton.inputEnabled = true;
+        controls.inputEnabled = true;
+        credit.inputEnabled = true;
+        exit.inputEnabled = true;
+        this.msgBox.destroy();
     },
 
     exit : function(){
