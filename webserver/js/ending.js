@@ -15,9 +15,16 @@ var Ending = {
         game.load.image('restartButton', 'img/button/restart.png');
         game.load.image('reset_ranking', 'img/button/reset_ranking.png');
         game.load.image('menuButton', 'img/button/menu.png');
+        game.load.image('eixtButton', 'img/button/exit.png');
+
+        game.load.spritesheet('restartButton_sprite_sheet', 'img/button/restart_sprite_sheet.png',175,64);
+        game.load.spritesheet('reset_ranking_sprite_sheet', 'img/button/reset_ranking_sprite_sheet.png',60,51);
+        game.load.spritesheet('menuButton_sprite_sheet', 'img/button/menu_sprite_sheet.png',175,64);
+        game.load.spritesheet('eixtButton_sprite_sheet', 'img/button/exit_sprite_sheet.png',175,64);
+
+
         game.load.image('twitterButton', 'img/twitterIcon.png');
         game.load.image('facebookButton', 'img/facebookIcon.png');
-        game.load.image('eixtButton', 'img/button/exit.png');
         game.load.image('award', 'img/zero.png');
         Ending.load.audio('ending_sound', 'audio/ending_sound.mp3')
     },
@@ -25,11 +32,11 @@ var Ending = {
     create : function() {
         var image = game.add.image(0,0,'Wall_paper');
         game.stage.background = image;
-        restartButton = game.add.button(game.world.centerX-85,280,'restartButton', this.startGame, this);
+        restartButton = game.add.button(game.world.centerX-85,280,'restartButton_sprite_sheet', this.startGame, this,1,0,0);
         restartButton.inputEnabled=true;
-        exitButton = game.add.button(game.world.centerX-85,430,'eixtButton', this.real, this);
+        exitButton = game.add.button(game.world.centerX-85,430,'eixtButton_sprite_sheet', this.real, this,1,0,0);
         exitButton.inputEnabled = true;
-        menuButton = game.add.button(game.world.centerX-85,355,'menuButton', this.goMenu, this);
+        menuButton = game.add.button(game.world.centerX-85,355,'menuButton_sprite_sheet', this.goMenu, this,1,0,0);
         menuButton.inputEnabled=true;
         twitterButton = game.add.button(828,520,'twitterButton',this.shareTwitter, this);
         facebookButton = game.add.button(775,520,'facebookButton',this.shareFacebook, this);
@@ -39,7 +46,7 @@ var Ending = {
         totalScore = game.add.text(game.world.centerX, 215, score, { font: '124px Arial', fill: '#00f' });
         youDied.anchor.setTo(0.5);
         totalScore.anchor.setTo(0.5);
-        ranking_init = game.add.button(game.world.centerX-20,500,'reset_ranking', this.ranking_clear, this);
+        ranking_init = game.add.button(game.world.centerX-20,500,'reset_ranking_sprite_sheet', this.ranking_clear, this,1,0,0);
         ranking_init.inputEnabled = true;
         easyRestart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.ShowRankingBox();
