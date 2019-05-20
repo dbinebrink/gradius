@@ -357,6 +357,7 @@ var Game = {
             cheatmode = false;
             Bullets.info.fireRate = 0.5;
             Player.info.speed = 200;
+            Player.info.isInvincible = false;
             cheat_status = 'OFF';
             cheatText.text = cheatString + cheat_status;
         }
