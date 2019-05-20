@@ -67,8 +67,10 @@ var Game = {
         //ship img
         // game.load.image('shipimg', 'img/ship.png');
         game.load.spritesheet('shipimg', 'img/ship_sprite.png',64,70);
-        game.load.image('ship2img', 'img/ship2.png');
-        game.load.image('ship3img', 'img/ship3.png');
+        // game.load.image('ship2img', 'img/ship2.png');
+        game.load.spritesheet('ship2img', 'img/ship2_sprite.png',64,70);
+        // game.load.image('ship3img', 'img/ship3.png');
+        game.load.spritesheet('ship3img', 'img/ship3_sprite.png',64,70);
         game.load.image('ship4img', 'img/ship4.png');
         //bullet
         game.load.image('bullet', 'img/bullet.png');
@@ -170,9 +172,9 @@ var Game = {
         lower_mountain = game.add.tileSprite(0, 500, 900, 0, 'lower_mountain');
 
         ship1button = game.add.button(game.world.centerX-300, game.world.centerY, 'shipimg', this.character1, this,1,2,0);
-        ship2button = game.add.button(game.world.centerX-100, game.world.centerY, 'ship2img', this.character2, this);
-        ship3button = game.add.button(game.world.centerX+100, game.world.centerY, 'ship3img', this.character3, this);
-        ship4button = game.add.button(game.world.centerX+300, game.world.centerY, 'ship4img', this.character4, this);
+        ship2button = game.add.button(game.world.centerX-100, game.world.centerY, 'ship2img', this.character2, this,1,2,0);
+        ship3button = game.add.button(game.world.centerX+100, game.world.centerY, 'ship3img', this.character3, this,1,2,0);
+        ship4button = game.add.button(game.world.centerX+300, game.world.centerY, 'ship4', this.character4, this,1,2,0);
         game.paused = true;
 
 
