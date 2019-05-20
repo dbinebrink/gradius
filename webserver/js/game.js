@@ -107,7 +107,7 @@ var Game = {
         game.load.image('settingButton', 'img/settingButton.png');
         game.load.image('settingBack', 'img/settingBackground.png');
         game.load.image('settingBack1', 'img/settingBackground1.png');
-        game.load.image('backButton', 'img/backButton.png');
+        game.load.image('backButton', 'img/button/back.png');
 
         game.load.image('Wall_paper' , 'img/space.jpg');
     },
@@ -351,6 +351,8 @@ var Game = {
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.CONTROL) && game.input.keyboard.isDown(Phaser.Keyboard.V)){
             cheatmode = false;
+            Bullets.info.fireRate = 0.5;
+            Player.info.speed = 200;
             cheat_status = 'OFF';
             cheatText.text = cheatString + cheat_status;
         }
@@ -368,8 +370,14 @@ var Game = {
             if (game.input.keyboard.isDown(Phaser.Keyboard.C)){
                 Bullets.info.fireRate = Bullets.info.fireRate - Bullets.info.fireRate/25;
             }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.D)){
+                Bullets.info.fireRate = Bullets.info.fireRate + Bullets.info.fireRate/25;
+            }
             if (game.input.keyboard.isDown(Phaser.Keyboard.V)){
                 Player.info.speed = Player.info.speed + Player.info.speed/15;
+            }
+            if (game.input.keyboard.isDown(Phaser.Keyboard.F)){
+                Player.info.speed = Player.info.speed - Player.info.speed/15;
             }
         }
         // Setting
@@ -393,7 +401,7 @@ var Game = {
 
             //  Run collision
             game.physics.arcade.overlap(Bullets.bulletGroup, aliens, this.collisionHandler, null, this);
-            if (Bullets.info.collide){
+            if (Bullets.info.collideEnemyBullet){
                 game.physics.arcade.overlap(Bullets.bulletGroup, enemyBullets, this.playerBreakEnemyBullet, null, this);
             }
             game.physics.arcade.overlap(Player.sprite, aliens, this.enemyHitsPlayer, null, this);
