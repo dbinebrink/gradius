@@ -21,6 +21,13 @@ var mainMenu = {
         game.load.image('creditList' , 'img/credit_list.png');
         game.load.image('settingBack', 'img/settingBackground.png');
         game.load.image('githubButton', 'img/githubIcon.png');
+
+        game.load.image('control1','img/control_page/control1.png');
+        game.load.image('control2','img/control_page/control2.png');
+        game.load.image('control3','img/control_page/control3.png');
+        game.load.image('next_left','img/control_page/next_left.png');
+        game.load.image('next_right','img/control_page/next_right.png');
+
         mainMenu.load.audio('start_sound', 'audio/start_sound.mp3')
     },
 
@@ -58,20 +65,34 @@ var mainMenu = {
     },
 
     ViewControls : function() {
-        var image2 = game.add.image(0,0,'new help');
+        var image2 = game.add.image(0,-12,'control1');
+        var image21 = game.add.image(0,-12,'control2');
+        var image22 = game.add.image(0,-12,'control3');
         var image3 = game.add.button(700,30,'backButton');
+        var image4 = game. add.button(800,game.world.centerY,'next_right');
+        var image5 = game. add.button(50,game.world.centerY,'next_left');
+        var cur = image2;
         credit.inputEnabled = false;
         image3.inputEnabled = true;
         startButton.inputEnabled=false;
         controls.inputEnabled=false;
         exit.inputEnabled=false;
         image3.events.onInputDown.add(function(){
-            image2.destroy();image3.destroy();
+            cur.destroy();image3.destroy();
+            image4.destroy();image5.destroy();
+            image21.destroy();image22.destroy();
             startButton.inputEnabled=true;
             controls.inputEnabled=true;
             exit.inputEnabled=true;
             credit.inputEnabled = true;
         });
+        image4.events.onInputDown.add(function(){
+            image22.destroy();
+        });
+        image5.events.onInputDown.add(function(){
+            image22.destroy();
+            image21.destroy();
+        })
     },
 
     ViewCredit : function() {
