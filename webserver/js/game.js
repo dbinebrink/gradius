@@ -90,7 +90,7 @@ var Game = {
         game.load.image('debug_message', 'img/debugMessage.png');
         game.load.image('addPenetration', 'img/item/addPenetration.png');
         game.load.image('addBullet','img/item/addBullet.png');
-        game.load.image('fireRateUp','img/item/fireRateUp.png');
+        game.load.image('fireRateUp','img/fireRateUp.png');
 
         // load all sfx and music
         game.load.audio('music1', 'audio/gradius.mp3');
