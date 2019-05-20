@@ -93,13 +93,11 @@ class item {
     }
 
     applyItem(myItemList){
-        if(cheatmode==false){
-            if(this.isActiveItem) Player.activeItem = this;
-            else if(!myItemList[this.itemNumber]) myItemList[this.itemNumber] = 1;
-            else myItemList[this.itemNumber] += 1;
-            Bullets.applyItems(myItemList);
-            Player.applyItems(myItemList);
-        }
+        if(this.isActiveItem) Player.activeItem = this;
+        else if(!myItemList[this.itemNumber]) myItemList[this.itemNumber] = 1;
+        else myItemList[this.itemNumber] += 1;
+        Bullets.applyItems(myItemList);
+        Player.applyItems(myItemList);
     }
 
     removeItem(myItemList){
