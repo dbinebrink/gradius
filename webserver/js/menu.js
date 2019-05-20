@@ -17,6 +17,13 @@ var mainMenu = {
         game.load.image('backButton', 'img/button/back.png');
         game.load.image('exit' , 'img/button/exit.png');
         game.load.image('credit' , 'img/button/credit.png');
+       
+        game.load.spritesheet('startButton_sprite_sheet', 'img/button/start_sprite_sheet.png',175,64);
+        game.load.spritesheet('controls_sprite_sheet', 'img/button/controls_sprite_sheet.png',175,64);
+        game.load.spritesheet('backButton_sprite_sheet', 'img/button/back_sprite_sheet.png',175,64);
+        game.load.spritesheet('exit_sprite_sheet', 'img/button/exit_sprite_sheet.png',175,64);
+        game.load.spritesheet('credit_sprite_sheet', 'img/button/credit_sprite_sheet.png',175,64);
+
         game.load.image('new help' , 'img/new help.png');
         game.load.image('creditList' , 'img/credit_list.png');
         game.load.image('settingBack', 'img/settingBackground.png');
@@ -27,6 +34,8 @@ var mainMenu = {
         game.load.image('control3','img/control_page/control3.png');
         game.load.image('next_left','img/control_page/next_left.png');
         game.load.image('next_right','img/control_page/next_right.png');
+        game.load.spritesheet('next_left_sprite_sheet','img/control_page/next_left_sprite_sheet.png',50,109);
+        game.load.spritesheet('next_right_sprite_sheet','img/control_page/next_right_sprite_sheet.png',50,109);
 
         mainMenu.load.audio('start_sound', 'audio/start_sound.mp3')
     },
@@ -35,10 +44,10 @@ var mainMenu = {
         var image = game.add.image(0,0,'Wall_paper');
         var image1 = game.add.image(game.world.centerX-425,70,'gradius');
         game.stage.background = image;
-        startButton=game.add.button(game.world.centerX-195,350,'startButton', this.startGame, this);
-        controls=game.add.button(game.world.centerX+20,350,'controls', this.ViewControls, this);
-        exit=game.add.button(game.world.centerX-195,430,'exit', this.real, this);
-        credit=game.add.button(game.world.centerX+20,430,'credit', this.ViewCredit, this);
+        startButton=game.add.button(game.world.centerX-195,350,'startButton_sprite_sheet', this.startGame, this,1,0,0);
+        controls=game.add.button(game.world.centerX+20,350,'controls_sprite_sheet', this.ViewControls, this,1,0,0);
+        exit=game.add.button(game.world.centerX-195,430,'exit_sprite_sheet', this.real, this,1,0,0);
+        credit=game.add.button(game.world.centerX+20,430,'credit_sprite_sheet', this.ViewCredit, this,1,0,0);
         version = game.add.text(game.world.centerX-50,570, "v1.0.0", { font: '30px Arial', fill: '#fff' });
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         if (!start_music) start_music = game.add.audio('start_sound');
@@ -68,9 +77,9 @@ var mainMenu = {
         var image2 = game.add.image(0,-12,'control1');
         var image21 = game.add.image(0,-12,'control2');
         var image22 = game.add.image(0,-12,'control3');
-        var image3 = game.add.button(700,30,'backButton');
-        var image4 = game. add.button(800,game.world.centerY,'next_right');
-        var image5 = game. add.button(50,game.world.centerY,'next_left');
+        var image3 = game.add.button(700,30,'backButton_sprite_sheet',function(){},this,1,0,0);
+        var image4 = game. add.button(800,game.world.centerY,'next_right_sprite_sheet',function(){},this,1,0,0);
+        var image5 = game. add.button(50,game.world.centerY,'next_left_sprite_sheet',function(){},this,1,0,0);
         var cur = image2;
         credit.inputEnabled = false;
         image3.inputEnabled = true;
@@ -97,7 +106,7 @@ var mainMenu = {
 
     ViewCredit : function() {
         var image2 = game.add.image(0,0,'creditList');
-        var image3 = game.add.button(700,30,'backButton');
+        var image3 = game.add.button(700,30,'backButton_sprite_sheet',function(){},this,1,0,0);
         var image4 = game.add.button(630,40,'githubButton');
         credit.inputEnabled = false;
         image3.inputEnabled = true;
