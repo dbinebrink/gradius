@@ -4,43 +4,61 @@ var ending_music;
 var restartButton;
 var menuButton;
 var ranking_init;
+var twitterButton;
+var facebookButton;
+var exitButton;
 
 var Ending = {
 
     preload : function() {
     	game.load.image('Wall_paper' , 'img/space.jpg');
-        game.load.image('restartButton', 'img/restartbutton.png');
-        game.load.image('reset_ranking', 'img/reset_ranking.png');
-        game.load.image('menuButton', 'img/menubutton.png');
+        game.load.image('restartButton', 'img/button/restart.png');
+        game.load.image('reset_ranking', 'img/button/reset_ranking.png');
+        game.load.image('menuButton', 'img/button/menu.png');
+        game.load.image('eixtButton', 'img/button/exit.png');
+
+        game.load.spritesheet('restartButton_sprite_sheet', 'img/button/restart_sprite_sheet.png',175,64);
+        game.load.spritesheet('reset_ranking_sprite_sheet', 'img/button/reset_ranking_sprite_sheet.png',60,51);
+        game.load.spritesheet('menuButton_sprite_sheet', 'img/button/menu_sprite_sheet.png',175,64);
+        game.load.spritesheet('eixtButton_sprite_sheet', 'img/button/exit_sprite_sheet.png',175,64);
+
+
+        game.load.image('twitterButton', 'img/twitterIcon.png');
+        game.load.image('facebookButton', 'img/facebookIcon.png');
+        game.load.image('award', 'img/zero.png');
         Ending.load.audio('ending_sound', 'audio/ending_sound.mp3')
     },
 
     create : function() {
         var image = game.add.image(0,0,'Wall_paper');
         game.stage.background = image;
-        restartButton = game.add.button(game.world.centerX-110,320,'restartButton', this.startGame, this);
+        restartButton = game.add.button(game.world.centerX-85,280,'restartButton_sprite_sheet', this.startGame, this,1,0,0);
         restartButton.inputEnabled=true;
-        menuButton = game.add.button(game.world.centerX-110,420,'menuButton', this.goMenu, this);
+        exitButton = game.add.button(game.world.centerX-85,430,'eixtButton_sprite_sheet', this.real, this,1,0,0);
+        exitButton.inputEnabled = true;
+        menuButton = game.add.button(game.world.centerX-85,355,'menuButton_sprite_sheet', this.goMenu, this,1,0,0);
         menuButton.inputEnabled=true;
+        twitterButton = game.add.button(828,520,'twitterButton',this.shareTwitter, this);
+        facebookButton = game.add.button(775,520,'facebookButton',this.shareFacebook, this);
         if(!ending_music) ending_music = game.add.audio('ending_sound');
         ending_music.play();
-        youDied = game.add.text(game.world.centerX + 10, 100, "YOU DIED", { font: '124px Arial', fill: '#f00'}); 
-        totalScore = game.add.text(game.world.centerX, 237, score, { font: '124px Arial', fill: '#00f' });
+        youDied = game.add.text(game.world.centerX + 10, 100, "YOU DIED", { font: '124px Arial', fill: '#f00'});
+        totalScore = game.add.text(game.world.centerX, 215, score, { font: '124px Arial', fill: '#00f' });
         youDied.anchor.setTo(0.5);
         totalScore.anchor.setTo(0.5);
-        ranking_init = game.add.button(game.world.centerX-20,520,'reset_ranking', this.ranking_clear, this);
+        ranking_init = game.add.button(game.world.centerX-20,500,'reset_ranking_sprite_sheet', this.ranking_clear, this,1,0,0);
         ranking_init.inputEnabled = true;
         easyRestart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.ShowRankingBox();
-        
-        
+        if(score == 0) this.showAward();
+
     },
-    
+
     ranking_clear : function() {
         fetch('http://tallbin98.dothome.co.kr/ranking__develop.php')
         .then(() => alert("Ranking Clear"));
     },
-    
+
     ShowRankingBox : function() {
         // load DB setting
         var msgBox2 = game.add.group();
@@ -91,8 +109,8 @@ var Ending = {
                 close_button.y = 0;
                 close_button.inputEnabled = true;
                 close_button.events.onInputDown.add(this.closeRanking, this);
-        
-        
+
+
                 msgBox2.add(rank_1st);
                 msgBox2.add(rank_2nd);
 
@@ -105,7 +123,7 @@ var Ending = {
                 rank_2nd.addColor("#ffffff", 0);
                 rank_2nd.x = Ranking_text.x + 100;
                 rank_2nd.y = 60;
-        
+
                 this.msgBox2 = msgBox2;
             });
         msgBox2.enabledBody=true;
@@ -134,5 +152,67 @@ var Ending = {
         game.state.start('mainMenu');
         minutes = 0;
         seconds = 0;
+    },
+
+    real : function(){
+        restartButton.inputEnabled=false;
+        menuButton.inputEnabled=false;
+        exitButton.inputEnabled = false;
+        var msgBox = game.add.group();
+        var back = game.add.sprite(270,220,'settingBack');
+        back.scale.setTo(1,0.3);
+        var real_exit = game.add.text(310,250,'Do you want to exit Gradios?',{ fontSize: 19 });
+        var yes = game.add.text(370,310,'yes',{ fontSize: 19 });
+        var no = game.add.text(500,310,'no',{ fontSize: 19 });
+        msgBox.add(back);
+        msgBox.add(real_exit);
+        msgBox.add(yes);
+        msgBox.add(no);
+        real_exit.wordWrapWidth = back;
+        real_exit.addColor("#ffffff", 0);
+        yes.wordWrapWidth = back;
+        yes.addColor("#ffffff", 0);
+        no.wordWrapWidth = back;
+        no.addColor("#ffffff", 0);
+        no.inputEnabled = true;
+        yes.inputEnabled = true;
+        yes.events.onInputDown.add(this.exit,this);
+        no.events.onInputDown.add(this.hideBox,this);
+        this.msgBox = msgBox;
+    },
+
+    hideBox : function(){
+        restartButton.inputEnabled=true;
+        menuButton.inputEnabled=true;
+        exitButton.inputEnabled = true;
+        this.msgBox.destroy();
+    },
+
+    exit : function(){
+      window.open('about:blank', '_self').close();
+    },
+
+    endGame : function(){
+        window.open('about:blank', '_self').close();
+    },
+
+    shareTwitter : function() {
+        var twitterLink = 'https://twitter.com/intent/tweet?text=What is my score? ' + score + '! join the grdios! &url=https://github.com/inureyes/gradios';
+        window.open(twitterLink, '_blank');
+    },
+
+    shareFacebook : function() {
+        var facebookLink = 'https://www.facebook.com/sharer/sharer.php?u=https://github.com/inureyes/gradios&quote=what is my score? ' + score + '! join the gradios!';
+        window.open(facebookLink, '_blank');
+    },
+
+    showAward : function() {
+        var AwardImg = game.add.image(268,58,'award');
+        var closeButton = game.add.text(300, 60, 'X', { fontsize: 20 });
+        closeButton.inputEnabled = true;
+        closeButton.events.onInputDown.add(function(){
+            AwardImg.destroy();closeButton.destroy();
+        });
     }
+
 }
