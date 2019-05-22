@@ -25,8 +25,8 @@
 
 ## In game play
 <p align="center">
-  <img src="https://i.imgur.com/P1LE2uy.png" width="60%"></img>
-  <img src="https://i.imgur.com/xqTC4xJ.png" width="60%"></img>
+  <img src="mainscreen.png" width="60%"></img>
+  <img src="game.png" width="60%"></img>
 </p>
 
 ## Contributors
