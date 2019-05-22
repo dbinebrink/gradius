@@ -25,8 +25,8 @@
 
 ## In game play
 <p align="center">
-  <img src="mainscreen.png" width="60%"></img>
-  <img src="game.png" width="60%"></img>
+  <img src="webserver/img/mainscreen.png" width="60%"></img>
+  <img src="webserver/img/game.png" width="60%"></img>
 </p>
 
 ## Contributors
