@@ -80,27 +80,52 @@ var mainMenu = {
         var image3 = game.add.button(700,30,'backButton_sprite_sheet',function(){},this,1,0,0);
         var image4 = game. add.button(800,game.world.centerY,'next_right_sprite_sheet',function(){},this,1,0,0);
         var image5 = game. add.button(50,game.world.centerY,'next_left_sprite_sheet',function(){},this,1,0,0);
-        var cur = image2;
+        var cur = 1;
         credit.inputEnabled = false;
         image3.inputEnabled = true;
         startButton.inputEnabled=false;
         controls.inputEnabled=false;
         exit.inputEnabled=false;
+        image2.visible=true;
+        image21.visible=false;
+        image22.visible=false;
+
         image3.events.onInputDown.add(function(){
-            cur.destroy();image3.destroy();
+            image3.destroy();
             image4.destroy();image5.destroy();
-            image21.destroy();image22.destroy();
+            if(image2.visible) image2.destroy();
+            if(image21.visible) image21.destroy();
+            if(image22.visible) image22.destroy();
             startButton.inputEnabled=true;
             controls.inputEnabled=true;
             exit.inputEnabled=true;
             credit.inputEnabled = true;
         });
         image4.events.onInputDown.add(function(){
-            image22.destroy();
+            if(cur<3) cur++;
+            if(cur==2) {
+                image2.visible=false;
+                image21.visible=true;
+                image22.visible=false;
+            }
+            if(cur==3) {
+                image2.visible=false;
+                image21.visible=false;
+                image22.visible=true;
+            }
         });
         image5.events.onInputDown.add(function(){
-            image22.destroy();
-            image21.destroy();
+            if(cur>1) cur--;
+            if(cur==1) {
+                image2.visible=true;
+                image21.visible=false;
+                image22.visible=false;
+            }
+            if(cur==2) {
+                image2.visible=false;
+                image21.visible=true;
+                image22.visible=false;
+            }
         })
     },
 
@@ -206,7 +231,7 @@ var mainMenu = {
         var msgBox = game.add.group();
         var back = game.add.sprite(270,220,'settingBack');
         back.scale.setTo(1,0.3);
-        var real_exit = game.add.text(310,250,'Do you want to exit Gradios?',{ fontSize: 19 });
+        var real_exit = game.add.text(310,250,'Do you want to exit Grxdgfgdios?',{ fontSize: 19 });
         var yes = game.add.text(370,310,'yes',{ fontSize: 19 });
         var no = game.add.text(500,310,'no',{ fontSize: 19 });
         msgBox.add(back);
