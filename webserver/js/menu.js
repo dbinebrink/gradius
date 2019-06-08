@@ -17,12 +17,16 @@ var mainMenu = {
         game.load.image('backButton', 'img/button/back.png');
         game.load.image('exit' , 'img/button/exit.png');
         game.load.image('credit' , 'img/button/credit.png');
+
+        game.load.image('rankingButton','img/button/ranking.png');
        
         game.load.spritesheet('startButton_sprite_sheet', 'img/button/start_sprite_sheet.png',175,64);
         game.load.spritesheet('controls_sprite_sheet', 'img/button/controls_sprite_sheet.png',175,64);
         game.load.spritesheet('backButton_sprite_sheet', 'img/button/back_sprite_sheet.png',175,64);
         game.load.spritesheet('exit_sprite_sheet', 'img/button/exit_sprite_sheet.png',175,64);
         game.load.spritesheet('credit_sprite_sheet', 'img/button/credit_sprite_sheet.png',175,64);
+        
+        game.load.spritesheet('rankButton_sprite_sheet','img/button/ranking_sprite_sheet.png',175,64);
 
         game.load.image('new help' , 'img/new help.png');
         game.load.image('creditList' , 'img/credit_list.png');
@@ -44,10 +48,12 @@ var mainMenu = {
         var image = game.add.image(0,0,'Wall_paper');
         var image1 = game.add.image(game.world.centerX-425,70,'gradius');
         game.stage.background = image;
-        startButton=game.add.button(game.world.centerX-195,350,'startButton_sprite_sheet', this.startGame, this,1,0,0);
-        controls=game.add.button(game.world.centerX+20,350,'controls_sprite_sheet', this.ViewControls, this,1,0,0);
-        exit=game.add.button(game.world.centerX-195,430,'exit_sprite_sheet', this.real, this,1,0,0);
-        credit=game.add.button(game.world.centerX+20,430,'credit_sprite_sheet', this.ViewCredit, this,1,0,0);
+        startButton=game.add.button(game.world.centerX-295,350,'startButton_sprite_sheet', this.startGame, this,1,0,0);
+        controls=game.add.button(game.world.centerX-80,350,'controls_sprite_sheet', this.ViewControls, this,1,0,0);
+        exit=game.add.button(game.world.centerX-295,430,'exit_sprite_sheet', this.real, this,1,0,0);
+        credit=game.add.button(game.world.centerX-80,430,'credit_sprite_sheet', this.ViewCredit, this,1,0,0);
+
+        rank=game.add.button(game.world.centerX+140,390,'rankButton_sprite_sheet',this.ShowRankingBox,this,1,0,0);
         version = game.add.text(game.world.centerX-50,570, "v1.0.0", { font: '30px Arial', fill: '#fff' });
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         if (!start_music) start_music = game.add.audio('start_sound');
@@ -231,7 +237,7 @@ var mainMenu = {
         var msgBox = game.add.group();
         var back = game.add.sprite(270,220,'settingBack');
         back.scale.setTo(1,0.3);
-        var real_exit = game.add.text(310,250,'Do you want to exit Grxdgfgdios?',{ fontSize: 19 });
+        var real_exit = game.add.text(310,250,'Do you want to exit Gradios?',{ fontSize: 19 });
         var yes = game.add.text(370,310,'yes',{ fontSize: 19 });
         var no = game.add.text(500,310,'no',{ fontSize: 19 });
         msgBox.add(back);
