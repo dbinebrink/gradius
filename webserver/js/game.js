@@ -539,7 +539,7 @@ var Game = {
         let alienSizeMultiple;
         let specialEnemyPer = Math.random()*100;//0~100
 
-        if(diff == 0){ // If difficulty is easy,
+        if(diff == 0){ // If difficulty is easy, 
             if(specialEnemyPer < Math.floor(stage/30)){
                 alienImage = 'invaderPurple';
                 alienHealth = 3;
