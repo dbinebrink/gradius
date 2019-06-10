@@ -42,6 +42,13 @@ var ship1button;
 var ship2button;
 var ship3button;
 var ship4button;
+
+
+var easybutton;
+var normalbutton;
+var hardbutton; // three difficulty setting buttons added. easy, normal, hard
+
+
 var resumeByESC;
 var backButton
 var characterSelection;
@@ -51,9 +58,20 @@ var items = [];
 var cheatmode = false;
 var cheat_status;
 
+
+var diff = 0; //0 => easy, 1=> normal, 2=>hard
+
+
 var Game = {
 
     preload : function() {
+
+
+        game.load.spritesheet('easyButton','img/button/easy.png',175,64);
+        game.load.spritesheet('normalButton','img/button/normal.png',175,64);
+        game.load.spritesheet('hardButton','img/button/hard.png',175,64);
+
+
         // load all sprites
         game.load.spritesheet('invaderBasic', 'img/invader32x32x4.png', 32, 32);
         game.load.spritesheet('invaderGreen', 'img/invader32x32x4-green.png', 32, 32);
@@ -133,7 +151,7 @@ var Game = {
         stageString = '';
         alienHealth = 1;
         shiptype = 0;
-
+        diff = 0;
         seconds = 0;
         minutes = 0;
         music_status = 'ON';
@@ -176,6 +194,18 @@ var Game = {
         ship2button = game.add.button(game.world.centerX-100, game.world.centerY, 'ship2img', this.character2, this,1,2,0);
         ship3button = game.add.button(game.world.centerX+100, game.world.centerY, 'ship3img', this.character3, this,1,2,0);
         ship4button = game.add.button(game.world.centerX+300, game.world.centerY, 'ship4', this.character4, this,1,2,0);
+
+        easybutton = game.add.button(game.world.centerX-80, game.world.centerY-150, 'easyButton', this.easy, this,1,0,0);
+        normalbutton = game.add.button(game.world.centerX-80, game.world.centerY, 'normalButton', this.normal, this,1,0,0);
+        hardbutton = game.add.button(game.world.centerX-80, game.world.centerY+150, 'hardButton', this.hard, this,1,0,0);
+
+
+        easybutton.visible=false;
+        normalbutton.visible=false;
+        hardbutton.visible=false;
+
+
+
         game.paused = true;
 
 
@@ -394,7 +424,7 @@ var Game = {
         }
 
         if (Player.sprite.alive) {
-            if((game.time.now > ailencreatetimer && ailencreatecount < 10*stage) || aliens.countLiving() === 0)  {
+            if((game.time.now > ailencreatetimer && ailencreatecount < 10*stage*(diff+1)) || aliens.countLiving() === 0)  {
                 this.createAliens();
             }
 
@@ -421,8 +451,10 @@ var Game = {
         ship2button.destroy();
         ship3button.destroy();
         ship4button.destroy();
-        game.paused = false;
-        Player.initalize(game);
+        
+        easybutton.visible=true;
+        normalbutton.visible=true;
+        hardbutton.visible=true;
     },
 
     character2 : function() {
@@ -431,8 +463,10 @@ var Game = {
         ship2button.destroy();
         ship3button.destroy();
         ship4button.destroy();
-        game.paused = false;
-        Player.initalize(game);
+        
+        easybutton.visible=true;
+        normalbutton.visible=true;
+        hardbutton.visible=true;
     },
 
     character3 : function() {
@@ -441,8 +475,10 @@ var Game = {
         ship2button.destroy();
         ship3button.destroy();
         ship4button.destroy();
-        game.paused = false;
-        Player.initalize(game);
+        
+        easybutton.visible=true;
+        normalbutton.visible=true;
+        hardbutton.visible=true;
     },
     character4 : function() {
         shiptype = 4
@@ -450,32 +486,114 @@ var Game = {
         ship2button.destroy();
         ship3button.destroy();
         ship4button.destroy();
+        
+        easybutton.visible=true;
+        normalbutton.visible=true;
+        hardbutton.visible=true;
+    },
+
+    easy : function(){
+        diff=0;
+        
+        easybutton.destroy();
+        normalbutton.destroy();
+        hardbutton.destroy();
+
         game.paused = false;
         Player.initalize(game);
+
+        
+
+    },
+
+    normal : function(){
+        diff=1;
+        
+        easybutton.destroy();
+        normalbutton.destroy();
+        hardbutton.destroy();
+
+        game.paused = false;
+        Player.initalize(game);
+
+        
+    },
+
+    hard : function(){
+        diff=2;
+        
+        easybutton.destroy();
+        normalbutton.destroy();
+        hardbutton.destroy();
+
+        game.paused = false;
+        Player.initalize(game);
+
+       
+
     },
 
     createAliens : function() {
         let alienImage;
         let alienHealth;
         let alienSizeMultiple;
-        let specialEnemyPer = Math.random()*100;
-        if(specialEnemyPer < Math.floor(stage/30)){
-            alienImage = 'invaderPurple';
-            alienHealth = 3;
-            alienSizeMultiple = 2;
-        }
-        else if(specialEnemyPer < Math.floor(stage/20)+3){
-            alienImage = 'invaderGreen';
-            alienHealth = 2.5;
-            alienSizeMultiple = 1.5;
-        }
-        else{
-            alienImage = 'invaderBasic';
-            alienHealth = 1;
-            alienSizeMultiple = 1;
+        let specialEnemyPer = Math.random()*100;//0~100
+
+        if(diff == 0){ // If difficulty is easy,
+            if(specialEnemyPer < Math.floor(stage/30)){
+                alienImage = 'invaderPurple';
+                alienHealth = 3;
+                alienSizeMultiple = 2;
+            }
+            else if(specialEnemyPer < Math.floor(stage/20)+3){
+                alienImage = 'invaderGreen';
+                alienHealth = 2.5;
+                alienSizeMultiple = 1.5;
+            }
+            else{
+                alienImage = 'invaderBasic';
+                alienHealth = 1;
+                alienSizeMultiple = 1;
+            }
         }
 
-        ailencreatetimer = game.time.now + 500 + 1000*Math.random();
+        if(diff==1){ // If difficulty is normal,
+            if(specialEnemyPer < Math.floor(stage/20)){
+                alienImage = 'invaderPurple';
+                alienHealth = 10;
+                alienSizeMultiple = 2;
+            }
+            else if(specialEnemyPer < Math.floor(stage/10)+3){
+                alienImage = 'invaderGreen';
+                alienHealth = 5;
+                alienSizeMultiple = 1.5;
+            }
+            else{
+                alienImage = 'invaderBasic';
+                alienHealth = 2;
+                alienSizeMultiple = 1;
+            }
+        }
+
+        if(diff==2){ // If difficulty is hard,
+            if(specialEnemyPer < Math.floor(stage/5)){
+                alienImage = 'invaderPurple';
+                alienHealth = 30;
+                alienSizeMultiple = 2;
+            }
+            else if(specialEnemyPer < Math.floor(stage/2)+3){
+                alienImage = 'invaderGreen';
+                alienHealth = 10;
+                alienSizeMultiple = 1.5;
+            }
+            else{
+                alienImage = 'invaderBasic';
+                alienHealth = 5;
+                alienSizeMultiple = 1;
+            }
+        }
+
+        ailencreatetimer = game.time.now + 500 + 500*Math.random()*(3-diff);
         ailencreatecount++;
         var movepoint_x = 930;
         var movepoint_y = Math.random() * 540 + 30;
@@ -549,7 +667,7 @@ var Game = {
     collisionHandler : function(bullet, alien) {
 
         if (debugFlag){
-            this.debugCollisionMessage(bullet, alien);
+           // this.debugCollisionMessage(bullet, alien);
         }
         //  When a bullet hits an alien we kill them both
         Bullets.killBullet(bullet);
@@ -564,7 +682,7 @@ var Game = {
         sfx_enemy_die.play();
 
         //  Increase the score
-        score += 200;
+        score += 200+(diff*50);
         scoreText.text = scoreString + score;
         //alienkillText.text = alienString + alienkill;
         //  And create an explosion :)
@@ -572,7 +690,7 @@ var Game = {
         explosion.reset(alien.body.x, alien.body.y);
         explosion.play('kaboom', 30, false, true);
 
-        if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
+        if (aliens.countLiving() === 0 && ailencreatecount >= stage*10*(diff+1)) {
             if(stage%3 == 0)
                 this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'uncommon');
             else this.makeRandomItem(alien.body.x, alien.body.y, -120, (Math.random()*2-1)*120, 'common');
@@ -665,7 +783,7 @@ var Game = {
 
     playerBreakEnemyBullet : function(bullet, enemyBullet) {
         if(debugFlag){
-            this.debugCollisionMessage(bullet, enemyBullet);
+           // this.debugCollisionMessage(bullet, enemyBullet);
         }
         Bullets.killBullet(bullet);
         enemyBullet.kill();
@@ -703,7 +821,7 @@ var Game = {
             this.finishGame();
         }
 
-        if (aliens.countLiving() === 0 && ailencreatecount >= stage*10) {
+        if (aliens.countLiving() === 0 && ailencreatecount >= stage*10*(diff+1)) {
             sfx_stage_clear.play();
             this.createAliens();
             countstage++;
@@ -720,7 +838,7 @@ var Game = {
         score_2_switch = false;
         score_3_switch = false;
 
-        if (Player.info.isInvincible == false) Player.info.invincibleTime = game.time.now + 2000;
+        if (Player.info.isInvincible == false) Player.info.invincibleTime = game.time.now + 2000*(2-diff)+1000;
         // blink player
         if (Player.info.isInvincible == false) game.add.tween(player).to( { alpha : 0.2 }, 250, Phaser.Easing.Linear.None, true, 0, 2, true);
     },

@@ -95,7 +95,7 @@ var mainMenu = {
         image2.visible=true;
         image21.visible=false;
         image22.visible=false;
-
+        
         image3.events.onInputDown.add(function(){
             image3.destroy();
             image4.destroy();image5.destroy();
