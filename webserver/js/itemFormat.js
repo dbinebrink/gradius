@@ -148,7 +148,7 @@ class item {
 // 웹브라우저 콘솔에서 게임을 실행시킨 후 Bullets.addItem(laser_item);
 // 를 입력하면 공격이 레이저로 바뀝니다.
 // make laser item
-let laser_item = new item("laser-bullet", "rare");
+/*let laser_item = new item("laser-bullet", "rare");
 
 laser_item.addAbility("Bullets", "changeParameter", "damage", x => x/3);
 laser_item.addAbility("Bullets", "changeParameter", "fireRate", x => x*3);
@@ -161,7 +161,7 @@ laser_item.addAbility("Bullets", "changeFunction", "animation", obj => {
 laser_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBullet) => {
     currentBullet.body.velocity.x = Player.sprite.body.velocity.x;
     currentBullet.body.velocity.y = Player.sprite.body.velocity.y;
-});
+});*/
 
 // make pierce item
 let pierce_item = new item("addPenetration", "uncommon");
@@ -181,28 +181,32 @@ addBullet_item.addAbility("Bullets", "addFunction", "beforeFire", (bulletObj, cu
 });
 
 // make bullet tracking item
-let tracking_item = new item("tracking", "rare");
+let addGuiding_item = new item("addGuiding", "rare");
 
-tracking_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBullet) => {
+addGuiding_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBullet) => {
     let enemy = aliens.getClosestTo({x:currentBullet.x - aliens.x,y:currentBullet.y-30});
     // console.log(enemy);
+    //
     let trackingPerformance = 0.03;
     let x = currentBullet.body.velocity.x+(enemy.body.x-currentBullet.x)*trackingPerformance;
     let y = currentBullet.body.velocity.y+(enemy.body.y-currentBullet.y)*trackingPerformance;
 
     let currentBulletSpeed = Math.sqrt( Math.pow(x,2)+Math.pow(y,2) );
     let expectedBulletSpeed = bulletObj.info.bulletSpeed*100;
+    //
 
     if( currentBulletSpeed > expectedBulletSpeed ){
         let reduceAmount = expectedBulletSpeed/currentBulletSpeed;
         x = x*reduceAmount;
         y = y*reduceAmount;
     }
+    //
+    
     currentBullet.body.velocity.x = x;
     currentBullet.body.velocity.y = y;
 }, 2);
 
-tracking_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBullet) => {
+addGuiding_item.addAbility("Bullets", "addFunction", "firing", (bulletObj, currentBullet) => {
     let x = currentBullet.body.velocity.x;
     let y = currentBullet.body.velocity.y;
     if(x == 0){

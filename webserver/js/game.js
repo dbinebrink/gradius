@@ -92,6 +92,7 @@ var Game = {
         game.load.image('speedUp', 'img/speed_up.png');
         game.load.image('debug_message', 'img/debugMessage.png');
         game.load.image('addPenetration', 'img/item/addPenetration.png');
+        game.load.image('addGuiding', 'img/item/addGuiding.png');
         game.load.image('addBullet','img/item/addBullet.png');
         game.load.image('fireRateUp','img/fireRateUp.png');
 
@@ -596,7 +597,7 @@ var Game = {
     makeRandomItem : function(x, y, x_vel = 0, y_vel = 0, itemRarity){
         var itemIndex;
         itemIndex = dropTable[itemRarity][Math.floor(Math.random()*dropTable[itemRarity].length)];
-
+        console.log("NAME = "+itemList[itemIndex].name);
         itemSprite = itemGroup.create(x, y, itemList[itemIndex].name);
         itemSprite.setHealth(itemIndex);
         itemSprite.anchor.setTo(0.5, 0.5);
