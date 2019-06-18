@@ -17,12 +17,16 @@ var mainMenu = {
         game.load.image('backButton', 'img/button/back.png');
         game.load.image('exit' , 'img/button/exit.png');
         game.load.image('credit' , 'img/button/credit.png');
+
+        game.load.image('rankingButton','img/button/ranking.png');
        
         game.load.spritesheet('startButton_sprite_sheet', 'img/button/start_sprite_sheet.png',175,64);
         game.load.spritesheet('controls_sprite_sheet', 'img/button/controls_sprite_sheet.png',175,64);
         game.load.spritesheet('backButton_sprite_sheet', 'img/button/back_sprite_sheet.png',175,64);
         game.load.spritesheet('exit_sprite_sheet', 'img/button/exit_sprite_sheet.png',175,64);
         game.load.spritesheet('credit_sprite_sheet', 'img/button/credit_sprite_sheet.png',175,64);
+        
+        game.load.spritesheet('rankButton_sprite_sheet','img/button/ranking_sprite_sheet.png',175,64);
 
         game.load.image('new help' , 'img/new help.png');
         game.load.image('creditList' , 'img/credit_list.png');
@@ -44,10 +48,12 @@ var mainMenu = {
         var image = game.add.image(0,0,'Wall_paper');
         var image1 = game.add.image(game.world.centerX-425,70,'gradius');
         game.stage.background = image;
-        startButton=game.add.button(game.world.centerX-195,350,'startButton_sprite_sheet', this.startGame, this,1,0,0);
-        controls=game.add.button(game.world.centerX+20,350,'controls_sprite_sheet', this.ViewControls, this,1,0,0);
-        exit=game.add.button(game.world.centerX-195,430,'exit_sprite_sheet', this.real, this,1,0,0);
-        credit=game.add.button(game.world.centerX+20,430,'credit_sprite_sheet', this.ViewCredit, this,1,0,0);
+        startButton=game.add.button(game.world.centerX-295,350,'startButton_sprite_sheet', this.startGame, this,1,0,0);
+        controls=game.add.button(game.world.centerX-80,350,'controls_sprite_sheet', this.ViewControls, this,1,0,0);
+        exit=game.add.button(game.world.centerX-295,430,'exit_sprite_sheet', this.real, this,1,0,0);
+        credit=game.add.button(game.world.centerX-80,430,'credit_sprite_sheet', this.ViewCredit, this,1,0,0);
+
+        rank=game.add.button(game.world.centerX+140,390,'rankButton_sprite_sheet',this.ShowRankingBox,this,1,0,0);
         version = game.add.text(game.world.centerX-50,570, "v1.0.0", { font: '30px Arial', fill: '#fff' });
         easyStart = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         if (!start_music) start_music = game.add.audio('start_sound');
@@ -80,27 +86,52 @@ var mainMenu = {
         var image3 = game.add.button(700,30,'backButton_sprite_sheet',function(){},this,1,0,0);
         var image4 = game. add.button(800,game.world.centerY,'next_right_sprite_sheet',function(){},this,1,0,0);
         var image5 = game. add.button(50,game.world.centerY,'next_left_sprite_sheet',function(){},this,1,0,0);
-        var cur = image2;
+        var cur = 1;
         credit.inputEnabled = false;
         image3.inputEnabled = true;
         startButton.inputEnabled=false;
         controls.inputEnabled=false;
         exit.inputEnabled=false;
+        image2.visible=true;
+        image21.visible=false;
+        image22.visible=false;
+        
         image3.events.onInputDown.add(function(){
-            cur.destroy();image3.destroy();
+            image3.destroy();
             image4.destroy();image5.destroy();
-            image21.destroy();image22.destroy();
+            if(image2.visible) image2.destroy();
+            if(image21.visible) image21.destroy();
+            if(image22.visible) image22.destroy();
             startButton.inputEnabled=true;
             controls.inputEnabled=true;
             exit.inputEnabled=true;
             credit.inputEnabled = true;
         });
         image4.events.onInputDown.add(function(){
-            image22.destroy();
+            if(cur<3) cur++;
+            if(cur==2) {
+                image2.visible=false;
+                image21.visible=true;
+                image22.visible=false;
+            }
+            if(cur==3) {
+                image2.visible=false;
+                image21.visible=false;
+                image22.visible=true;
+            }
         });
         image5.events.onInputDown.add(function(){
-            image22.destroy();
-            image21.destroy();
+            if(cur>1) cur--;
+            if(cur==1) {
+                image2.visible=true;
+                image21.visible=false;
+                image22.visible=false;
+            }
+            if(cur==2) {
+                image2.visible=false;
+                image21.visible=true;
+                image22.visible=false;
+            }
         })
     },
 
