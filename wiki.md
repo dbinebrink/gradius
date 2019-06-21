@@ -3,14 +3,9 @@
 gradios wiki 입니다.
 
 
-
-
-
 ### Gradios 실행 방법
 
 Gradios는 Node.js의 gulp를 기반으로 동작합니다. 실행하기 위해서는 Node.js의 설치와 실행이 필요합니다.
-
-
 
 #### Node.js 설치
 ![wiki_nodejs_01](https://user-images.githubusercontent.com/43108674/56501866-613f4600-654b-11e9-823d-b320a7d19e00.PNG)
